@@ -442,7 +442,10 @@ function main(){
     var mataBrown1Faces = sphereFaces();
     var mataBrown1 = new MyObject(mataBrown1Vertex, mataBrown1Faces, shader_vertex_source, shader_fragment_source);
     var mataBrown2 = new MyObject(mataBrown1Vertex, mataBrown1Faces, shader_vertex_source, shader_fragment_source);
-    var hidungBrown = new MyObject(mataBrown1Vertex, mataBrown1Faces, shader_vertex_source, shader_fragment_source);
+
+    // hidung
+    var hidungBrownVertex = sphereVertex(0.04,0.04,0.04,244/255,39/255,61/255);
+    var hidungBrown = new MyObject(hidungBrownVertex, mataBrown1Faces, shader_vertex_source, shader_fragment_source);
 
     // Mulut brown
     var mulutBrownVertex = sphereVertex(0.12, 0.14, 0.1, 203/255,194/255,187/255);
@@ -456,6 +459,48 @@ function main(){
     var garisMulut2Vertex = tabungVertex(0.01,0.01,0.01,0.01,0.02,0.1,0,0,0);
     var garisMulut2Faces = tabungFaces();
     var garisMulut2 = new MyObject(garisMulut2Vertex, garisMulut2Faces, shader_vertex_source, shader_fragment_source);
+
+    // topi
+    var topiBrownVertex = tabungVertex(0.13, 0.13, 0.005, 0.005, 0.0, 0.3, 42/255,98/255,203/255);
+    var topiBrownFaces = tabungFaces();
+    var topiBrown = new MyObject(topiBrownVertex, topiBrownFaces, shader_vertex_source, shader_fragment_source);
+    // bawah topi
+    var bawahTopiBrownVertex = tabungVertex(0.15,0.15, 0.15,0.15, 0.0, 0.1, 23/255,78/255,134/255);
+    var bawahTopiBrownFaces = tabungFaces();
+    var bawahTopiBrown = new MyObject(bawahTopiBrownVertex, bawahTopiBrownFaces, shader_vertex_source, shader_fragment_source);
+
+    // badan brown
+    var bodyBrownVertex = tabungVertex(0.3,0.3,0.3,0.3,-0.15,-0.575,42/255,98/255,203/255);
+    var bodyBrownFaces = tabungFaces();
+    var bodyBrown = new MyObject(bodyBrownVertex, bodyBrownFaces, shader_vertex_source, shader_fragment_source);
+    // inner badan brown
+    var innerBadanVertex = tabungVertex(0.15,0.15,0.15,0.15,-0.15,-0.575,231/255,16/255,42/255);
+    var innerBadan = new MyObject(innerBadanVertex, bodyBrownFaces, shader_vertex_source, shader_fragment_source);
+    // arm
+    var arm1BrownVertex= tabungVertex(0.125,0.125,0.1,0.1,-0.15,-0.45,23/255,78/255,134/255);
+    var arm1_faces = tabungFaces();
+    var arm1Brown = new MyObject(arm1BrownVertex, arm1_faces, shader_vertex_source, shader_fragment_source);
+    var arm2Brown = new MyObject(arm1BrownVertex, arm1_faces, shader_vertex_source, shader_fragment_source);
+    // palm brown
+    var palmBrownVertex = sphereVertex(0.08,0.12,0.08,255,255,255);
+    var palm_faces = sphereFaces();
+    var palm1Brown = new MyObject(palmBrownVertex, palm_faces, shader_vertex_source, shader_fragment_source);
+    var palm2Brown = new MyObject(palmBrownVertex, palm_faces, shader_vertex_source, shader_fragment_source);
+    // kaki brown
+    var legVertexBrown = tabungVertex(0.16875,0.16875,0.175,0.175,-0.45,-0.75,231/255,16/255,42/255);
+    var leg_faces = tabungFaces();
+    var leg1Brown = new MyObject(legVertexBrown, leg_faces, shader_vertex_source, shader_fragment_source);
+    var leg2Brown = new MyObject(legVertexBrown, leg_faces, shader_vertex_source, shader_fragment_source);
+
+    // sepatu brown
+    var sepatuVertex = sphereVertex(0.175,0.1,0.2,0,0,0);
+    var sepatuFaces = sphereFaces();
+    var sepatuBrown1 = new MyObject(sepatuVertex, sepatuFaces, shader_vertex_source, shader_fragment_source);
+    var sepatuBrown2 = new MyObject(sepatuVertex, sepatuFaces, shader_vertex_source, shader_fragment_source);
+    var innerSepatuVertex = tabungVertex(0.16875,0.16875,0.175,0.175,-0.65,-0.75,0,0,0);
+    var innerSepatuFaces = tabungFaces();
+    var innerSepatuBrown1 = new MyObject(innerSepatuVertex, innerSepatuFaces, shader_vertex_source, shader_fragment_source);
+    var innerSepatuBrown2 = new MyObject(innerSepatuVertex, innerSepatuFaces, shader_vertex_source, shader_fragment_source);
     // END BROWN PUNYA TIMOTHY
     var object_vertex = sphereVertex(0.55,0.5,0.5, 255, 255, 255);
     var object_faces = sphereFaces();
@@ -570,6 +615,21 @@ function main(){
     kepalaBrown.addChild(hidungBrown);
     kepalaBrown.addChild(garisMulut1);
     kepalaBrown.addChild(garisMulut2);
+    kepalaBrown.addChild(topiBrown);
+    kepalaBrown.addChild(bawahTopiBrown);
+    kepalaBrown.addChild(bodyBrown);
+    kepalaBrown.addChild(innerBadan);
+    kepalaBrown.addChild(arm1Brown);
+    kepalaBrown.addChild(arm2Brown);
+    kepalaBrown.addChild(palm1Brown);
+    kepalaBrown.addChild(palm2Brown);
+    kepalaBrown.addChild(leg1Brown);
+    kepalaBrown.addChild(leg2Brown);
+    kepalaBrown.addChild(sepatuBrown1);
+    kepalaBrown.addChild(sepatuBrown2);
+    kepalaBrown.addChild(innerSepatuBrown1);
+    kepalaBrown.addChild(innerSepatuBrown2);
+
     //kepala
     object1.addChild(kuping1);
     object1.addChild(kuping2);
@@ -624,9 +684,23 @@ function main(){
         mataBrown1.setPosition(0,0,0,-1.925,0.1,0.50,PHI,THETA);
         mataBrown2.setPosition(0,0,0,-2.075,0.1,0.50,PHI,THETA);
         mulutBrown.setPosition(0,0,0,-2.0,-0.065,0.5,PHI,THETA);
-        hidungBrown.setPosition(0,0,0,-2,0.0,0.57,PHI,THETA);
-        garisMulut1.setPosition(-Math.PI / 2,0,0, -2.0,-0.1,0.6, PHI,THETA);
+        hidungBrown.setPosition(0,0,0,-2,0.0,0.6,PHI,THETA);
+        garisMulut1.setPosition(-Math.PI / 2,0,0, -2.0,-0.11,0.6, PHI,THETA);
         // garisMulut2.setPosition(0,-Math.PI / 2,Math.PI / 6, -2.0,-0.1,0.6, PHI,THETA)
+        topiBrown.setPosition(-Math.PI / 2,0,0,-2,0.45,0.0,PHI,THETA);
+        bawahTopiBrown.setPosition(-Math.PI/2,0,0,-2,0.45,0,PHI,THETA);
+        bodyBrown.setPosition(4.71239,0,0,-2,-0.2,0.02,PHI,THETA);
+        innerBadan.setPosition(4.71239,0,0,-2,-0.2,0.2,PHI,THETA);
+        arm1Brown.setPosition(-Math.PI / 2 - 0.5,-0.5,0 ,-1.875,-0.375,0,PHI,THETA);
+        arm2Brown.setPosition(Math.PI / 2 - 0.5,2.5,0,-2.125,-0.375,0,PHI,THETA);
+        palm1Brown.setPosition(0,-0.7,1, -1.69,-0.7,0.175,PHI,THETA);
+        palm2Brown.setPosition(0,0.7,-1,-2.378,-0.7,0.175,PHI,THETA);
+        leg1Brown.setPosition(4.71239,0,0,-1.9,-0.30,0.1,PHI,THETA);
+        leg2Brown.setPosition(4.71239,0,0,-2.1,-0.30,0.1,PHI,THETA);
+        sepatuBrown1.setPosition(0,0,0,-1.9,-1.05,0.12,PHI,THETA);
+        sepatuBrown2.setPosition(0,0,0,-2.1,-1.05,0.12,PHI,THETA);
+        innerSepatuBrown1.setPosition(4.71239,0,0,-1.9,-0.35,0.12,PHI,THETA);
+        innerSepatuBrown2.setPosition(4.71239,0,0,-2.1,-0.35,0.12,PHI,THETA);
 
 
         object1.setPosition(0,0,0,0,0,0,PHI,THETA)
