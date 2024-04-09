@@ -295,7 +295,7 @@ function halfSphereFaces(){
 
     return object_faces;
 }
-
+// lingkaran bawah (x,y), lingkaran atas(x1,y1), tinggi (x,y), rgb
 function tabungVertex(a, b, a1, b1, s, e, r, g, b2){
     var tabung_vertex = [
         0,0,s, //pusat
@@ -421,6 +421,42 @@ function main(){
 
     //CONY PUNYA MK
     //Kepala
+    // BROWN PUNYA Timothy
+    var kepalaBrownVertex = sphereVertex(0.55,0.5,0.5,162/255,114/255,92/255);
+    var kepalaBrownFaces = sphereFaces();
+    var kepalaBrown = new MyObject(kepalaBrownVertex, kepalaBrownFaces, shader_vertex_source, shader_fragment_source);
+
+    // telinga brown
+    var telingaBrown1Vertex = sphereVertex(0.155, 0.185, 0.185, 162/255,114/255,92/255);
+    var telingaBrown1Faces = sphereFaces();
+    var telingaBrown1 = new MyObject(telingaBrown1Vertex, telingaBrown1Faces, shader_vertex_source, shader_fragment_source);
+    var telingaBrown2 = new MyObject(telingaBrown1Vertex, telingaBrown1Faces, shader_vertex_source, shader_fragment_source);
+    // inner telinga brown
+    var inner1Vertex = sphereVertex(0.135, 0.165, 0.165, 107/255,60/255,47/255);
+    var inner1Faces = sphereFaces();
+    var inner1 = new MyObject(inner1Vertex, inner1Faces, shader_vertex_source, shader_fragment_source);
+    var inner2 = new MyObject(inner1Vertex, inner1Faces, shader_vertex_source, shader_fragment_source);
+
+    // mata
+    var mataBrown1Vertex = sphereVertex(0.035, 0.035, 0.035, 0, 0, 0);
+    var mataBrown1Faces = sphereFaces();
+    var mataBrown1 = new MyObject(mataBrown1Vertex, mataBrown1Faces, shader_vertex_source, shader_fragment_source);
+    var mataBrown2 = new MyObject(mataBrown1Vertex, mataBrown1Faces, shader_vertex_source, shader_fragment_source);
+    var hidungBrown = new MyObject(mataBrown1Vertex, mataBrown1Faces, shader_vertex_source, shader_fragment_source);
+
+    // Mulut brown
+    var mulutBrownVertex = sphereVertex(0.12, 0.14, 0.1, 203/255,194/255,187/255);
+    var mulutBrownFaces = sphereFaces();
+    var mulutBrown = new MyObject(mulutBrownVertex, mulutBrownFaces, shader_vertex_source, shader_fragment_source);
+    // garis mulut
+    var garisMulut1Vertex = tabungVertex(0.01,0.01,0.01,0.01,0.02,0.1,0,0,0);
+    var garisMulut1Faces = tabungFaces();
+    var garisMulut1 = new MyObject(garisMulut1Vertex, garisMulut1Faces, shader_vertex_source, shader_fragment_source);
+
+    var garisMulut2Vertex = tabungVertex(0.01,0.01,0.01,0.01,0.02,0.1,0,0,0);
+    var garisMulut2Faces = tabungFaces();
+    var garisMulut2 = new MyObject(garisMulut2Vertex, garisMulut2Faces, shader_vertex_source, shader_fragment_source);
+    // END BROWN PUNYA TIMOTHY
     var object_vertex = sphereVertex(0.55,0.5,0.5, 255, 255, 255);
     var object_faces = sphereFaces();
     var object1 = new MyObject(object_vertex, object_faces, shader_vertex_source, shader_fragment_source);
@@ -524,6 +560,16 @@ function main(){
     LIBS.translateZ(VIEWMATRIX,-5);
 
     //ADD CHILD
+    kepalaBrown.addChild(telingaBrown1);
+    kepalaBrown.addChild(telingaBrown2);
+    kepalaBrown.addChild(inner1);
+    kepalaBrown.addChild(inner2);
+    kepalaBrown.addChild(mataBrown1);
+    kepalaBrown.addChild(mataBrown2);
+    kepalaBrown.addChild(mulutBrown);
+    kepalaBrown.addChild(hidungBrown);
+    kepalaBrown.addChild(garisMulut1);
+    kepalaBrown.addChild(garisMulut2);
     //kepala
     object1.addChild(kuping1);
     object1.addChild(kuping2);
@@ -570,6 +616,18 @@ function main(){
             THETA += dX;
             PHI += dY;
         }
+        kepalaBrown.setPosition(0,0,0,-2,0,0,PHI,THETA);
+        telingaBrown1.setPosition(0,0,0, -1.75,0.4,0,PHI,THETA);
+        telingaBrown2.setPosition(0,0,0,-2.25,0.4,0,PHI,THETA);
+        inner1.setPosition(0,0,0, -1.75,0.4,0.05,PHI,THETA);
+        inner2.setPosition(0,0,0,-2.25,0.4,0.05,PHI,THETA);
+        mataBrown1.setPosition(0,0,0,-1.925,0.1,0.55,PHI,THETA);
+        mataBrown2.setPosition(0,0,0,-2.075,0.1,0.55,PHI,THETA);
+        mulutBrown.setPosition(0,0,0,-2.0,-0.065,0.5,PHI,THETA);
+        hidungBrown.setPosition(0,0,0,-2,0.0,0.57,PHI,THETA);
+        garisMulut1.setPosition(-Math.PI / 2,0,0, -2.0,-0.1,0.6, PHI,THETA);
+        // garisMulut2.setPosition(0,-Math.PI / 2,Math.PI / 6, -2.0,-0.1,0.6, PHI,THETA)
+
 
         object1.setPosition(0,0,0,0,0,0,PHI,THETA)
         kuping1.setPosition(0,0,0,0.15,0.4,0,PHI,THETA)
@@ -607,6 +665,9 @@ function main(){
 
         object1.setuniformmatrix4(PROJMATRIX,VIEWMATRIX);
         object1.draw();
+
+        kepalaBrown.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
+        kepalaBrown.draw();
 
         GL.flush();
         window.requestAnimationFrame(animate);
