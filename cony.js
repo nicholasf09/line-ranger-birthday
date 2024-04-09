@@ -621,8 +621,8 @@ function main(){
         telingaBrown2.setPosition(0,0,0,-2.25,0.4,0,PHI,THETA);
         inner1.setPosition(0,0,0, -1.75,0.4,0.05,PHI,THETA);
         inner2.setPosition(0,0,0,-2.25,0.4,0.05,PHI,THETA);
-        mataBrown1.setPosition(0,0,0,-1.925,0.1,0.55,PHI,THETA);
-        mataBrown2.setPosition(0,0,0,-2.075,0.1,0.55,PHI,THETA);
+        mataBrown1.setPosition(0,0,0,-1.925,0.1,0.50,PHI,THETA);
+        mataBrown2.setPosition(0,0,0,-2.075,0.1,0.50,PHI,THETA);
         mulutBrown.setPosition(0,0,0,-2.0,-0.065,0.5,PHI,THETA);
         hidungBrown.setPosition(0,0,0,-2,0.0,0.57,PHI,THETA);
         garisMulut1.setPosition(-Math.PI / 2,0,0, -2.0,-0.1,0.6, PHI,THETA);
