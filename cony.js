@@ -185,6 +185,59 @@ function sphereVertex(a, b, c, r, g, b1){
     return object_vertex;
 }
 
+// function hyperboloid1Vertex(a, b, r, g, b1) {
+//     var triangle_vertex = [];
+//     var radius = 1;
+//     var x, y, z, xy;                              // vertex position
+//     var nx, ny, nz, lengthInv = 1 / radius;    // vertex normal     
+//     var radius = 1; // Adjust this as needed
+//     for(var u = -180; u <= 180; u += 6) { // 60
+//         for(var v = -90; v < 90; v += 6) { // 30
+//             var thetaV = (v / 360) * 2 * Math.PI;
+//             var thetaU = (u / 360) * 2 * Math.PI;
+//             var x = radius * (1 / Math.cos(thetaV)) * Math.cos(thetaU);
+//             var y = rad * (1 / Math.cos(thetaV)) * Math.sin(thetaU);
+//             var z = Math.tan(thetaV);
+
+//             triangle_vertex.push(x, y, z);
+//         }
+//     }
+
+//     return triangle_vertex;
+// }
+
+
+// function hyperboloid1Faces() {
+//     var sectorCount = 72;
+//     var stackCount = 36;
+//     var object_faces = [];
+//     var k1, k2;
+//     for (var i = 0; i < stackCount; ++i) {
+//         k1 = i * (sectorCount + 1); // beginning of current stack
+//         k2 = k1 + sectorCount + 1; // beginning of next stack
+
+//         for (var j = 0; j < sectorCount; ++j, ++k1, ++k2) {
+//             // 2 triangles per sector excluding first and last stacks
+//             // k1 => k2 => k1+1
+//             if (i !== 0) {
+//                 object_faces.push(k1);
+//                 object_faces.push(k2);
+//                 object_faces.push(k1 + 1);
+//             }
+
+//             // k1+1 => k2 => k2+1
+//             if (i !== stackCount - 1) {
+//                 object_faces.push(k1 + 1);
+//                 object_faces.push(k2);
+//                 object_faces.push(k2 + 1);
+//             }
+//         }
+//     }
+
+//     return object_faces;
+// }
+
+
 function sphereFaces(){
     var sectorCount = 72;
     var stackCount = 36;
@@ -501,7 +554,27 @@ function main(){
     var innerSepatuFaces = tabungFaces();
     var innerSepatuBrown1 = new MyObject(innerSepatuVertex, innerSepatuFaces, shader_vertex_source, shader_fragment_source);
     var innerSepatuBrown2 = new MyObject(innerSepatuVertex, innerSepatuFaces, shader_vertex_source, shader_fragment_source);
-    // END BROWN PUNYA TIMOTHY
+
+    var garisVertex = tabungVertex(0.01,0.01,0.01,0.01,0.05,0.5,254/255,250/255,249/255);
+    var garisFaces = tabungFaces();
+    var garis = new MyObject(garisVertex, garisFaces, shader_vertex_source, shader_fragment_source);
+    var garis2 = new MyObject(garisVertex, garisFaces, shader_vertex_source, shader_fragment_source);
+    var garis3 = new MyObject(garisVertex, garisFaces, shader_vertex_source, shader_fragment_source);
+    var garis4 = new MyObject(garisVertex, garisFaces, shader_vertex_source, shader_fragment_source);
+    var garis5 = new MyObject(garisVertex, garisFaces, shader_vertex_source, shader_fragment_source);
+    var garis6 = new MyObject(garisVertex, garisFaces, shader_vertex_source, shader_fragment_source);
+    var garis7 = new MyObject(garisVertex, garisFaces, shader_vertex_source, shader_fragment_source);
+
+    // sepeda
+    var kursiVertex = halfSphereVertex(0.3,0.3,0.5,56/255,143/255,231/255);
+    var kursiFaces = halfSphereFaces();
+    var kursi = new MyObject(kursiVertex, kursiFaces, shader_vertex_source, shader_fragment_source);
+    var tiangVertex = tabungVertex(0.1,0.1,0.1,0.1,-0.05,0.5,232/255,169/255,45/255);
+    var tiangFaces = tabungFaces();
+    var tiang = new MyObject(tiangVertex, tiangFaces, shader_vertex_source, shader_fragment_source);
+
+
+    // -----------------------------------------------------END BROWN PUNYA TIMOTHY-----------------------------------
     var object_vertex = sphereVertex(0.55,0.5,0.5, 255, 255, 255);
     var object_faces = sphereFaces();
     var object1 = new MyObject(object_vertex, object_faces, shader_vertex_source, shader_fragment_source);
@@ -629,6 +702,16 @@ function main(){
     kepalaBrown.addChild(sepatuBrown2);
     kepalaBrown.addChild(innerSepatuBrown1);
     kepalaBrown.addChild(innerSepatuBrown2);
+    kepalaBrown.addChild(garis);
+    kepalaBrown.addChild(garis2);
+    kepalaBrown.addChild(garis3);
+    kepalaBrown.addChild(garis4);
+    kepalaBrown.addChild(garis5);
+    kepalaBrown.addChild(garis6);
+    kepalaBrown.addChild(garis7);
+    kepalaBrown.addChild(kursi);
+    kepalaBrown.addChild(tiang);
+    // kepalaBrown.addChild(pitaBrown);
 
     //kepala
     object1.addChild(kuping1);
@@ -701,7 +784,16 @@ function main(){
         sepatuBrown2.setPosition(0,0,0,-2.1,-1.05,0.12,PHI,THETA);
         innerSepatuBrown1.setPosition(4.71239,0,0,-1.9,-0.35,0.12,PHI,THETA);
         innerSepatuBrown2.setPosition(4.71239,0,0,-2.1,-0.35,0.12,PHI,THETA);
-
+        // pitaBrown.setPosition(0,0,0,0,-4,0,0.8,PHI,THETA);
+        garis.setPosition(4.71239,0,0,-2.05,-0.85,0.34,PHI,THETA);
+        garis2.setPosition(4.71239,0,0,-1.990,-0.85,0.35,PHI,THETA);
+        garis3.setPosition(4.71239,0,0,-1.930,-0.85,0.33,PHI,THETA);
+        garis4.setPosition(4.71239,0,0,-1.930,-1.04,0.28,PHI,THETA);
+        garis5.setPosition(4.71239,0,0,-1.83,-1.04,0.25,PHI,THETA);
+        garis6.setPosition(4.71239,0,0,-2.05,-1.04,0.28,PHI,THETA);
+        garis7.setPosition(4.71239,0,0,-2.15,-1.04,0.26,PHI,THETA);
+        kursi.setPosition(4.71239*3,0,0,-2,-0.42,-0.2,PHI,THETA);
+        tiang.setPosition(4.71239,0,0,-2,-1.4,-0.2,PHI,THETA);
 
         object1.setPosition(0,0,0,0,0,0,PHI,THETA)
         kuping1.setPosition(0,0,0,0.15,0.4,0,PHI,THETA)
