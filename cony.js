@@ -94,6 +94,28 @@ class MyObject{
         }
     }
 
+    rotate(PHI, THETA, r){
+        LIBS.rotateZ(this.MOVEMATRIX,r);
+        LIBS.rotateY(this.MOVEMATRIX,THETA);
+        LIBS.rotateX(this.MOVEMATRIX,PHI);
+        var parentMatrix = this.MOVEMATRIX;
+        for (let i = 0; i < this.child.length; i++) {
+            let child = this.child[i];
+            child.MOVEMATRIX = LIBS.mul(child.MOVEMATRIX, parentMatrix );
+            child.rotate( PHI, THETA, r);
+		}
+    }
+
+    translate(x,y,z){
+        LIBS.translateZ(this.MOVEMATRIX,z);
+        LIBS.translateY(this.MOVEMATRIX,y);
+        LIBS.translateX(this.MOVEMATRIX,x);
+        for (let i = 0; i < this.child.length; i++) {
+            let child = this.child[i];
+            child.translate(x,y,z)
+		}
+    }
+
     drawLine() {
 		GL.useProgram(this.SHADER_PROGRAM);
 		GL.bindBuffer(GL.ARRAY_BUFFER, this.OBJECT_VERTEX);
@@ -224,6 +246,49 @@ function cubeVertex(h, d, w, r, g, b) {
     vertices.push(-w * lengthInv, -h * lengthInv, d * lengthInv, r, g, b);
     vertices.push(-w * lengthInv, h * lengthInv, d * lengthInv, r, g, b);
     vertices.push(-w * lengthInv, h * lengthInv, -d * lengthInv, r, g, b);
+
+    return vertices;
+}
+
+function cubeVertexColor(h, d, w, r1, g1, b1, r2,g2,b2,r3,g3,b3) {
+    const vertices = [];
+    const lengthInv = 1; // Normalization factor
+
+    // Front face
+    vertices.push(-w * lengthInv, -h * lengthInv, d * lengthInv, r1, g1, b1);
+    vertices.push(w * lengthInv, -h * lengthInv, d * lengthInv, r1, g1, b1);
+    vertices.push(w * lengthInv, h * lengthInv, d * lengthInv, r1, g1, b1);
+    vertices.push(-w * lengthInv, h * lengthInv, d * lengthInv,  r1, g1, b1);
+
+    // Back face
+    vertices.push(-w * lengthInv, -h * lengthInv, -d * lengthInv,  r1, g1, b1);
+    vertices.push(-w * lengthInv, h * lengthInv, -d * lengthInv,  r1, g1, b1);
+    vertices.push(w * lengthInv, h * lengthInv, -d * lengthInv,  r1, g1, b1);
+    vertices.push(w * lengthInv, -h * lengthInv, -d * lengthInv,  r1, g1, b1);
+
+    // Top face
+    vertices.push(-w * lengthInv, h * lengthInv, -d * lengthInv, r2,g2,b2);
+    vertices.push(-w * lengthInv, h * lengthInv, d * lengthInv, r2,g2,b2);
+    vertices.push(w * lengthInv, h * lengthInv, d * lengthInv, r2,g2,b2);
+    vertices.push(w * lengthInv, h * lengthInv, -d * lengthInv, r2,g2,b2);
+
+    // Bottom face
+    vertices.push(-w * lengthInv, -h * lengthInv, -d * lengthInv, r2,g2,b2);
+    vertices.push(w * lengthInv, -h * lengthInv, -d * lengthInv, r2,g2,b2);
+    vertices.push(w * lengthInv, -h * lengthInv, d * lengthInv, r2,g2,b2);
+    vertices.push(-w * lengthInv, -h * lengthInv, d * lengthInv, r2,g2,b2);
+
+    // Right face
+    vertices.push(w * lengthInv, -h * lengthInv, -d * lengthInv, r3,g3,b3);
+    vertices.push(w * lengthInv, h * lengthInv, -d * lengthInv,  r3,g3,b3);
+    vertices.push(w * lengthInv, h * lengthInv, d * lengthInv,  r3,g3,b3);
+    vertices.push(w * lengthInv, -h * lengthInv, d * lengthInv,  r3,g3,b3);
+
+    // Left face
+    vertices.push(-w * lengthInv, -h * lengthInv, -d * lengthInv,  r3,g3,b3);
+    vertices.push(-w * lengthInv, -h * lengthInv, d * lengthInv,  r3,g3,b3);
+    vertices.push(-w * lengthInv, h * lengthInv, d * lengthInv,  r3,g3,b3);
+    vertices.push(-w * lengthInv, h * lengthInv, -d * lengthInv,  r3,g3,b3);
 
     return vertices;
 }
@@ -381,6 +446,84 @@ function tabungVertex(a, b, a1, b1, s, e, r, g, b2){
     }
 
     return tabung_vertex;
+}
+
+function generateTube(x, y, outerRad, innerRad, height, segments, r,g,b) {
+    var vertices = [];
+
+    var angleIncrement = (2 * Math.PI) / segments;
+
+    // Vertices around the outer and inner circles for top and bottom
+    for (var i = 0; i < segments; i++) {
+    var angle = i * angleIncrement;
+    var cosAngle = Math.cos(angle);
+    var sinAngle = Math.sin(angle);
+
+    // Bottom circle vertex
+    var bottomX = outerRad * cosAngle + x;
+    var bottomY = outerRad * sinAngle + y;
+    var bottomZ = 0; // For the bottom circle
+    vertices.push(bottomX, bottomY, bottomZ,r,g,b);
+
+    // Top circle vertex
+    var topX = innerRad * cosAngle + x;
+    var topY = innerRad * sinAngle + y;
+    var topZ = height; // For the top circle
+    vertices.push(topX, topY, topZ,r,g,b);
+    }
+
+    // Closing vertices for the last segment
+    vertices.push(vertices[0], vertices[1], 0,r,g,b);
+    vertices.push(vertices[3], vertices[4], height,r,g,b);
+
+    // Faces
+    var faces = [];
+    for (var i = 0; i < segments; i++) {
+    var index = i * 2;
+    faces.push(index, index + 1, (index + 3) % (segments * 2));
+    faces.push(index, (index + 3) % (segments * 2), (index + 2) % (segments * 2));
+    }
+
+    // Faces for top and bottom circles
+    for (var i = 0; i < segments; i++) {
+    var bottomIndex = i * 2;
+    var topIndex = bottomIndex + 1;
+    var nextBottomIndex = ((i + 1) % segments) * 2;
+    var nextTopIndex = nextBottomIndex + 1;
+
+    // Bottom circle face
+    faces.push(bottomIndex, nextBottomIndex, vertices.length / 3 - 2);
+
+    // Top circle face
+    faces.push(nextTopIndex, topIndex, vertices.length / 3 - 1);
+    }
+
+    return { vertices: vertices, faces: faces };
+}
+
+function segi5Faces(){
+    var tabung_faces = []
+    for(var i = 1; i <= 5; i++){
+        tabung_faces.push(0,i,i+1);
+    }
+    tabung_faces.push(0,6,1);
+    
+    //gambar atas
+    for(var i = 1; i <= 5; i++){
+        tabung_faces.push(7,i+7,i+7);
+    }
+    tabung_faces.push(7,13,8);
+    
+    //selimut
+    for(var i = 1; i <= 360; i++){
+        tabung_faces.push(i,i+1,361+i);
+        tabung_faces.push(i+1,361+i,362+i);
+    }
+
+    tabung_faces.push(1,2,723);
+    tabung_faces.push(1,722,723);
+
+    return tabung_faces;
 }
 
 function tabungFaces(){
@@ -594,9 +737,14 @@ function main(){
     var innerRodaVertex = sphereVertex(0.2,0.4,0.4,229/255,0/255,29/255);
     var innerRodaFaces = sphereFaces();
     var innerRoda = new MyObject(innerRodaVertex, innerRodaFaces, shader_vertex_source, shader_fragment_source);
+    var patternRodaData = generateTube(0,0,0.3,0.3,0.4,5,10,253/255,216/255,56/255);
+    var patternRodaVertex = patternRodaData.vertices;
+    var patternRodaFaces = patternRodaData.faces;
+    var patternRoda = new MyObject(patternRodaVertex, patternRodaFaces, shader_vertex_source, shader_fragment_source);
 
 
     // -----------------------------------------------------END BROWN PUNYA TIMOTHY-----------------------------------
+
     var object_vertex = sphereVertex(0.55,0.5,0.5, 255, 255, 255);
     var object_faces = sphereFaces();
     var object1 = new MyObject(object_vertex, object_faces, shader_vertex_source, shader_fragment_source);
@@ -692,6 +840,13 @@ function main(){
     var tail_vertex = sphereVertex(0.05, 0.05, 0.05, 255, 255, 255);
     var tail_faces = sphereFaces();
     var tail = new MyObject(tail_vertex, tail_faces, shader_vertex_source, shader_fragment_source);
+
+    // -------------------------------------------------------ENVIRONMENT--------------------------------------------
+    var environmentVertex = cubeVertexColor(7,7,7,155/255,213/255,254/255,11/255,144/255,227/255,197/255,38/255,0/255)
+    var environmentFaces = cubeFaces();
+    var environment1 = new MyObject(environmentVertex, environmentFaces, shader_vertex_source, shader_fragment_source);
+    // ___________________________ START KUE TART___________________________
+
  
     //MAtrix
     var PROJMATRIX = LIBS.get_projection(40,CANVAS.width/CANVAS.height, 1 ,100);
@@ -739,6 +894,7 @@ function main(){
     boxSepeda.addChild(tanganRoda2);
     boxSepeda.addChild(roda);
     roda.addChild(innerRoda);
+    innerRoda.addChild(patternRoda);
     // kepalaBrown.addChild(pitaBrown);
 
     //kepala
@@ -824,10 +980,11 @@ function main(){
         tiang.setPosition(4.71239,0,0,-2,-1.4,-0.2,PHI,THETA);
         bottomtiang.setPosition(4.71239,0,0,-2,-1.8,-0.2,PHI,THETA);
         boxSepeda.setPosition(0,0,0,-2,-1.45,-0.2,PHI,THETA);
-        tanganRoda1.setPosition(0,0,0,-2.2,-1.79,-0.2,PHI,THETA);
-        tanganRoda2.setPosition(0,0,0,-1.8,-1.79,-0.2,PHI,THETA);
+        tanganRoda1.setPosition(0,0,0,-2.2,-1.77,-0.2,PHI,THETA);
+        tanganRoda2.setPosition(0,0,0,-1.8,-1.77,-0.2,PHI,THETA);
         roda.setPosition(0,4.71239,0,-1.85,-2.1,-0.2,PHI,THETA);
         innerRoda.setPosition(0,0,0,-2,-2.1,-0.2,PHI,THETA);
+        patternRoda.setPosition(0,4.71239,4.71239,-1.8115,-2.1,-0.2,PHI,THETA);
 
 
         object1.setPosition(0,0,0,0,0,0,PHI,THETA)
@@ -860,6 +1017,12 @@ function main(){
         arm2.setPosition(Math.PI / 2 - 0.5,2.5,0,-0.125,-0.375,0,PHI,THETA)
         palm1.setPosition(0,-0.7,1,0.31,-0.7,0.175,PHI,THETA)
         palm2.setPosition(0,0.7,-1,-0.378,-0.7,0.175,PHI,THETA)
+    
+
+
+
+        // _____________________________ENV POS______________________________________
+        environment1.setPosition(0,0,4.71239,0,3.5,0,PHI,THETA);
 
         GL.viewport (0,0,CANVAS.width,CANVAS.height);
         GL.clear(GL.COLOR_BUFFER_BIT);
@@ -869,6 +1032,9 @@ function main(){
 
         kepalaBrown.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
         kepalaBrown.draw();
+
+        environment1.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
+        environment1.draw();
 
         GL.flush();
         window.requestAnimationFrame(animate);
