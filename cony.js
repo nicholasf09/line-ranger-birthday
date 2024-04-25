@@ -185,57 +185,63 @@ function sphereVertex(a, b, c, r, g, b1){
     return object_vertex;
 }
 
-// function hyperboloid1Vertex(a, b, r, g, b1) {
-//     var triangle_vertex = [];
-//     var radius = 1;
-//     var x, y, z, xy;                              // vertex position
-//     var nx, ny, nz, lengthInv = 1 / radius;    // vertex normal     
-//     var radius = 1; // Adjust this as needed
-//     for(var u = -180; u <= 180; u += 6) { // 60
-//         for(var v = -90; v < 90; v += 6) { // 30
-//             var thetaV = (v / 360) * 2 * Math.PI;
-//             var thetaU = (u / 360) * 2 * Math.PI;
-//             var x = radius * (1 / Math.cos(thetaV)) * Math.cos(thetaU);
-//             var y = rad * (1 / Math.cos(thetaV)) * Math.sin(thetaU);
-//             var z = Math.tan(thetaV);
+function cubeVertex(h, d, w, r, g, b) {
+    const vertices = [];
+    const lengthInv = 1; // Normalization factor
 
-//             triangle_vertex.push(x, y, z);
-//         }
-//     }
+    // Front face
+    vertices.push(-w * lengthInv, -h * lengthInv, d * lengthInv, r, g, b);
+    vertices.push(w * lengthInv, -h * lengthInv, d * lengthInv, r, g, b);
+    vertices.push(w * lengthInv, h * lengthInv, d * lengthInv, r, g, b);
+    vertices.push(-w * lengthInv, h * lengthInv, d * lengthInv, r, g, b);
 
-//     return triangle_vertex;
-// }
+    // Back face
+    vertices.push(-w * lengthInv, -h * lengthInv, -d * lengthInv, r, g, b);
+    vertices.push(-w * lengthInv, h * lengthInv, -d * lengthInv, r, g, b);
+    vertices.push(w * lengthInv, h * lengthInv, -d * lengthInv, r, g, b);
+    vertices.push(w * lengthInv, -h * lengthInv, -d * lengthInv, r, g, b);
+
+    // Top face
+    vertices.push(-w * lengthInv, h * lengthInv, -d * lengthInv, r, g, b);
+    vertices.push(-w * lengthInv, h * lengthInv, d * lengthInv, r, g, b);
+    vertices.push(w * lengthInv, h * lengthInv, d * lengthInv, r, g, b);
+    vertices.push(w * lengthInv, h * lengthInv, -d * lengthInv, r, g, b);
+
+    // Bottom face
+    vertices.push(-w * lengthInv, -h * lengthInv, -d * lengthInv, r, g, b);
+    vertices.push(w * lengthInv, -h * lengthInv, -d * lengthInv, r, g, b);
+    vertices.push(w * lengthInv, -h * lengthInv, d * lengthInv, r, g, b);
+    vertices.push(-w * lengthInv, -h * lengthInv, d * lengthInv, r, g, b);
+
+    // Right face
+    vertices.push(w * lengthInv, -h * lengthInv, -d * lengthInv, r, g, b);
+    vertices.push(w * lengthInv, h * lengthInv, -d * lengthInv, r, g, b);
+    vertices.push(w * lengthInv, h * lengthInv, d * lengthInv, r, g, b);
+    vertices.push(w * lengthInv, -h * lengthInv, d * lengthInv, r, g, b);
+
+    // Left face
+    vertices.push(-w * lengthInv, -h * lengthInv, -d * lengthInv, r, g, b);
+    vertices.push(-w * lengthInv, -h * lengthInv, d * lengthInv, r, g, b);
+    vertices.push(-w * lengthInv, h * lengthInv, d * lengthInv, r, g, b);
+    vertices.push(-w * lengthInv, h * lengthInv, -d * lengthInv, r, g, b);
+
+    return vertices;
+}
 
 
-// function hyperboloid1Faces() {
-//     var sectorCount = 72;
-//     var stackCount = 36;
-//     var object_faces = [];
-//     var k1, k2;
-//     for (var i = 0; i < stackCount; ++i) {
-//         k1 = i * (sectorCount + 1); // beginning of current stack
-//         k2 = k1 + sectorCount + 1; // beginning of next stack
+function cubeFaces() {
+    const indices = [
+        0,  1,  2,      0,  2,  3,    // front
+        4,  5,  6,      4,  6,  7,    // back
+        8,  9, 10,      8, 10, 11,    // top
+       12, 13, 14,     12, 14, 15,    // bottom
+       16, 17, 18,     16, 18, 19,    // right
+       20, 21, 22,     20, 22, 23,    // left
+    ];
 
-//         for (var j = 0; j < sectorCount; ++j, ++k1, ++k2) {
-//             // 2 triangles per sector excluding first and last stacks
-//             // k1 => k2 => k1+1
-//             if (i !== 0) {
-//                 object_faces.push(k1);
-//                 object_faces.push(k2);
-//                 object_faces.push(k1 + 1);
-//             }
+    return indices;
+}
 
-//             // k1+1 => k2 => k2+1
-//             if (i !== stackCount - 1) {
-//                 object_faces.push(k1 + 1);
-//                 object_faces.push(k2);
-//                 object_faces.push(k2 + 1);
-//             }
-//         }
-//     }
-
-//     return object_faces;
-// }
 
 
 function sphereFaces(){
@@ -569,9 +575,25 @@ function main(){
     var kursiVertex = halfSphereVertex(0.3,0.3,0.5,56/255,143/255,231/255);
     var kursiFaces = halfSphereFaces();
     var kursi = new MyObject(kursiVertex, kursiFaces, shader_vertex_source, shader_fragment_source);
-    var tiangVertex = tabungVertex(0.1,0.1,0.1,0.1,-0.05,0.5,232/255,169/255,45/255);
+    var tiangVertex = tabungVertex(0.1,0.1,0.1,0.1,0.05,0.5,232/255,169/255,45/255);
     var tiangFaces = tabungFaces();
     var tiang = new MyObject(tiangVertex, tiangFaces, shader_vertex_source, shader_fragment_source);
+    var bottomtiangVertex = tabungVertex(0.15,0.15,0.15,0.15,0.4,0.5,255,255,255);
+    var bottomtiangFaces = tabungFaces();
+    var bottomtiang = new MyObject(bottomtiangVertex, bottomtiangFaces, shader_vertex_source, shader_fragment_source);
+    var boxSepedaVertex = cubeVertex(0.05,0.2,0.3,232/255,169/255,45/255);
+    var boxSepedaFaces = cubeFaces();
+    var boxSepeda = new MyObject(boxSepedaVertex, boxSepedaFaces, shader_vertex_source, shader_fragment_source);
+    var tanganRodaVertex1 = cubeVertex(0.25,0.05,0.07,105/255,105/255,104/255);
+    var tanganRodaFaces1 = cubeFaces();
+    var tanganRoda1 = new MyObject(tanganRodaVertex1, tanganRodaFaces1, shader_vertex_source, shader_fragment_source);
+    var tanganRoda2 = new MyObject(tanganRodaVertex1, tanganRodaFaces1, shader_vertex_source, shader_fragment_source);
+    var rodaVertex = tabungVertex(0.5,0.5,0.5,0.5,0.05,0.25,0,0,0);
+    var rodaFaces = tabungFaces();
+    var roda = new MyObject(rodaVertex, rodaFaces, shader_vertex_source, shader_fragment_source);
+    var innerRodaVertex = sphereVertex(0.2,0.4,0.4,229/255,0/255,29/255);
+    var innerRodaFaces = sphereFaces();
+    var innerRoda = new MyObject(innerRodaVertex, innerRodaFaces, shader_vertex_source, shader_fragment_source);
 
 
     // -----------------------------------------------------END BROWN PUNYA TIMOTHY-----------------------------------
@@ -675,7 +697,7 @@ function main(){
     var PROJMATRIX = LIBS.get_projection(40,CANVAS.width/CANVAS.height, 1 ,100);
     var VIEWMATRIX = LIBS.get_I4(); 
 
-    LIBS.translateZ(VIEWMATRIX,-5);
+    LIBS.translateZ(VIEWMATRIX,-8);
 
     //ADD CHILD
     kepalaBrown.addChild(telingaBrown1);
@@ -691,26 +713,32 @@ function main(){
     kepalaBrown.addChild(topiBrown);
     kepalaBrown.addChild(bawahTopiBrown);
     kepalaBrown.addChild(bodyBrown);
-    kepalaBrown.addChild(innerBadan);
-    kepalaBrown.addChild(arm1Brown);
-    kepalaBrown.addChild(arm2Brown);
-    kepalaBrown.addChild(palm1Brown);
-    kepalaBrown.addChild(palm2Brown);
-    kepalaBrown.addChild(leg1Brown);
-    kepalaBrown.addChild(leg2Brown);
-    kepalaBrown.addChild(sepatuBrown1);
-    kepalaBrown.addChild(sepatuBrown2);
-    kepalaBrown.addChild(innerSepatuBrown1);
-    kepalaBrown.addChild(innerSepatuBrown2);
-    kepalaBrown.addChild(garis);
-    kepalaBrown.addChild(garis2);
-    kepalaBrown.addChild(garis3);
-    kepalaBrown.addChild(garis4);
-    kepalaBrown.addChild(garis5);
-    kepalaBrown.addChild(garis6);
-    kepalaBrown.addChild(garis7);
-    kepalaBrown.addChild(kursi);
-    kepalaBrown.addChild(tiang);
+    bodyBrown.addChild(innerBadan);
+    bodyBrown.addChild(arm1Brown);
+    bodyBrown.addChild(arm2Brown);
+    arm1Brown.addChild(palm1Brown);
+    arm2Brown.addChild(palm2Brown);
+    bodyBrown.addChild(leg1Brown);
+    bodyBrown.addChild(leg2Brown);
+    leg1Brown.addChild(sepatuBrown1);
+    leg2Brown.addChild(sepatuBrown2);
+    sepatuBrown1.addChild(innerSepatuBrown1);
+    sepatuBrown2.addChild(innerSepatuBrown2);
+    bodyBrown.addChild(garis);
+    bodyBrown.addChild(garis2);
+    bodyBrown.addChild(garis3);
+    leg1Brown.addChild(garis4);
+    leg1Brown.addChild(garis5);
+    leg2Brown.addChild(garis6);
+    leg2Brown.addChild(garis7);
+    bodyBrown.addChild(kursi);
+    kursi.addChild(tiang);
+    tiang.addChild(bottomtiang);
+    tiang.addChild(boxSepeda);
+    boxSepeda.addChild(tanganRoda1);
+    boxSepeda.addChild(tanganRoda2);
+    boxSepeda.addChild(roda);
+    roda.addChild(innerRoda);
     // kepalaBrown.addChild(pitaBrown);
 
     //kepala
@@ -794,6 +822,13 @@ function main(){
         garis7.setPosition(4.71239,0,0,-2.15,-1.04,0.26,PHI,THETA);
         kursi.setPosition(4.71239*3,0,0,-2,-0.42,-0.2,PHI,THETA);
         tiang.setPosition(4.71239,0,0,-2,-1.4,-0.2,PHI,THETA);
+        bottomtiang.setPosition(4.71239,0,0,-2,-1.8,-0.2,PHI,THETA);
+        boxSepeda.setPosition(0,0,0,-2,-1.45,-0.2,PHI,THETA);
+        tanganRoda1.setPosition(0,0,0,-2.2,-1.79,-0.2,PHI,THETA);
+        tanganRoda2.setPosition(0,0,0,-1.8,-1.79,-0.2,PHI,THETA);
+        roda.setPosition(0,4.71239,0,-1.85,-2.1,-0.2,PHI,THETA);
+        innerRoda.setPosition(0,0,0,-2,-2.1,-0.2,PHI,THETA);
+
 
         object1.setPosition(0,0,0,0,0,0,PHI,THETA)
         kuping1.setPosition(0,0,0,0.15,0.4,0,PHI,THETA)
