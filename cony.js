@@ -94,16 +94,41 @@ class MyObject{
         }
     }
 
-    rotate(PHI, THETA, r){
-        LIBS.rotateZ(this.MOVEMATRIX,r);
-        LIBS.rotateY(this.MOVEMATRIX,THETA);
-        LIBS.rotateX(this.MOVEMATRIX,PHI);
-        var parentMatrix = this.MOVEMATRIX;
+    rotate(PHI, THETA, r) {
+        // Simpan matriks transformasi objek induk sebelum rotasi
+        var parentMatrixBefore = LIBS.cloneMatrix(this.MOVEMATRIX);
+        
+        // Terapkan rotasi pada objek induk
+        LIBS.rotateZ(this.MOVEMATRIX, r);
+        LIBS.rotateY(this.MOVEMATRIX, THETA);
+        LIBS.rotateX(this.MOVEMATRIX, PHI);
+        
+        // Iterasi melalui objek anak
         for (let i = 0; i < this.child.length; i++) {
             let child = this.child[i];
-            child.rotate(PHI,THETA,r)
-            child.MOVEMATRIX = LIBS.mul(child.MOVEMATRIX,parentMatrix);
-		}
+            
+            // Terapkan rotasi yang sama dengan objek induk pada objek anak
+            child.MOVEMATRIX = LIBS.cloneMatrix(this.MOVEMATRIX);// Clone matriks rotasi objek induk
+            
+            // Atur ulang posisi objek anak relatif terhadap posisi objek induk setelah rotasi
+            // child.MOVEMATRIX[12] -= parentMatrixBefore[12];
+            // child.MOVEMATRIX[13] -= parentMatrixBefore[13];
+            // child.MOVEMATRIX[14] -= parentMatrixBefore[14];
+
+            var a = child.MOVEMATRIX[12] - parentMatrixBefore[12]
+            var b = child.MOVEMATRIX[13] - parentMatrixBefore[13]
+            var c = child.MOVEMATRIX[14] - parentMatrixBefore[14]
+            
+            
+            // Terapkan rotasi tambahan pada objek anak jika diperlukan
+            // child.MOVEMATRIX = LIBS.mul(child.MOVEMATRIX, this.MOVEMATRIX);
+            child.rotate(PHI, THETA, r);
+
+            child.MOVEMATRIX[12] -= a;
+            child.MOVEMATRIX[13] -= b;
+            child.MOVEMATRIX[14] -=c;
+            
+        }
     }
 
     translate(x,y,z){
@@ -1016,7 +1041,7 @@ function main(){
         cheek2.setPosition(0,0,0,-0.17,0,0.435,PHI,THETA)
         nose1.setPosition(0,0,0,0,0,0.475,PHI,THETA)
         nose2.setPosition(0,0,0,0,0,0.477,PHI,THETA)
-        smileCony.setPosition(0,0,0,0,-0.125,0.45,PHI,THETA)
+        smileCony.setPosition(0,0,0,-0.125,0,0.45,PHI,THETA)
         var xtemp = -0.125;
         for(var i = 0; i < smileCony.child.length;i++){
             xtemp += 0.0025;
@@ -1046,7 +1071,7 @@ function main(){
         environment1.setPosition(0,0,4.71239,0,3.5,0,PHI,THETA);
         balonBottom.setPosition(0,0,0,0,0,1.95,PHI,THETA);
         balonUp.setPosition(0,0,0,0,0,2.8,PHI,THETA);
-        // balonBottom.rotate(4.71239,0,0);
+        balonBottom.rotate(4.71239,0,0);
 
         //_______________DRAW___________________________________________
         GL.viewport (0,0,CANVAS.width,CANVAS.height);
