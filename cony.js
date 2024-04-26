@@ -904,6 +904,101 @@ function main(){
     var tail_faces = sphereFaces();
     var tail = new MyObject(tail_vertex, tail_faces, shader_vertex_source, shader_fragment_source);
 
+
+    // ______________________________________________________ START JESSICA ______________________________________________________
+
+    // Kepala
+    var jessicaHead_vertex = sphereVertex(0.55,0.5,0.5, 255, 255, 255);
+    var jessicaHead_faces = sphereFaces();
+    var jessicaHead = new MyObject(jessicaHead_vertex, jessicaHead_faces, shader_vertex_source, shader_fragment_source);
+
+    // Kuping 
+    var kupingJessica_vertex = sphereVertex(0.145, 0.395, 0.15, 255, 255, 255);
+    var kupingJessica_faces = sphereFaces();
+    var kupingJessica1 = new MyObject(kupingJessica_vertex, kupingJessica_faces, shader_vertex_source, shader_fragment_source);
+    var kupingJessica2 = new MyObject(kupingJessica_vertex, kupingJessica_faces, shader_vertex_source, shader_fragment_source);
+
+    // Eye
+    var eyeJessica_vertex = sphereVertex(0.05, 0.05, 0.05, 0, 0, 0);
+    var eyeJessica_faces = sphereFaces();
+    var eyeJessica1 = new MyObject(eyeJessica_vertex, eyeJessica_faces, shader_vertex_source, shader_fragment_source);
+    var eyeJessica2 = new MyObject(eyeJessica_vertex, eyeJessica_faces, shader_vertex_source, shader_fragment_source);
+
+    // Cheek
+    var cheekJessica_vertex = sphereVertex(0.1, 0.05, 0.05, 255/255, 153/255, 204/255);
+    var cheekJessica_faces = sphereFaces();
+    var cheekJessica1 = new MyObject(cheekJessica_vertex, cheekJessica_faces, shader_vertex_source, shader_fragment_source);
+    var cheekJessica2 = new MyObject(cheekJessica_vertex, cheekJessica_faces, shader_vertex_source, shader_fragment_source);
+
+    // Nose
+    var noseJessica_vertex = sphereVertex(0.07, 0.0375, 0.05, 0, 0, 0);
+    var noseJessica_faces = sphereFaces();
+    var noseJessica = new MyObject(noseJessica_vertex, noseJessica_faces, shader_vertex_source, shader_fragment_source);
+
+    // Mouth
+    var smileJessicaVertex = tabungVertex(0.01,0.01,0.01,0.01,0,0.01,0,0,0);
+    var smileJessicaFaces = tabungFaces();
+    var smileJessica = new MyObject(smileJessicaVertex,smileJessicaFaces,shader_vertex_source,shader_fragment_source);
+    smileJessica.addCurve(100);
+
+    // Neck
+    var neckJessica_vertex = tabungVertex(0.25,0.25,0.3,0.3,0,-0.15,102/255,178/255,255);
+    var neckJessica_faces = tabungFaces();
+    var neckJessica = new MyObject(neckJessica_vertex, neckJessica_faces, shader_vertex_source, shader_fragment_source); 
+
+    // Body
+    var bodyJessica_vertex = tabungVertex(0.3,0.3,0.3,0.3,-0.15,-0.375,102/255,178/255,255);
+    var bodyJessica_faces = tabungFaces();
+    var bodyJessica = new MyObject(bodyJessica_vertex, bodyJessica_faces, shader_vertex_source, shader_fragment_source);
+
+    //ribbon
+    var ribbonJessica_vertex = tabungVertex(0.05,0.05,0.06,0.06,-0.5,-0.65,51/255,255,51/255);
+    var ribbonJessica_faces = tabungFaces();
+    var ribbonJessica1 = new MyObject(ribbonJessica_vertex, ribbonJessica_faces, shader_vertex_source, shader_fragment_source);
+    var ribbonJessica2 = new MyObject(ribbonJessica_vertex, ribbonJessica_faces, shader_vertex_source, shader_fragment_source);
+
+    //stomach
+    var stomachJessica_vertex = tabungVertex(0.3,0.3,0.3,0.3,-0.375,-0.5,0,0,0);
+    var stomachJessica_faces = tabungFaces();
+    var stomachJessica = new MyObject(stomachJessica_vertex, stomachJessica_faces, shader_vertex_source, shader_fragment_source);
+
+    //pant
+    var pantJessica_vertex = tabungVertex(0.16875,0.16875,0.175,0.175,-0.5,-0.65,255,255,255);
+    var pantJessica_faces = tabungFaces();
+    var pantJessica1 = new MyObject(pantJessica_vertex, pantJessica_faces, shader_vertex_source, shader_fragment_source);
+    var pantJessica2 = new MyObject(pantJessica_vertex, pantJessica_faces, shader_vertex_source, shader_fragment_source);
+
+    //leg
+    var legJessica_vertex = tabungVertex(0.16875,0.16875,0.175,0.175,-0.65,-0.75,0,76/255,153/255);
+    var legJessica_faces = tabungFaces();
+    var legJessica1 = new MyObject(legJessica_vertex, legJessica_faces, shader_vertex_source, shader_fragment_source);
+    var legJessica2 = new MyObject(legJessica_vertex, legJessica_faces, shader_vertex_source, shader_fragment_source);
+
+    //legthumb
+    var legthumbJessica_vertex = sphereVertex(0.175,0.1,0.2,0,76/255,153/255);
+    var legthumbJessica_faces = sphereFaces();
+    var legthumbJessica1 = new MyObject(legthumbJessica_vertex, legthumbJessica_faces, shader_vertex_source, shader_fragment_source);
+    var legthumbJessica2 = new MyObject(legthumbJessica_vertex, legthumbJessica_faces, shader_vertex_source, shader_fragment_source);
+
+    //arm
+    var armJessica_vertex = tabungVertex(0.125,0.125,0.1,0.1,-0.15,-0.45,102/255,178/255,255);
+    var armJessica_faces = tabungFaces();
+    var armJessica1 = new MyObject(armJessica_vertex, armJessica_faces, shader_vertex_source, shader_fragment_source);
+    var armJessica2 = new MyObject(armJessica_vertex, armJessica_faces, shader_vertex_source, shader_fragment_source);
+
+    //palm
+    var palmJessica_vertex = sphereVertex(0.08,0.12,0.08,255,255,255);
+    var palmJessica_faces = sphereFaces();
+    var palmJessica1 = new MyObject(palmJessica_vertex, palmJessica_faces, shader_vertex_source, shader_fragment_source);
+    var palmJessica2 = new MyObject(palmJessica_vertex, palmJessica_faces, shader_vertex_source, shader_fragment_source);
+
+    //tail
+    var tailJessica_vertex = sphereVertex(0.05, 0.05, 0.05, 255, 255, 255);
+    var tailJessica_faces = sphereFaces();
+    var tailJessica = new MyObject(tailJessica_vertex, tailJessica_faces, shader_vertex_source, shader_fragment_source);
+
+    // ______________________________________________________ END JESSICA ______________________________________________________
+
     // -------------------------------------------------------ENVIRONMENT--------------------------------------------
     var environmentVertex = cubeVertexColor(7,7,7,155/255,213/255,254/255,11/255,144/255,227/255,197/255,38/255,0/255)
     var environmentFaces = cubeFaces();
