@@ -911,12 +911,20 @@ function main(){
     // ___________________________ START KUE TART___________________________
 
     //___________BALON_____________________
-    var balonBottomVertex = tabungVertex(0,0,0.5,0.5,0,0.7,255,255,255);
+    var balonBottomVertex = tabungVertex(0.05,0.05,0.45,0.45,0,0.7,208/255,297/255,255);
     var balonBottomFaces = tabungFaces();
     var balonBottom = new MyObject(balonBottomVertex,balonBottomFaces,shader_vertex_source,shader_fragment_source);
-    var balonUpVertex = sphereVertex(0.5,0.5,0.7,255,255,255);
+    var balonUpVertex = sphereVertex(0.5,0.5,0.7,208/255,297/255,255);
     var balonUpFaces = sphereFaces();
     var balonUp = new MyObject(balonUpVertex,balonUpFaces,shader_vertex_source,shader_fragment_source);
+    var balonBottom1 = new MyObject(tabungVertex(0.05,0.05,0.45,0.45,0,0.7,255,165/255,88/255),balonBottomFaces,shader_vertex_source,shader_fragment_source);
+    var balonUp1 = new MyObject(sphereVertex(0.5,0.5,0.7,255,165/255,88/255),balonUpFaces,shader_vertex_source,shader_fragment_source);
+    var balonBottom2 = new MyObject(tabungVertex(0.05,0.05,0.45,0.45,0,0.7,50/255,245/255,219/255),balonBottomFaces,shader_vertex_source,shader_fragment_source);
+    var balonUp2 = new MyObject(sphereVertex(0.5,0.5,0.7,50/255,245/255,219/255),balonUpFaces,shader_vertex_source,shader_fragment_source);
+    var balonBottom3 = new MyObject(tabungVertex(0.05,0.05,0.45,0.45,0,0.7,91/255,65/255,255),balonBottomFaces,shader_vertex_source,shader_fragment_source);
+    var balonUp3 = new MyObject(sphereVertex(0.5,0.5,0.7,91/255,65/255,255),balonUpFaces,shader_vertex_source,shader_fragment_source);
+    var balonBottom4 = new MyObject(tabungVertex(0.05,0.05,0.45,0.45,0,0.7,255,0,0),balonBottomFaces,shader_vertex_source,shader_fragment_source);
+    var balonUp4 = new MyObject(sphereVertex(0.5,0.5,0.7,255,0,0),balonUpFaces,shader_vertex_source,shader_fragment_source);
 
     //_______________________________________TALI_____________________________________
     var taliVertex = tabungVertex(0.05,0.05,0.05,0.05,0,0.05,0,0,0);
@@ -1017,6 +1025,10 @@ function main(){
 
     //____________________ENV_________________
     balonBottom.addChild(balonUp);
+    balonBottom1.addChild(balonUp1);
+    balonBottom2.addChild(balonUp2);
+    balonBottom3.addChild(balonUp3);
+    balonBottom4.addChild(balonUp4);
 
     bendera.addChild(bendera1);
     bendera.addChild(bendera2);
@@ -1122,9 +1134,17 @@ function main(){
 
         // _____________________________ENV POS______________________________________
         environment1.setPosition(0,0,4.71239,0,3.5,0,PHI,THETA);
-        balonBottom.setPosition(0,0,0,0,0,1.95,PHI,THETA);
-        balonUp.setPosition(0,0,0,0,0,2.8,PHI,THETA);
-        // balonBottom.rotate(4.71239,0,0)
+        balonBottom.setPosition(4.71239,0,0,1,0.1,-3,PHI,THETA);
+        balonUp.setPosition(4.71239,0,0,1,0.9,-3,PHI,THETA);
+        balonBottom1.setPosition(4.71239,0,0,3,-0.6,-3,PHI,THETA);
+        balonUp1.setPosition(4.71239,0,0,3,0.3,-3,PHI,THETA);
+        balonBottom2.setPosition(4.71239,0,0,-1,-0.7,-3,PHI,THETA);
+        balonUp2.setPosition(4.71239,0,0,-1,0.2,-3,PHI,THETA);
+        balonBottom3.setPosition(4.71239,0,0,-3,0.1,-3,PHI,THETA);
+        balonUp3.setPosition(4.71239,0,0,-3,0.9,-3,PHI,THETA);
+        balonBottom4.setPosition(4.71239,0,0,-5,-0.7,-3,PHI,THETA);
+        balonUp4.setPosition(4.71239,0,0,-5,0.1,-3,PHI,THETA);
+        
         tali.setPosition(0,0,0,-2.5,0.1*2.5*2.5+2,-3,PHI,THETA);
         var xtemp = -5;
         for(var i = 0; i < tali.child.length;i++){
@@ -1162,7 +1182,15 @@ function main(){
         // environment1.draw();
 
         balonBottom.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
-        // balonBottom.draw();
+        balonBottom.draw();
+        balonBottom1.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
+        balonBottom1.draw();
+        balonBottom2.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
+        balonBottom2.draw();
+        balonBottom3.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
+        balonBottom3.draw();
+        balonBottom4.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
+        balonBottom4.draw();
 
         tali.setuniformmatrix4(PROJMATRIX,VIEWMATRIX);
         tali.draw();
