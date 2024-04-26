@@ -1118,6 +1118,37 @@ function main(){
     object1.addChild(palm1);
     object1.addChild(palm2);
 
+    // ________________________________________ START JESSICA ADD CHILD _____________________________________
+
+    jessicaHead.addChild(kupingJessica1);
+    jessicaHead.addChild(kupingJessica2);
+    jessicaHead.addChild(eyeJessica1);
+    jessicaHead.addChild(eyeJessica2);
+    jessicaHead.addChild(cheekJessica1);
+    jessicaHead.addChild(cheekJessica2);
+    jessicaHead.addChild(noseJessica);
+    jessicaHead.addChild(smileJessica);
+    jessicaHead.addChild(neckJessica);
+    jessicaHead.addChild(bodyJessica);
+    jessicaHead.addChild(ribbonJessica1);
+    jessicaHead.addChild(ribbonJessica2);
+    jessicaHead.addChild(stomachJessica);
+    jessicaHead.addChild(pantJessica1);
+    jessicaHead.addChild(pantJessica2);
+    jessicaHead.addChild(legJessica1);
+    jessicaHead.addChild(legJessica2);
+    jessicaHead.addChild(legthumbJessica1);
+    jessicaHead.addChild(legthumbJessica2);
+    jessicaHead.addChild(armJessica1);
+    jessicaHead.addChild(armJessica2);
+    jessicaHead.addChild(palmJessica1);
+    jessicaHead.addChild(palmJessica2);
+    jessicaHead.addChild(tailJessica);
+
+    // ________________________________________ END JESSICA ADD CHILD _____________________________________
+    
+    
+    
     //____________________ENV_________________
     balonBottom.addChild(balonUp);
     balonBottom1.addChild(balonUp1);
@@ -1227,6 +1258,38 @@ function main(){
         palm1.setPosition(0,-0.7,1,0.31,-0.7,0.175,PHI,THETA)
         palm2.setPosition(0,0.7,-1,-0.378,-0.7,0.175,PHI,THETA)
 
+
+        // _____________________________ START JESSICA SET POSITION ______________________________________
+        
+        jessicaHead.setPosition(0,0,0,2,0,0,PHI,THETA);
+        kupingJessica1.setPosition(0,0,0,2.15,0.4,0,PHI,THETA);
+        kupingJessica2.setPosition(0,0,0,1.85,0.4,0,PHI,THETA);
+        eyeJessica1.setPosition(0,0,0,2.075,0.1,0.50,PHI,THETA);
+        eyeJessica2.setPosition(0,0,0,1.925,0.1,0.50,PHI,THETA);
+        cheekJessica1.setPosition(0,0,0,2.17,0,0.435,PHI,THETA);
+        cheekJessica2.setPosition(0,0,0,1.83,0,0.435,PHI,THETA);
+        noseJessica.setPosition(0,0,0,2,0.0,0.6,PHI,THETA);
+        smileJessica.setPosition(0,0,0,2,0.065,0.5,PHI,THETA);
+        neckJessica.setPosition(0,0,0,2,-0.2,0.02,PHI,THETA);
+        bodyJessica.setPosition(0,0,0,2,-0.2,0.2,PHI,THETA);
+        ribbonJessica1.setPosition(0,0,0,2,-0.2,0.3,PHI,THETA);
+        ribbonJessica2.setPosition(0,0,0,2,-0.2,0.1,PHI,THETA);
+        stomachJessica.setPosition(0,0,0,2,-0.35,0,PHI,THETA);
+        pantJessica1.setPosition(0,0,0,2,-0.35,0.1,PHI,THETA);
+        pantJessica2.setPosition(0,0,0,2,-0.35,-0.1,PHI,THETA);
+        legJessica1.setPosition(0,0,0,2,-0.35,0.1,PHI,THETA);
+        legJessica2.setPosition(0,0,0,2,-0.35,-0.1,PHI,THETA);
+        legthumbJessica1.setPosition(0,0,0,2,-1.05,0.05,PHI,THETA);
+        legthumbJessica2.setPosition(0,0,0,2,-0.95,0.05,PHI,THETA);
+        armJessica1.setPosition(0,0,0,2.125,-0.375,0,PHI,THETA);
+        armJessica2.setPosition(0,0,0,1.875,-0.375,0,PHI,THETA);
+        palmJessica1.setPosition(0,0,0,2.31,-0.7,0.175,PHI,THETA);
+        palmJessica2.setPosition(0,0,0,1.69,-0.7,0.175,PHI,THETA);
+        tailJessica.setPosition(0,0,0,2,-0.8,-0.275,PHI,THETA);
+
+        // _____________________________ END JESSICA SET POSITION ______________________________________
+        
+
         // _____________________________ENV POS______________________________________
         environment1.setPosition(0,0,4.71239,0,3.5,0,PHI,THETA);
         balonBottom.setPosition(4.71239,0,0,1,0.1,-3,PHI,THETA);
@@ -1272,6 +1335,9 @@ function main(){
 
         kepalaBrown.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
         kepalaBrown.draw();
+
+        jessicaHead.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
+        jessicaHead.draw();
 
         environment1.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
         // environment1.draw();
