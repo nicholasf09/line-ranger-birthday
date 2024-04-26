@@ -101,8 +101,8 @@ class MyObject{
         var parentMatrix = this.MOVEMATRIX;
         for (let i = 0; i < this.child.length; i++) {
             let child = this.child[i];
-            child.MOVEMATRIX = LIBS.mul(child.MOVEMATRIX, parentMatrix );
-            child.rotate( PHI, THETA, r);
+            child.rotate(PHI,THETA,r)
+            child.MOVEMATRIX = LIBS.mul(child.MOVEMATRIX,parentMatrix);
 		}
     }
 
@@ -162,6 +162,12 @@ class MyObject{
 		LIBS.rotateY(temps, THETA);
 		this.MOVEMATRIX = LIBS.mul(this.MOVEMATRIX, temps);
 	}
+
+    addCurve(n){
+        for(var i = 0; i < n; i++){
+            this.addChild(new MyObject(this.object_vertex,this.object_faces,this.shader_vertex_source,this.shader_fragment_source));
+        }
+    }
 }
 
 function sphereVertex(a, b, c, r, g, b1){
@@ -781,9 +787,10 @@ function main(){
     var nose2 = new MyObject(nose2_vertex, nose1_faces, shader_vertex_source, shader_fragment_source);
 
     //mouth
-    var mouth_vertex = sphereVertex(0.125, 0.125, 0.125, 255, 0, 0);
-    var mouth_faces = sphereFaces();
-    var mouth = new MyObject(mouth_vertex, mouth_faces, shader_vertex_source, shader_fragment_source); 
+    var smileConyVertex = tabungVertex(0.01,0.01,0.01,0.01,0,0.01,0,0,0);
+    var smileConyFaces = tabungFaces();
+    var smileCony = new MyObject(smileConyVertex,smileConyFaces,shader_vertex_source,shader_fragment_source);
+    smileCony.addCurve(100);
 
     //neck
     var neck_vertex = tabungVertex(0.25,0.25,0.3,0.3,0,-0.15,102/255,178/255,255);
@@ -847,6 +854,14 @@ function main(){
     var environment1 = new MyObject(environmentVertex, environmentFaces, shader_vertex_source, shader_fragment_source);
     // ___________________________ START KUE TART___________________________
 
+    //___________BALON_____________________
+    var balonBottomVertex = tabungVertex(0,0,0.5,0.5,0,0.7,255,255,255);
+    var balonBottomFaces = tabungFaces();
+    var balonBottom = new MyObject(balonBottomVertex,balonBottomFaces,shader_vertex_source,shader_fragment_source);
+    var balonUpVertex = sphereVertex(0.5,0.5,0.7,255,255,255);
+    var balonUpFaces = sphereFaces();
+    var balonUp = new MyObject(balonUpVertex,balonUpFaces,shader_vertex_source,shader_fragment_source);
+
  
     //MAtrix
     var PROJMATRIX = LIBS.get_projection(40,CANVAS.width/CANVAS.height, 1 ,100);
@@ -854,7 +869,7 @@ function main(){
 
     LIBS.translateZ(VIEWMATRIX,-8);
 
-    //ADD CHILD
+    //___________________________________________ADD CHILD_____________________________________
     kepalaBrown.addChild(telingaBrown1);
     kepalaBrown.addChild(telingaBrown2);
     kepalaBrown.addChild(inner1);
@@ -908,7 +923,8 @@ function main(){
     object1.addChild(cheek2);
     object1.addChild(nose1);
     object1.addChild(nose2);
-    object1.addChild(mouth);
+    object1.addChild(smileCony);
+
     //badan
     object1.addChild(body);
     object1.addChild(neck);
@@ -927,6 +943,9 @@ function main(){
     object1.addChild(arm2);
     object1.addChild(palm1);
     object1.addChild(palm2);
+
+    //____________________ENV_________________
+    balonBottom.addChild(balonUp);
 
     //DRAWING
     GL.clearColor(0.0,0.0,0.0,0.0);
@@ -986,7 +1005,6 @@ function main(){
         innerRoda.setPosition(0,0,0,-2,-2.1,-0.2,PHI,THETA);
         patternRoda.setPosition(0,4.71239,4.71239,-1.8115,-2.1,-0.2,PHI,THETA);
 
-
         object1.setPosition(0,0,0,0,0,0,PHI,THETA)
         kuping1.setPosition(0,0,0,0.15,0.4,0,PHI,THETA)
         kuping2.setPosition(0,0,0,-0.15,0.4,0,PHI,THETA)
@@ -998,7 +1016,13 @@ function main(){
         cheek2.setPosition(0,0,0,-0.17,0,0.435,PHI,THETA)
         nose1.setPosition(0,0,0,0,0,0.475,PHI,THETA)
         nose2.setPosition(0,0,0,0,0,0.477,PHI,THETA)
-        mouth.setPosition(0,0,0,0,-0.175,0.375,PHI,THETA)
+        smileCony.setPosition(0,0,0,0,-0.125,0.45,PHI,THETA)
+        var xtemp = -0.125;
+        for(var i = 0; i < smileCony.child.length;i++){
+            xtemp += 0.0025;
+            var ytemp = 2.5*xtemp*xtemp-0.2;
+            smileCony.child[i].setPosition(0,0,0,xtemp,ytemp,0.45,PHI,THETA)
+        }
         
         body.setPosition(4.71239,0,0,0,-0.35,0,PHI,THETA)
         neck.setPosition(4.71239,0,0,0,-0.35,0,PHI,THETA)
@@ -1017,16 +1041,18 @@ function main(){
         arm2.setPosition(Math.PI / 2 - 0.5,2.5,0,-0.125,-0.375,0,PHI,THETA)
         palm1.setPosition(0,-0.7,1,0.31,-0.7,0.175,PHI,THETA)
         palm2.setPosition(0,0.7,-1,-0.378,-0.7,0.175,PHI,THETA)
-    
-
-
 
         // _____________________________ENV POS______________________________________
         environment1.setPosition(0,0,4.71239,0,3.5,0,PHI,THETA);
+        balonBottom.setPosition(0,0,0,0,0,1.95,PHI,THETA);
+        balonUp.setPosition(0,0,0,0,0,2.8,PHI,THETA);
+        // balonBottom.rotate(4.71239,0,0);
 
+        //_______________DRAW___________________________________________
         GL.viewport (0,0,CANVAS.width,CANVAS.height);
         GL.clear(GL.COLOR_BUFFER_BIT);
 
+        object1.translate(0,-1.3,0)
         object1.setuniformmatrix4(PROJMATRIX,VIEWMATRIX);
         object1.draw();
 
@@ -1034,7 +1060,10 @@ function main(){
         kepalaBrown.draw();
 
         environment1.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
-        environment1.draw();
+        // environment1.draw();
+
+        balonBottom.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
+        balonBottom.draw();
 
         GL.flush();
         window.requestAnimationFrame(animate);

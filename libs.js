@@ -165,4 +165,17 @@ var LIBS = {
       return res;
     },
 
+    sub: function(mat1, mat2) 
+    {
+      let i,j,k;
+      var res = this.get_I4();
+      var N = 4;
+      for (i = 0; i < N; i++) {
+        for (j = 0; j < N; j++) {
+          res[i*N+j] = mat1[i*N+j] - mat2[i*N+j];
+        }
+      }
+      return res;
+    },
+
   };
