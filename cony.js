@@ -108,26 +108,19 @@ class MyObject{
             let child = this.child[i];
             
             // Terapkan rotasi yang sama dengan objek induk pada objek anak
-            child.MOVEMATRIX = LIBS.cloneMatrix(this.MOVEMATRIX);// Clone matriks rotasi objek induk
+            child.MOVEMATRIX = LIBS.cloneMatrix(this.MOVEMATRIX);
             
-            // Atur ulang posisi objek anak relatif terhadap posisi objek induk setelah rotasi
-            // child.MOVEMATRIX[12] -= parentMatrixBefore[12];
-            // child.MOVEMATRIX[13] -= parentMatrixBefore[13];
-            // child.MOVEMATRIX[14] -= parentMatrixBefore[14];
-
-            var a = child.MOVEMATRIX[12] - parentMatrixBefore[12]
-            var b = child.MOVEMATRIX[13] - parentMatrixBefore[13]
-            var c = child.MOVEMATRIX[14] - parentMatrixBefore[14]
-            
-            
-            // Terapkan rotasi tambahan pada objek anak jika diperlukan
-            // child.MOVEMATRIX = LIBS.mul(child.MOVEMATRIX, this.MOVEMATRIX);
-            child.rotate(PHI, THETA, r);
-
-            child.MOVEMATRIX[12] -= a;
-            child.MOVEMATRIX[13] -= b;
-            child.MOVEMATRIX[14] -=c;
-            
+            // Hitung posisi relatif objek anak terhadap rotasi objek induk sebelum rotasi
+            var relativePosition = [
+                child.MOVEMATRIX[12] - parentMatrixBefore[12],
+                child.MOVEMATRIX[13] - parentMatrixBefore[13],
+                child.MOVEMATRIX[14] - parentMatrixBefore[14]
+            ];
+    
+            // Terapkan posisi relatif pada posisi rotasi objek anak setelah rotasi objek induk
+            child.MOVEMATRIX[12] = this.MOVEMATRIX[12] + relativePosition[0];
+            child.MOVEMATRIX[13] = this.MOVEMATRIX[13] + relativePosition[1];
+            child.MOVEMATRIX[14] = this.MOVEMATRIX[14] + relativePosition[2];
         }
     }
 
@@ -582,6 +575,44 @@ function tabungFaces(){
     return tabung_faces;
 }
 
+function segitigaVertex(r,g,b){
+    var segitiga_vertex = [
+        //segitiga bawah
+        0,1,0, 
+        r,g,b,
+        0.5,1,0,
+        r,g,b,
+        0.25,0,0,
+        r,g,b,
+
+        //segitiga bawah
+        0,1,0.1,
+        r,g,b,
+        0.5,1,0.1,
+        r,g,b,
+        0.25,0,0.1,
+        r,g,b,
+    ];
+
+    return segitiga_vertex;
+}
+
+function segitigaFaces(){
+    var segitiga_faces = [
+        //segitiga bawah
+        0,1,2,
+        3,4,5,
+        0,2,3,
+        0,2,4,
+        1,2,5,
+        2,4,5,
+        0,1,3,
+        0,3,5
+
+    ];
+    return segitiga_faces;
+}
+
 function main(){
     var CANVAS = document.getElementById("mycanvas");
 
@@ -887,6 +918,21 @@ function main(){
     var balonUpFaces = sphereFaces();
     var balonUp = new MyObject(balonUpVertex,balonUpFaces,shader_vertex_source,shader_fragment_source);
 
+    //_______________________________________TALI_____________________________________
+    var taliVertex = tabungVertex(0.05,0.05,0.05,0.05,0,0.05,0,0,0);
+    var taliFaces = tabungFaces();
+    var tali = new MyObject(taliVertex,taliFaces,shader_vertex_source,shader_fragment_source);
+    tali.addCurve(200);
+
+    //_______________________BENDERA_______________
+    var bendera = new MyObject(segitigaVertex(245/255,255/255,151/255),segitigaFaces(),shader_vertex_source,shader_fragment_source);
+    var bendera1 = new MyObject(segitigaVertex(151/255,245/255,255/255),segitigaFaces(),shader_vertex_source,shader_fragment_source);
+    var bendera2 = new MyObject(segitigaVertex(151/255,255/255,196/255),segitigaFaces(),shader_vertex_source,shader_fragment_source);
+    var bendera3 = new MyObject(segitigaVertex(255/255,217/255,151/255),segitigaFaces(),shader_vertex_source,shader_fragment_source);
+    var bendera4 = new MyObject(segitigaVertex(255/255,151/255,189/255),segitigaFaces(),shader_vertex_source,shader_fragment_source);
+    var bendera5 = new MyObject(segitigaVertex(245/255,255/255,151/255),segitigaFaces(),shader_vertex_source,shader_fragment_source);
+    var bendera6 = new MyObject(segitigaVertex(151/255,245/255,255/255),segitigaFaces(),shader_vertex_source,shader_fragment_source);
+
  
     //MAtrix
     var PROJMATRIX = LIBS.get_projection(40,CANVAS.width/CANVAS.height, 1 ,100);
@@ -972,6 +1018,13 @@ function main(){
     //____________________ENV_________________
     balonBottom.addChild(balonUp);
 
+    bendera.addChild(bendera1);
+    bendera.addChild(bendera2);
+    bendera.addChild(bendera3);
+    bendera.addChild(bendera4);
+    bendera.addChild(bendera5);
+    bendera.addChild(bendera6);
+
     //DRAWING
     GL.clearColor(0.0,0.0,0.0,0.0);
     GL.enable(GL.DEPTH_TEST);
@@ -1041,7 +1094,7 @@ function main(){
         cheek2.setPosition(0,0,0,-0.17,0,0.435,PHI,THETA)
         nose1.setPosition(0,0,0,0,0,0.475,PHI,THETA)
         nose2.setPosition(0,0,0,0,0,0.477,PHI,THETA)
-        smileCony.setPosition(0,0,0,-0.125,0,0.45,PHI,THETA)
+        smileCony.setPosition(0,0,0,-0.125,2.5*0.125*0.125-0.2,0.45,PHI,THETA)
         var xtemp = -0.125;
         for(var i = 0; i < smileCony.child.length;i++){
             xtemp += 0.0025;
@@ -1071,7 +1124,28 @@ function main(){
         environment1.setPosition(0,0,4.71239,0,3.5,0,PHI,THETA);
         balonBottom.setPosition(0,0,0,0,0,1.95,PHI,THETA);
         balonUp.setPosition(0,0,0,0,0,2.8,PHI,THETA);
-        balonBottom.rotate(4.71239,0,0);
+        // balonBottom.rotate(4.71239,0,0)
+        tali.setPosition(0,0,0,-2.5,0.1*2.5*2.5+2,-3,PHI,THETA);
+        var xtemp = -5;
+        for(var i = 0; i < tali.child.length;i++){
+            xtemp += 0.05;
+            var ytemp = 0.1*xtemp*xtemp+2;
+            tali.child[i].setPosition(0,0,0,xtemp,ytemp,-3,PHI,THETA)
+        }
+        bendera.setPosition(0,0,0,0,0.95,-3,PHI,THETA);
+        bendera1.setPosition(0,0,0,1.5,1.2,-3,PHI,THETA);
+        bendera1.rotate(0,0,0.261799)
+        bendera2.setPosition(0,0,0,3,1.8,-3,PHI,THETA);
+        bendera2.rotate(0,0,0.523599)
+        bendera3.setPosition(0,0,0,-1.5,1.2,-3,PHI,THETA);
+        bendera3.rotate(0,0,-0.261799)
+        bendera4.setPosition(0,0,0,-3,1.8,-3,PHI,THETA);
+        bendera4.rotate(0,0,-0.523599)
+        bendera5.setPosition(0,0,0,4.2,2.5,-3,PHI,THETA);
+        bendera5.rotate(0,0,0.785398)
+        bendera6.setPosition(0,0,0,-4.2,2.6,-3,PHI,THETA);
+        bendera6.rotate(0,0,-0.785398)
+
 
         //_______________DRAW___________________________________________
         GL.viewport (0,0,CANVAS.width,CANVAS.height);
@@ -1088,7 +1162,13 @@ function main(){
         // environment1.draw();
 
         balonBottom.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
-        balonBottom.draw();
+        // balonBottom.draw();
+
+        tali.setuniformmatrix4(PROJMATRIX,VIEWMATRIX);
+        tali.draw();
+
+        bendera.setuniformmatrix4(PROJMATRIX,VIEWMATRIX);
+        bendera.draw();
 
         GL.flush();
         window.requestAnimationFrame(animate);
