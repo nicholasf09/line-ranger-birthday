@@ -107,15 +107,15 @@ class MyObject{
         for (let i = 0; i < this.child.length; i++) {
             let child = this.child[i];
             
-            // Terapkan rotasi yang sama dengan objek induk pada objek anak
-            child.MOVEMATRIX = LIBS.cloneMatrix(this.MOVEMATRIX);
-            
             // Hitung posisi relatif objek anak terhadap rotasi objek induk sebelum rotasi
             var relativePosition = [
                 child.MOVEMATRIX[12] - parentMatrixBefore[12],
                 child.MOVEMATRIX[13] - parentMatrixBefore[13],
                 child.MOVEMATRIX[14] - parentMatrixBefore[14]
             ];
+
+            // Terapkan rotasi yang sama dengan objek induk pada objek anak
+            child.MOVEMATRIX = LIBS.cloneMatrix(this.MOVEMATRIX);
     
             // Terapkan posisi relatif pada posisi rotasi objek anak setelah rotasi objek induk
             child.MOVEMATRIX[12] = this.MOVEMATRIX[12] + relativePosition[0];
@@ -873,8 +873,6 @@ function main(){
     var pitaBrownFaces = tabungFaces();
     var pitaBrown = new MyObject(pitaBrownVertex, pitaBrownFaces, shader_vertex_source, shader_fragment_source);
     var pitaBrown2 = new MyObject(pitaBrownVertex, pitaBrownFaces, shader_vertex_source, shader_fragment_source);
-
-
     // -----------------------------------------------------END BROWN PUNYA TIMOTHY-----------------------------------
 
     //_______________________CONY CANTIKKKK_______________________
@@ -1098,6 +1096,8 @@ function main(){
     var balonUp3 = new MyObject(sphereVertex(0.5,0.5,0.7,91/255,65/255,255),balonUpFaces,shader_vertex_source,shader_fragment_source);
     var balonBottom4 = new MyObject(tabungVertex(0.05,0.05,0.45,0.45,0,0.7,255,0,0),balonBottomFaces,shader_vertex_source,shader_fragment_source);
     var balonUp4 = new MyObject(sphereVertex(0.5,0.5,0.7,255,0,0),balonUpFaces,shader_vertex_source,shader_fragment_source);
+    var balonBottom5 = new MyObject(tabungVertex(0.05,0.05,0.45,0.45,0,0.7,255,0,0),balonBottomFaces,shader_vertex_source,shader_fragment_source);
+    var balonUp5 = new MyObject(sphereVertex(0.5,0.5,0.7,255,0,0),balonUpFaces,shader_vertex_source,shader_fragment_source);
 
     //_______________________________________TALI_____________________________________
     var taliVertex = tabungVertex(0.05,0.05,0.05,0.05,0,0.05,0,0,0);
@@ -1196,12 +1196,11 @@ function main(){
     object1.addChild(tail);
     //tangan
     object1.addChild(arm1);
+    arm1.addChild(palm1);
     object1.addChild(arm2);
-    object1.addChild(palm1);
-    object1.addChild(palm2);
+    arm2.addChild(palm2);
 
     // ________________________________________ START JESSICA ADD CHILD _____________________________________
-
     jessicaHead.addChild(kupingJessica1);
     jessicaHead.addChild(kupingJessica2);
     jessicaHead.addChild(eyeJessica1);
@@ -1226,10 +1225,7 @@ function main(){
     jessicaHead.addChild(palmJessica1);
     jessicaHead.addChild(palmJessica2);
     jessicaHead.addChild(tailJessica);
-
     // ________________________________________ END JESSICA ADD CHILD _____________________________________
-    
-    
     
     //____________________ENV_________________
     balonBottom.addChild(balonUp);
@@ -1237,6 +1233,7 @@ function main(){
     balonBottom2.addChild(balonUp2);
     balonBottom3.addChild(balonUp3);
     balonBottom4.addChild(balonUp4);
+    balonBottom5.addChild(balonUp5);
 
     bendera.addChild(bendera1);
     bendera.addChild(bendera2);
@@ -1248,6 +1245,8 @@ function main(){
     //______________________________ANIMASI___________________
     var conyJump = 0; //var utk translate Y
     var conyUp = true;
+    var balonJump = 0;
+    var balonGeser = 0;
 
     //_____________________________________DRAWING_____________________________________
     GL.clearColor(0.0,0.0,0.0,0.0);
@@ -1362,7 +1361,7 @@ function main(){
                 conyUp = true; //Naik
             }
         }
-    
+        
         object1.translate(0, conyJump, 0);
 
         //_________________CONY SENYUM MELEBAR______________________
@@ -1414,6 +1413,8 @@ function main(){
         balonUp3.setPosition(4.71239,0,0,-3,0.9,-6);
         balonBottom4.setPosition(4.71239,0,0,-5,-0.7,-6);
         balonUp4.setPosition(4.71239,0,0,-5,0.1,-6);
+        balonBottom5.setPosition(4.71239,0,0,-5,-3,-1);
+        balonUp5.setPosition(4.71239,0,0,-5,-2.2,-1);
         
         tali.setPosition(0,0,0,-2.5,0.1*2.5*2.5+2,-6);
         var xtemp = -5;
@@ -1422,6 +1423,7 @@ function main(){
             var ytemp = 0.1*xtemp*xtemp+2;
             tali.child[i].setPosition(0,0,0,xtemp,ytemp,-6)
         }
+
         bendera.setPosition(0,0,0,0,0.95,-6);
         bendera1.setPosition(0,0,0.261799,1.5,1.2,-6);
         bendera2.setPosition(0,0,0.523599,3,1.8,-6);
@@ -1429,6 +1431,28 @@ function main(){
         bendera4.setPosition(0,0,-0.523599,-3,1.8,-6);
         bendera5.setPosition(0,0,0.785398,4.2,2.5,-6);
         bendera6.setPosition(0,0,-0.785398,-4.2,2.6,-6);
+
+        //_____________________ANIMASI BALON TERBANG_____________________
+        if (conyUp) {
+            //Lompat ke atas
+            balonGeser += 0.02;
+            if (conyJump >= 0.3) { //Batas Loncat
+                conyUp = false;
+            }
+        } else {
+            //Turun
+            balonGeser -= 0.02;
+            if (conyJump <= 0) { //Kalau sudah sampai tanah
+                conyJump = 0; 
+                conyUp = true; //Naik
+            }
+        }
+        balonJump += 0.02;
+        balonBottom5.translate(balonGeser, balonJump, 0);
+        console.log(balonJump)
+        if(balonJump >= 8){
+            balonJump = 0;
+        }
         
         object1.translate(0,-1.3,0)
 
@@ -1553,6 +1577,8 @@ function main(){
         balonUp3.setResponsiveRotation(PHI,THETA);
         balonBottom4.setResponsiveRotation(PHI,THETA);
         balonUp4.setResponsiveRotation(PHI,THETA);
+        balonBottom5.setResponsiveRotation(PHI,THETA);
+        balonUp5.setResponsiveRotation(PHI,THETA);
         
         tali.setResponsiveRotation(PHI,THETA);
         for(var i = 0; i < tali.child.length;i++){
@@ -1592,6 +1618,8 @@ function main(){
         balonBottom3.draw();
         balonBottom4.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
         balonBottom4.draw();
+        balonBottom5.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
+        balonBottom5.draw();
 
         tali.setuniformmatrix4(PROJMATRIX,VIEWMATRIX);
         tali.draw();
