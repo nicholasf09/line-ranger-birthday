@@ -1293,8 +1293,7 @@ function main(){
         roda.setPosition(0,4.71239,0,-1.85,-2.1,-0.2,PHI,THETA);
         innerRoda.setPosition(0,0,0,-2,-2.1,-0.2,PHI,THETA);
         patternRoda.setPosition(0,4.71239,4.71239,-1.8115,-2.1,-0.2,PHI,THETA);
-        pitaBrown2.setPosition(4.71239,4.71239,0,-1.9,-0.4,0.4,PHI,THETA);
-        pitaBrown.setPosition(4.71239,-4.71239,0,-2.1,-0.4,0.4,PHI,THETA);
+
 
         object1.setPosition(0,0,0,0,0,0,PHI,THETA)
         kuping1.setPosition(0,0,0,0.15,0.4,0,PHI,THETA)
