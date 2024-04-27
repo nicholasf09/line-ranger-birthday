@@ -232,12 +232,14 @@ class MyObject{
         this.child.push(child);
     }
 
-    setPosition(x1, y1, z1, x2, y2, z2, PHI, THETA) {
+    setPosition(x1, y1, z1, x2, y2, z2) {
 		this.setIdentityMove();
-		this.setIdentityMove();
-		var temps = LIBS.get_I4();
 		this.setRotateMove(x1, y1, z1);
 		this.setTranslateMove(x2, y2, z2);
+	}
+
+    setResponsiveRotation(PHI, THETA) {
+		var temps = LIBS.get_I4();
 		LIBS.rotateX(temps, PHI);
 		this.MOVEMATRIX = LIBS.mul(this.MOVEMATRIX, temps);
 
@@ -875,6 +877,8 @@ function main(){
 
     // -----------------------------------------------------END BROWN PUNYA TIMOTHY-----------------------------------
 
+    //_______________________CONY CANTIKKKK_______________________
+
     var object_vertex = sphereVertex(0.55,0.5,0.5, 255, 255, 255);
     var object_faces = sphereFaces();
     var object1 = new MyObject(object_vertex, object_faces, shader_vertex_source, shader_fragment_source);
@@ -915,6 +919,12 @@ function main(){
     var smileConyFaces = tabungFaces();
     var smileCony = new MyObject(smileConyVertex,smileConyFaces,shader_vertex_source,shader_fragment_source);
     smileCony.addCurve(100);
+
+    //pita di kepala
+    var headOrnamentVertex = tabungVertex(0.12,0.12,0.015,0.015,0,0.12,255,0,0);
+    var headOrnamentFaces = tabungFaces();
+    var headOrnament = new MyObject(headOrnamentVertex,headOrnamentFaces,shader_vertex_source,shader_fragment_source);
+    var headOrnament1 = new MyObject(headOrnamentVertex,headOrnamentFaces,shader_vertex_source,shader_fragment_source);
 
     //neck
     var neck_vertex = tabungVertex(0.25,0.25,0.3,0.3,0,-0.15,102/255,178/255,255);
@@ -981,22 +991,17 @@ function main(){
     var jessicaHead = new MyObject(jessicaHead_vertex, jessicaHead_faces, shader_vertex_source, shader_fragment_source);
 
     // Kuping 
-    var kupingJessica_vertex = sphereVertex(0.145, 0.395, 0.15, 255, 255, 255);
-    var kupingJessica_faces = sphereFaces();
-    var kupingJessica1 = new MyObject(kupingJessica_vertex, kupingJessica_faces, shader_vertex_source, shader_fragment_source);
-    var kupingJessica2 = new MyObject(kupingJessica_vertex, kupingJessica_faces, shader_vertex_source, shader_fragment_source);
+    var kupingJessica1_vertex = sphereVertex(0.145, 0.395, 0.15, 0, 0, 0);
+    var kupingJessica2_vertex = sphereVertex(0.145, 0.395, 0.15, 255, 255, 255);
+    var kupingJessica1_faces = sphereFaces();
+    var kupingJessica1 = new MyObject(kupingJessica2_vertex, kupingJessica1_faces, shader_vertex_source, shader_fragment_source);
+    var kupingJessica2 = new MyObject(kupingJessica1_vertex, kupingJessica1_faces, shader_vertex_source, shader_fragment_source);
 
     // Eye
     var eyeJessica_vertex = sphereVertex(0.05, 0.05, 0.05, 0, 0, 0);
     var eyeJessica_faces = sphereFaces();
     var eyeJessica1 = new MyObject(eyeJessica_vertex, eyeJessica_faces, shader_vertex_source, shader_fragment_source);
     var eyeJessica2 = new MyObject(eyeJessica_vertex, eyeJessica_faces, shader_vertex_source, shader_fragment_source);
-
-    // Cheek
-    var cheekJessica_vertex = sphereVertex(0.1, 0.05, 0.05, 255/255, 153/255, 204/255);
-    var cheekJessica_faces = sphereFaces();
-    var cheekJessica1 = new MyObject(cheekJessica_vertex, cheekJessica_faces, shader_vertex_source, shader_fragment_source);
-    var cheekJessica2 = new MyObject(cheekJessica_vertex, cheekJessica_faces, shader_vertex_source, shader_fragment_source);
 
     // Nose
     var noseJessica_vertex = sphereVertex(0.07, 0.0375, 0.05, 0, 0, 0);
@@ -1010,52 +1015,58 @@ function main(){
     smileJessica.addCurve(100);
 
     // Neck
-    var neckJessica_vertex = tabungVertex(0.25,0.25,0.3,0.3,0,-0.15,102/255,178/255,255);
+    var neckJessica_vertex = tabungVertex(0.35,0.35,0.25,0.3,0,-0.1,215/255,80/255,123/255);
     var neckJessica_faces = tabungFaces();
     var neckJessica = new MyObject(neckJessica_vertex, neckJessica_faces, shader_vertex_source, shader_fragment_source); 
 
     // Body
-    var bodyJessica_vertex = tabungVertex(0.3,0.3,0.3,0.3,-0.15,-0.375,102/255,178/255,255);
+    var bodyJessica_vertex = tabungVertex(0.15,0.15,0.35,0.5,0.15,-0.375,255,175/255,190/255);
     var bodyJessica_faces = tabungFaces();
     var bodyJessica = new MyObject(bodyJessica_vertex, bodyJessica_faces, shader_vertex_source, shader_fragment_source);
 
     //ribbon
-    var ribbonJessica_vertex = tabungVertex(0.05,0.05,0.06,0.06,-0.5,-0.65,51/255,255,51/255);
+    var ribbonJessica_vertex = tabungVertex(0.05,0.05,0.06,0.06,-0.5,-0.65,255,175/255,190/255);
     var ribbonJessica_faces = tabungFaces();
     var ribbonJessica1 = new MyObject(ribbonJessica_vertex, ribbonJessica_faces, shader_vertex_source, shader_fragment_source);
     var ribbonJessica2 = new MyObject(ribbonJessica_vertex, ribbonJessica_faces, shader_vertex_source, shader_fragment_source);
 
+    //  Pita
+    var pitaJessicaVertex = tabungVertex(0.1,0.1,0.0,0.0,0.0,0.15,253/255,216/255,56/255);
+    var pitaJessicaFaces = tabungFaces();
+    var pitaJessica1 = new MyObject(pitaJessicaVertex, pitaJessicaFaces, shader_vertex_source, shader_fragment_source);
+    var pitaJessica2 = new MyObject(pitaJessicaVertex, pitaJessicaFaces, shader_vertex_source, shader_fragment_source);
+
     //stomach
-    var stomachJessica_vertex = tabungVertex(0.3,0.3,0.3,0.3,-0.375,-0.5,0,0,0);
+    var stomachJessica_vertex = tabungVertex(0.3,0.3,0.3,0.3,-0.375,-0.5,215/255,80/255,123/255);
     var stomachJessica_faces = tabungFaces();
     var stomachJessica = new MyObject(stomachJessica_vertex, stomachJessica_faces, shader_vertex_source, shader_fragment_source);
 
     //pant
-    var pantJessica_vertex = tabungVertex(0.16875,0.16875,0.175,0.175,-0.5,-0.65,255,255,255);
+    var pantJessica_vertex = tabungVertex(0.16875,0.16875,0.175,0.175,-0.5,-0.65,0,0,0);
     var pantJessica_faces = tabungFaces();
     var pantJessica1 = new MyObject(pantJessica_vertex, pantJessica_faces, shader_vertex_source, shader_fragment_source);
     var pantJessica2 = new MyObject(pantJessica_vertex, pantJessica_faces, shader_vertex_source, shader_fragment_source);
 
     //leg
-    var legJessica_vertex = tabungVertex(0.16875,0.16875,0.175,0.175,-0.65,-0.75,0,76/255,153/255);
+    var legJessica_vertex = tabungVertex(0.16875,0.16875,0.175,0.175,-0.65,-0.75,108/255,70/255,57/255);
     var legJessica_faces = tabungFaces();
     var legJessica1 = new MyObject(legJessica_vertex, legJessica_faces, shader_vertex_source, shader_fragment_source);
     var legJessica2 = new MyObject(legJessica_vertex, legJessica_faces, shader_vertex_source, shader_fragment_source);
 
     //legthumb
-    var legthumbJessica_vertex = sphereVertex(0.175,0.1,0.2,0,76/255,153/255);
+    var legthumbJessica_vertex = sphereVertex(0.1475,0.1,0.2,108/255,70/255,57/255);
     var legthumbJessica_faces = sphereFaces();
     var legthumbJessica1 = new MyObject(legthumbJessica_vertex, legthumbJessica_faces, shader_vertex_source, shader_fragment_source);
     var legthumbJessica2 = new MyObject(legthumbJessica_vertex, legthumbJessica_faces, shader_vertex_source, shader_fragment_source);
 
     //arm
-    var armJessica_vertex = tabungVertex(0.125,0.125,0.1,0.1,-0.15,-0.45,102/255,178/255,255);
+    var armJessica_vertex = tabungVertex(0.125,0.125,0.1,0.1,-0.15,-0.45,255,255,255);
     var armJessica_faces = tabungFaces();
     var armJessica1 = new MyObject(armJessica_vertex, armJessica_faces, shader_vertex_source, shader_fragment_source);
     var armJessica2 = new MyObject(armJessica_vertex, armJessica_faces, shader_vertex_source, shader_fragment_source);
 
     //palm
-    var palmJessica_vertex = sphereVertex(0.08,0.12,0.08,255,255,255);
+    var palmJessica_vertex = sphereVertex(0.08,0.12,0.08,215/255,80/255,123/255);
     var palmJessica_faces = sphereFaces();
     var palmJessica1 = new MyObject(palmJessica_vertex, palmJessica_faces, shader_vertex_source, shader_fragment_source);
     var palmJessica2 = new MyObject(palmJessica_vertex, palmJessica_faces, shader_vertex_source, shader_fragment_source);
@@ -1068,10 +1079,52 @@ function main(){
     // ______________________________________________________ END JESSICA ______________________________________________________
 
     // -------------------------------------------------------ENVIRONMENT--------------------------------------------
-    var environmentVertex = cubeVertexColor(7,7,7,155/255,213/255,254/255,11/255,144/255,227/255,197/255,38/255,0/255)
+    var environmentVertex = cubeVertexColor(8,8,6.5,155/255,213/255,254/255,11/255,144/255,227/255,178/255,172/255,136/255)
     var environmentFaces = cubeFaces();
     var environment1 = new MyObject(environmentVertex, environmentFaces, shader_vertex_source, shader_fragment_source);
     // ___________________________ START KUE TART___________________________
+    var baseTartVertex = tabungVertex(0.5,0.5,0.5,0.5,-0.15,0.45,248/255,248/255,255);
+    var baseTartFaces = tabungFaces();
+    var baseTart = new MyObject(baseTartVertex, baseTartFaces, shader_vertex_source, shader_fragment_source);
+
+    var tart1Vertex = tabungVertex(0.3,0.3,0.3,0.3,-0.15,0.45,248/255,248/255,255);
+    var tart1Faces = tabungFaces();
+    var tart1 = new MyObject(tart1Vertex, tart1Faces, shader_vertex_source, shader_fragment_source);
+    var lowerBaseTartVertex = tabungVertex(0.9,0.9,0.9,0.9,-0.15,0.45,248/255,248/255,255);
+    var lowerBaseTartFaces = tabungFaces();
+    var lowerBaseTart = new MyObject(lowerBaseTartVertex, lowerBaseTartFaces, shader_vertex_source, shader_fragment_source);
+    var lowerBaseTartDecorVertex = tabungVertex(0.95,0.95,0.95,0.95,0.2,0.45,248/255,0,31/255);
+    var lowerBaseTartDecor = new MyObject(lowerBaseTartDecorVertex, lowerBaseTartFaces, shader_vertex_source, shader_fragment_source);
+    var cherryVertex = halfSphereVertex(0.1,0.1,0.4,198/255,0,23/255);
+    var cherryFaces = halfSphereFaces();
+    var cherry = new MyObject(cherryVertex, cherryFaces, shader_vertex_source, shader_fragment_source);
+    for(var i = 0; i < 8; i++){
+        cherry.addChild(new MyObject(cherryVertex, cherryFaces, shader_vertex_source, shader_fragment_source));
+    }
+
+    var lilinVertex = tabungVertex(0.05,0.05,0.05,0.05,0,0.3,127/255,87/255,181/255);
+    var lilinFaces = tabungFaces();
+    var lilin = new MyObject(lilinVertex, lilinFaces, shader_vertex_source, shader_fragment_source);
+    for (var i = 0; i < 8; i++){
+        lilin.addChild(new MyObject(lilinVertex, lilinFaces, shader_vertex_source, shader_fragment_source));
+    }
+
+    var topperData = generateTube(0,0,0.2,0.2,0.1,6,251/255,251/255,63/255);
+    var topper2Data = generateTube(0,0,0.1,0.1,0.1,6,250/255,157/255,46/255);
+    var topper = new MyObject(topperData.vertices, topperData.faces, shader_vertex_source, shader_fragment_source);
+    var topper2 = new MyObject(topper2Data.vertices, topper2Data.faces, shader_vertex_source, shader_fragment_source);
+
+    var plateVertex = tabungVertex(0.5,0.5,1.2,1.2,0,0.3,245/255, 228/255, 201/255);
+    var plateFaces = tabungFaces();
+    var plate = new MyObject(plateVertex, plateFaces, shader_vertex_source, shader_fragment_source);
+
+    var tableVertex = cubeVertex(1,0.5,1,143/255, 81/255, 43/255);
+    var tableFaces = cubeFaces();
+    var table = new MyObject(tableVertex, tableFaces, shader_vertex_source, shader_fragment_source);
+    var drawerVertex = cubeVertex(0.3,0.3,0.7,92/255, 48/255, 21/255);
+    var drawer1 = new MyObject(drawerVertex, tableFaces, shader_vertex_source, shader_fragment_source);
+    var drawer2 = new MyObject(drawerVertex, tableFaces, shader_vertex_source, shader_fragment_source);
+    
 
     //___________BALON_____________________
     var balonBottomVertex = tabungVertex(0.05,0.05,0.45,0.45,0,0.7,208/255,297/255,255);
@@ -1168,6 +1221,8 @@ function main(){
     object1.addChild(nose1);
     object1.addChild(nose2);
     object1.addChild(smileCony);
+    object1.addChild(headOrnament);
+    object1.addChild(headOrnament1);
 
     //badan
     object1.addChild(body);
@@ -1194,14 +1249,14 @@ function main(){
     jessicaHead.addChild(kupingJessica2);
     jessicaHead.addChild(eyeJessica1);
     jessicaHead.addChild(eyeJessica2);
-    jessicaHead.addChild(cheekJessica1);
-    jessicaHead.addChild(cheekJessica2);
     jessicaHead.addChild(noseJessica);
     jessicaHead.addChild(smileJessica);
     jessicaHead.addChild(neckJessica);
     jessicaHead.addChild(bodyJessica);
     jessicaHead.addChild(ribbonJessica1);
     jessicaHead.addChild(ribbonJessica2);
+    jessicaHead.addChild(pitaJessica1);
+    jessicaHead.addChild(pitaJessica2);
     jessicaHead.addChild(stomachJessica);
     jessicaHead.addChild(pantJessica1);
     jessicaHead.addChild(pantJessica2);
@@ -1232,7 +1287,20 @@ function main(){
     bendera.addChild(bendera4);
     bendera.addChild(bendera5);
     bendera.addChild(bendera6);
+    
+    baseTart.addChild(tart1);
+    baseTart.addChild(lowerBaseTart);
+    lowerBaseTart.addChild(cherry);
+    lowerBaseTart.addChild(lowerBaseTartDecor);
+    tart1.addChild(topper);
+    topper.addChild(topper2);
+    lowerBaseTart.addChild(plate);
+    lowerBaseTart.addChild(table);
+    tart1.addChild(lilin);
+    table.addChild(drawer1);
+    table.addChild(drawer2);
 
+    
     //______________________________ANIMASI___________________
     var conyJump = 0; //var utk translate Y
     var conyUp = true;
@@ -1252,88 +1320,88 @@ function main(){
             THETA += dX;
             PHI += dY;
         }
-        kepalaBrown.setPosition(0,0,0,-2,0,0,PHI,THETA);
-        telingaBrown1.setPosition(0,0,0, -1.75,0.4,0,PHI,THETA);
-        telingaBrown2.setPosition(0,0,0,-2.25,0.4,0,PHI,THETA);
-        inner1.setPosition(0,0,0, -1.75,0.4,0.05,PHI,THETA);
-        inner2.setPosition(0,0,0,-2.25,0.4,0.05,PHI,THETA);
-        mataBrown1.setPosition(0,0,0,-1.925,0.1,0.50,PHI,THETA);
-        mataBrown2.setPosition(0,0,0,-2.075,0.1,0.50,PHI,THETA);
-        mulutBrown.setPosition(0,0,0,-2.0,-0.065,0.5,PHI,THETA);
-        hidungBrown.setPosition(0,0,0,-2,0.0,0.6,PHI,THETA);
-        garisMulut1.setPosition(-Math.PI / 2,0,0, -2.0,-0.11,0.6, PHI,THETA);
-        // garisMulut2.setPosition(0,-Math.PI / 2,Math.PI / 6, -2.0,-0.1,0.6, PHI,THETA)
-        topiBrown.setPosition(-Math.PI / 2,0,0,-2,0.45,0.0,PHI,THETA);
-        bawahTopiBrown.setPosition(-Math.PI/2,0,0,-2,0.45,0,PHI,THETA);
-        bodyBrown.setPosition(4.71239,0,0,-2,-0.2,0.02,PHI,THETA);
-        innerBadan.setPosition(4.71239,0,0,-2,-0.2,0.2,PHI,THETA);
-        arm1Brown.setPosition(-Math.PI / 2 - 0.5,-0.5,0 ,-1.875,-0.375,0,PHI,THETA);
-        arm2Brown.setPosition(Math.PI / 2 - 0.5,2.5,0,-2.125,-0.375,0,PHI,THETA);
-        palm1Brown.setPosition(0,-0.7,1, -1.69,-0.7,0.175,PHI,THETA);
-        palm2Brown.setPosition(0,0.7,-1,-2.378,-0.7,0.175,PHI,THETA);
-        leg1Brown.setPosition(4.71239,0,0,-1.9,-0.30,0.1,PHI,THETA);
-        leg2Brown.setPosition(4.71239,0,0,-2.1,-0.30,0.1,PHI,THETA);
-        sepatuBrown1.setPosition(0,0,0,-1.9,-1.05,0.12,PHI,THETA);
-        sepatuBrown2.setPosition(0,0,0,-2.1,-1.05,0.12,PHI,THETA);
-        innerSepatuBrown1.setPosition(4.71239,0,0,-1.9,-0.35,0.12,PHI,THETA);
-        innerSepatuBrown2.setPosition(4.71239,0,0,-2.1,-0.35,0.12,PHI,THETA);
-        garis.setPosition(4.71239,0,0,-2.05,-0.85,0.34,PHI,THETA);
-        garis2.setPosition(4.71239,0,0,-1.990,-0.85,0.35,PHI,THETA);
-        garis3.setPosition(4.71239,0,0,-1.930,-0.85,0.33,PHI,THETA);
-        garis4.setPosition(4.71239,0,0,-1.930,-1.04,0.28,PHI,THETA);
-        garis5.setPosition(4.71239,0,0,-1.83,-1.04,0.25,PHI,THETA);
-        garis6.setPosition(4.71239,0,0,-2.05,-1.04,0.28,PHI,THETA);
-        garis7.setPosition(4.71239,0,0,-2.15,-1.04,0.26,PHI,THETA);
-        kursi.setPosition(4.71239*3,0,0,-2,-0.42,-0.2,PHI,THETA);
-        tiang.setPosition(4.71239,0,0,-2,-1.4,-0.2,PHI,THETA);
-        bottomtiang.setPosition(4.71239,0,0,-2,-1.8,-0.2,PHI,THETA);
-        boxSepeda.setPosition(0,0,0,-2,-1.45,-0.2,PHI,THETA);
-        tanganRoda1.setPosition(0,0,0,-2.2,-1.77,-0.2,PHI,THETA);
-        tanganRoda2.setPosition(0,0,0,-1.8,-1.77,-0.2,PHI,THETA);
-        roda.setPosition(0,4.71239,0,-1.85,-2.1,-0.2,PHI,THETA);
-        innerRoda.setPosition(0,0,0,-2,-2.1,-0.2,PHI,THETA);
-        patternRoda.setPosition(0,4.71239,4.71239,-1.8115,-2.1,-0.2,PHI,THETA);
-        pitaBrown2.setPosition(4.71239,4.71239,0,-1.9,-0.4,0.4,PHI,THETA);
-        pitaBrown.setPosition(4.71239,-4.71239,0,-2.1,-0.4,0.4,PHI,THETA);
+        kepalaBrown.setPosition(0,0,0,-2,0,0);
+        telingaBrown1.setPosition(0,0,0, -1.75,0.4,0);
+        telingaBrown2.setPosition(0,0,0,-2.25,0.4,0);
+        inner1.setPosition(0,0,0, -1.75,0.4,0.05);
+        inner2.setPosition(0,0,0,-2.25,0.4,0.05);
+        mataBrown1.setPosition(0,0,0,-1.925,0.1,0.50);
+        mataBrown2.setPosition(0,0,0,-2.075,0.1,0.50);
+        mulutBrown.setPosition(0,0,0,-2.0,-0.065,0.5);
+        hidungBrown.setPosition(0,0,0,-2,0.0,0.6);
+        garisMulut1.setPosition(-Math.PI / 2,0,0, -2.0,-0.11,0.6);
+        // garisMulut2.setPosition(0,-Math.PI / 2,Math.PI / 6, -2.0,-0.1,0.6)
+        topiBrown.setPosition(-Math.PI / 2,0,0,-2,0.45,0.0);
+        bawahTopiBrown.setPosition(-Math.PI/2,0,0,-2,0.45,0);
+        bodyBrown.setPosition(4.71239,0,0,-2,-0.2,0.02);
+        innerBadan.setPosition(4.71239,0,0,-2,-0.2,0.2);
+        arm1Brown.setPosition(-Math.PI / 2 - 0.5,-0.5,0 ,-1.875,-0.375,0);
+        arm2Brown.setPosition(Math.PI / 2 - 0.5,2.5,0,-2.125,-0.375,0);
+        palm1Brown.setPosition(0,-0.7,1, -1.69,-0.7,0.175);
+        palm2Brown.setPosition(0,0.7,-1,-2.378,-0.7,0.175);
+        leg1Brown.setPosition(4.71239,0,0,-1.9,-0.30,0.1);
+        leg2Brown.setPosition(4.71239,0,0,-2.1,-0.30,0.1);
+        sepatuBrown1.setPosition(0,0,0,-1.9,-1.05,0.12);
+        sepatuBrown2.setPosition(0,0,0,-2.1,-1.05,0.12);
+        innerSepatuBrown1.setPosition(4.71239,0,0,-1.9,-0.35,0.12);
+        innerSepatuBrown2.setPosition(4.71239,0,0,-2.1,-0.35,0.12);
+        garis.setPosition(4.71239,0,0,-2.05,-0.85,0.34);
+        garis2.setPosition(4.71239,0,0,-1.990,-0.85,0.35);
+        garis3.setPosition(4.71239,0,0,-1.930,-0.85,0.33);
+        garis4.setPosition(4.71239,0,0,-1.930,-1.04,0.28);
+        garis5.setPosition(4.71239,0,0,-1.83,-1.04,0.25);
+        garis6.setPosition(4.71239,0,0,-2.05,-1.04,0.28);
+        garis7.setPosition(4.71239,0,0,-2.15,-1.04,0.26);
+        kursi.setPosition(4.71239*3,0,0,-2,-0.42,-0.2);
+        tiang.setPosition(4.71239,0,0,-2,-1.4,-0.2);
+        bottomtiang.setPosition(4.71239,0,0,-2,-1.8,-0.2);
+        boxSepeda.setPosition(0,0,0,-2,-1.45,-0.2);
+        tanganRoda1.setPosition(0,0,0,-2.2,-1.77,-0.2);
+        tanganRoda2.setPosition(0,0,0,-1.8,-1.77,-0.2);
+        roda.setPosition(0,4.71239,0,-1.85,-2.1,-0.2);
+        innerRoda.setPosition(0,0,0,-2,-2.1,-0.2);
+        patternRoda.setPosition(0,4.71239,4.71239,-1.8115,-2.1,-0.2);
+        pitaBrown2.setPosition(4.71239,4.71239,0,-1.9,-0.4,0.4);
+        pitaBrown.setPosition(4.71239,-4.71239,0,-2.1,-0.4,0.4);
 
-
-        object1.setPosition(0,0,0,0,0,0,PHI,THETA)
-        kuping1.setPosition(0,0,0,0.15,0.4,0,PHI,THETA)
-        kuping2.setPosition(0,0,0,-0.15,0.4,0,PHI,THETA)
-        innerkuping1.setPosition(0,0,0,0.15,0.4,0.05,PHI,THETA)
-        innerkuping2.setPosition(0,0,0,-0.15,0.4,0.05,PHI,THETA)
-        eye1.setPosition(0,0,0,0.075,0.1,0.45,PHI,THETA)
-        eye2.setPosition(0,0,0,-0.075,0.1,0.45,PHI,THETA)
-        cheek1.setPosition(0,0,0,0.17,0,0.435,PHI,THETA)
-        cheek2.setPosition(0,0,0,-0.17,0,0.435,PHI,THETA)
-        nose1.setPosition(0,0,0,0,0,0.475,PHI,THETA)
-        nose2.setPosition(0,0,0,0,0,0.477,PHI,THETA)
-        smileCony.setPosition(0,0,0,-0.125,2.5*0.125*0.125-0.2,0.45,PHI,THETA)
+        object1.setPosition(0,0,0,0,0,0)
+        kuping1.setPosition(0,0,0,0.15,0.4,0)
+        kuping2.setPosition(0,0,0,-0.15,0.4,0)
+        innerkuping1.setPosition(0,0,0,0.15,0.4,0.05)
+        innerkuping2.setPosition(0,0,0,-0.15,0.4,0.05)
+        eye1.setPosition(0,0,0,0.075,0.1,0.45)
+        eye2.setPosition(0,0,0,-0.075,0.1,0.45)
+        cheek1.setPosition(0,0,0,0.17,0,0.435)
+        cheek2.setPosition(0,0,0,-0.17,0,0.435)
+        headOrnament.setPosition(0,-1.5708,0,0.32,0.35,0.4);
+        headOrnament1.setPosition(0,1.5708,0,0.1,0.35,0.4);
+        nose1.setPosition(0,0,0,0,0,0.475)
+        nose2.setPosition(0,0,0,0,0,0.477)
+        smileCony.setPosition(0,0,0,-0.125,2.5*0.125*0.125-0.2,0.45)
         var xtemp = -0.125;
         for(var i = 0; i < smileCony.child.length;i++){
             xtemp += 0.0025;
             var ytemp = 2.5*xtemp*xtemp-0.2;
-            smileCony.child[i].setPosition(0,0,0,xtemp,ytemp,0.45,PHI,THETA)
+            smileCony.child[i].setPosition(0,0,0,xtemp,ytemp,0.45)
         }
         
-        body.setPosition(4.71239,0,0,0,-0.35,0,PHI,THETA)
-        neck.setPosition(4.71239,0,0,0,-0.35,0,PHI,THETA)
-        ribbon1.setPosition(-Math.PI / 2 - 0.5,-0.5,0,-0.2,-0.05,0.03,PHI,THETA)
-        ribbon2.setPosition(Math.PI / 2 - 0.5,2.5,0,0.3,-0.09,0.06,PHI,THETA)
-        stomach.setPosition(4.71239,0,0,0,-0.35,0,PHI,THETA)
-        pant1.setPosition(4.71239,0,0,0.1,-0.35,0,PHI,THETA)
-        pant2.setPosition(4.71239,0,0,-0.1,-0.35,0,PHI,THETA)
-        leg1.setPosition(4.71239,0,0,0.1,-0.35,0,PHI,THETA)
-        leg2.setPosition(4.71239,0,0,-0.1,-0.35,0,PHI,THETA)
-        legthumb1.setPosition(0,0,0,0.1,-1.05,0.05,PHI,THETA)
-        legthumb2.setPosition(0,0,0,-0.1,-1.05,0.05,PHI,THETA)
-        tail.setPosition(0,0,0,0,-0.8,-0.275,PHI,THETA)
+        body.setPosition(4.71239,0,0,0,-0.35,0)
+        neck.setPosition(4.71239,0,0,0,-0.35,0)
+        ribbon1.setPosition(-Math.PI / 2 - 0.5,-0.5,0,-0.2,-0.05,0.03)
+        ribbon2.setPosition(Math.PI / 2 - 0.5,2.5,0,0.3,-0.09,0.06)
+        stomach.setPosition(4.71239,0,0,0,-0.35,0)
+        pant1.setPosition(4.71239,0,0,0.1,-0.35,0)
+        pant2.setPosition(4.71239,0,0,-0.1,-0.35,0)
+        leg1.setPosition(4.71239,0,0,0.1,-0.35,0)
+        leg2.setPosition(4.71239,0,0,-0.1,-0.35,0)
+        legthumb1.setPosition(0,0,0,0.1,-1.05,0.05)
+        legthumb2.setPosition(0,0,0,-0.1,-1.05,0.05)
+        tail.setPosition(0,0,0,0,-0.8,-0.275)
 
-        arm1.setPosition(-Math.PI / 2 - 0.5,-0.5,0,0.125,-0.375,0,PHI,THETA)
-        arm2.setPosition(Math.PI / 2 - 0.5,2.5,0,-0.125,-0.375,0,PHI,THETA)
-        palm1.setPosition(0,-0.7,1,0.31,-0.7,0.175,PHI,THETA)
-        palm2.setPosition(0,0.7,-1,-0.378,-0.7,0.175,PHI,THETA)
-
+        arm1.setPosition(-Math.PI / 2 - 0.5,-0.5,0,0.125,-0.375,0)
+        arm2.setPosition(Math.PI / 2 - 0.5,2.5,0,-0.125,-0.375,0)
+        palm1.setPosition(0,-0.7,1,0.31,-0.7,0.175)
+        palm2.setPosition(0,0.7,-1,-0.378,-0.7,0.175)
 
         //_________________CONY LOMPAT______________________
         if (conyUp) {
@@ -1362,68 +1430,261 @@ function main(){
         
         // _____________________________ START JESSICA SET POSITION ______________________________________
         
-        jessicaHead.setPosition(0,0,0,2,0,0,PHI,THETA);
-        kupingJessica1.setPosition(0,0,0,2.15,0.4,0,PHI,THETA);
-        kupingJessica2.setPosition(0,0,0,1.85,0.4,0,PHI,THETA);
-        eyeJessica1.setPosition(0,0,0,2.075,0.1,0.50,PHI,THETA);
-        eyeJessica2.setPosition(0,0,0,1.925,0.1,0.50,PHI,THETA);
-        cheekJessica1.setPosition(0,0,0,2.17,0,0.435,PHI,THETA);
-        cheekJessica2.setPosition(0,0,0,1.83,0,0.435,PHI,THETA);
-        noseJessica.setPosition(0,0,0,2,0.0,0.6,PHI,THETA);
-        smileJessica.setPosition(0,0,0,2,0.065,0.5,PHI,THETA);
-        neckJessica.setPosition(0,0,0,2,-0.2,0.02,PHI,THETA);
-        bodyJessica.setPosition(0,0,0,2,-0.2,0.2,PHI,THETA);
-        ribbonJessica1.setPosition(0,0,0,2,-0.2,0.3,PHI,THETA);
-        ribbonJessica2.setPosition(0,0,0,2,-0.2,0.1,PHI,THETA);
-        stomachJessica.setPosition(0,0,0,2,-0.35,0,PHI,THETA);
-        pantJessica1.setPosition(0,0,0,2,-0.35,0.1,PHI,THETA);
-        pantJessica2.setPosition(0,0,0,2,-0.35,-0.1,PHI,THETA);
-        legJessica1.setPosition(0,0,0,2,-0.35,0.1,PHI,THETA);
-        legJessica2.setPosition(0,0,0,2,-0.35,-0.1,PHI,THETA);
-        legthumbJessica1.setPosition(0,0,0,2,-1.05,0.05,PHI,THETA);
-        legthumbJessica2.setPosition(0,0,0,2,-0.95,0.05,PHI,THETA);
-        armJessica1.setPosition(0,0,0,2.125,-0.375,0,PHI,THETA);
-        armJessica2.setPosition(0,0,0,1.875,-0.375,0,PHI,THETA);
-        palmJessica1.setPosition(0,0,0,2.31,-0.7,0.175,PHI,THETA);
-        palmJessica2.setPosition(0,0,0,1.69,-0.7,0.175,PHI,THETA);
-        tailJessica.setPosition(0,0,0,2,-0.8,-0.275,PHI,THETA);
+        jessicaHead.setPosition(0,0,0,2,0,0);
+        kupingJessica1.setPosition(0,0,3.1,2.3,0.2,0);
+        kupingJessica2.setPosition(0,0,0.1,1.7,0.2,0);
+        eyeJessica1.setPosition(0,0,0,2.075,0.1,0.45);
+        eyeJessica2.setPosition(0,0,0,1.925,0.1,0.45);
+        noseJessica.setPosition(0,0,0,2,0.0,0.6);
+        smileJessica.setPosition(0,0,0,1.875,2.5*0.125*0.125-0.2,0.5);
+        var xtemp = 1.875;
+        for(var i = 0; i < smileJessica.child.length;i++){
+            xtemp += 0.0025;
+            var ytemp = 2.5*(xtemp-2)*(xtemp-2)-0.2;
+            smileJessica.child[i].setPosition(0,0,0,xtemp,ytemp,0.5)
+        }
+        neckJessica.setPosition(4.71239,0,0,2,-0.38,0.02);
+        bodyJessica.setPosition(4.71239,0,0,2,-0.38,0);
+        ribbonJessica1.setPosition(4.71239,0,0,2,-0.2,0.3);
+        ribbonJessica2.setPosition(4.71239,0,0,2,-0.2,0.1);
+        pitaJessica1.setPosition(4.71239,0,0,2,-0.5,0.32);
+        pitaJessica2.setPosition(4.71239,0,0,2,-0.5,0.32);
+        stomachJessica.setPosition(4.71239,0,0,2,-0.35,0);
+        pantJessica1.setPosition(4.71239,0,0,2.08,-0.35,0);
+        pantJessica2.setPosition(4.71239,0,0,1.9,-0.35,0);
+        legJessica1.setPosition(4.71239,0,0,1.9,-0.35,0);
+        legJessica2.setPosition(4.71239,0,0,2.08,-0.35,0);
+        legthumbJessica1.setPosition(0,0,0,1.87,-1.1,0.05);
+        legthumbJessica2.setPosition(0,0,0,2.11,-1.1,0.05);
+        armJessica1.setPosition(-Math.PI / 2 - 0.5,-0.5,0,2.125,-0.375,0);
+        armJessica2.setPosition(Math.PI / 2 - 0.5,2.5,0,1.875,-0.375,0);
+        palmJessica1.setPosition(0,0,0.5,2.34,-0.73,0.175);
+        palmJessica2.setPosition(0,0,-0.5,1.61,-0.7,0.175);
+        tailJessica.setPosition(0,0,0,2,-0.8,-0.275);
 
         // _____________________________ END JESSICA SET POSITION ______________________________________
         
-
         // _____________________________ENV POS______________________________________
-        environment1.setPosition(0,0,4.71239,0,3.5,0,PHI,THETA);
-        balonBottom.setPosition(4.71239,0,0,1,0.1,-3,PHI,THETA);
-        balonUp.setPosition(4.71239,0,0,1,0.9,-3,PHI,THETA);
-        balonBottom1.setPosition(4.71239,0,0,3,-0.6,-3,PHI,THETA);
-        balonUp1.setPosition(4.71239,0,0,3,0.3,-3,PHI,THETA);
-        balonBottom2.setPosition(4.71239,0,0,-1,-0.7,-3,PHI,THETA);
-        balonUp2.setPosition(4.71239,0,0,-1,0.2,-3,PHI,THETA);
-        balonBottom3.setPosition(4.71239,0,0,-3,0.1,-3,PHI,THETA);
-        balonUp3.setPosition(4.71239,0,0,-3,0.9,-3,PHI,THETA);
-        balonBottom4.setPosition(4.71239,0,0,-5,-0.7,-3,PHI,THETA);
-        balonUp4.setPosition(4.71239,0,0,-5,0.1,-3,PHI,THETA);
+        environment1.setPosition(0,0,4.71239,0,3.5,0);
+        balonBottom.setPosition(4.71239,0,0,1,0.1,-6);
+        balonUp.setPosition(4.71239,0,0,1,0.9,-6);
+        balonBottom1.setPosition(4.71239,0,0,3,-0.6,-6);
+        balonUp1.setPosition(4.71239,0,0,3,0.3,-6);
+        balonBottom2.setPosition(4.71239,0,0,-1,-0.7,-6);
+        balonUp2.setPosition(4.71239,0,0,-1,0.2,-6);
+        balonBottom3.setPosition(4.71239,0,0,-3,0.1,-6);
+        balonUp3.setPosition(4.71239,0,0,-3,0.9,-6);
+        balonBottom4.setPosition(4.71239,0,0,-5,-0.7,-6);
+        balonUp4.setPosition(4.71239,0,0,-5,0.1,-6);
         
-        tali.setPosition(0,0,0,-2.5,0.1*2.5*2.5+2,-3,PHI,THETA);
+        tali.setPosition(0,0,0,-2.5,0.1*2.5*2.5+2,-6);
         var xtemp = -5;
         for(var i = 0; i < tali.child.length;i++){
             xtemp += 0.05;
             var ytemp = 0.1*xtemp*xtemp+2;
-            tali.child[i].setPosition(0,0,0,xtemp,ytemp,-3,PHI,THETA)
+            tali.child[i].setPosition(0,0,0,xtemp,ytemp,-6)
         }
-        bendera.setPosition(0,0,0,0,0.95,-3,PHI,THETA);
-        bendera1.setPosition(0,0,0.261799,1.5,1.2,-3,PHI,THETA);
-        bendera2.setPosition(0,0,0.523599,3,1.8,-3,PHI,THETA);
-        bendera3.setPosition(0,0,-0.261799,-1.5,1.2,-3,PHI,THETA);
-        bendera4.setPosition(0,0,-0.523599,-3,1.8,-3,PHI,THETA);
-        bendera5.setPosition(0,0,0.785398,4.2,2.5,-3,PHI,THETA);
-        bendera6.setPosition(0,0,-0.785398,-4.2,2.6,-3,PHI,THETA);
+        bendera.setPosition(0,0,0,0,0.95,-6);
+        bendera1.setPosition(0,0,0.261799,1.5,1.2,-6);
+        bendera2.setPosition(0,0,0.523599,3,1.8,-6);
+        bendera3.setPosition(0,0,-0.261799,-1.5,1.2,-6);
+        bendera4.setPosition(0,0,-0.523599,-3,1.8,-6);
+        bendera5.setPosition(0,0,0.785398,4.2,2.5,-6);
+        bendera6.setPosition(0,0,-0.785398,-4.2,2.6,-6);
         
+        object1.translate(0,-1.3,0)
+
+        //_________________________RESPONSIVE ROTATE_____________________
+        object1.setResponsiveRotation(PHI,THETA);
+        kuping1.setResponsiveRotation(PHI,THETA);
+        kuping2.setResponsiveRotation(PHI,THETA);
+        innerkuping1.setResponsiveRotation(PHI,THETA);
+        innerkuping2.setResponsiveRotation(PHI,THETA);
+        eye1.setResponsiveRotation(PHI,THETA);
+        eye2.setResponsiveRotation(PHI,THETA);
+        cheek1.setResponsiveRotation(PHI,THETA);
+        cheek2.setResponsiveRotation(PHI,THETA);
+        headOrnament.setResponsiveRotation(PHI,THETA);
+        headOrnament1.setResponsiveRotation(PHI,THETA);
+        nose1.setResponsiveRotation(PHI,THETA);
+        nose2.setResponsiveRotation(PHI,THETA);
+        smileCony.setResponsiveRotation(PHI,THETA);
+        for(var i = 0; i < smileCony.child.length;i++){
+            smileCony.child[i].setResponsiveRotation(PHI,THETA);
+        }
+        
+        body.setResponsiveRotation(PHI,THETA);
+        neck.setResponsiveRotation(PHI,THETA);
+        ribbon1.setResponsiveRotation(PHI,THETA);
+        ribbon2.setResponsiveRotation(PHI,THETA);
+        stomach.setResponsiveRotation(PHI,THETA);
+        pant1.setResponsiveRotation(PHI,THETA);
+        pant2.setResponsiveRotation(PHI,THETA);
+        leg1.setResponsiveRotation(PHI,THETA);
+        leg2.setResponsiveRotation(PHI,THETA);
+        legthumb1.setResponsiveRotation(PHI,THETA);
+        legthumb2.setResponsiveRotation(PHI,THETA);
+        tail.setResponsiveRotation(PHI,THETA);
+
+        arm1.setResponsiveRotation(PHI,THETA);
+        arm2.setResponsiveRotation(PHI,THETA);
+        palm1.setResponsiveRotation(PHI,THETA);
+        palm2.setResponsiveRotation(PHI,THETA);
+
+        //BROWN
+        kepalaBrown.setResponsiveRotation(PHI,THETA);
+        telingaBrown1.setResponsiveRotation(PHI,THETA);
+        telingaBrown2.setResponsiveRotation(PHI,THETA);
+        inner1.setResponsiveRotation(PHI,THETA);
+        inner2.setResponsiveRotation(PHI,THETA);
+        mataBrown1.setResponsiveRotation(PHI,THETA);
+        mataBrown2.setResponsiveRotation(PHI,THETA);
+        mulutBrown.setResponsiveRotation(PHI,THETA);
+        hidungBrown.setResponsiveRotation(PHI,THETA);
+        garisMulut1.setResponsiveRotation(PHI,THETA);
+        // garisMulut2.setResponsiveRotation(PHI,THETA)
+        topiBrown.setResponsiveRotation(PHI,THETA);
+        bawahTopiBrown.setResponsiveRotation(PHI,THETA);
+        bodyBrown.setResponsiveRotation(PHI,THETA);
+        innerBadan.setResponsiveRotation(PHI,THETA);
+        arm1Brown.setResponsiveRotation(PHI,THETA);
+        arm2Brown.setResponsiveRotation(PHI,THETA);
+        palm1Brown.setResponsiveRotation(PHI,THETA);
+        palm2Brown.setResponsiveRotation(PHI,THETA);
+        leg1Brown.setResponsiveRotation(PHI,THETA);
+        leg2Brown.setResponsiveRotation(PHI,THETA);
+        sepatuBrown1.setResponsiveRotation(PHI,THETA);
+        sepatuBrown2.setResponsiveRotation(PHI,THETA);
+        innerSepatuBrown1.setResponsiveRotation(PHI,THETA);
+        innerSepatuBrown2.setResponsiveRotation(PHI,THETA);
+        garis.setResponsiveRotation(PHI,THETA);
+        garis2.setResponsiveRotation(PHI,THETA);
+        garis3.setResponsiveRotation(PHI,THETA);
+        garis4.setResponsiveRotation(PHI,THETA);
+        garis5.setResponsiveRotation(PHI,THETA);
+        garis6.setResponsiveRotation(PHI,THETA);
+        garis7.setResponsiveRotation(PHI,THETA);
+        kursi.setResponsiveRotation(PHI,THETA);
+        tiang.setResponsiveRotation(PHI,THETA);
+        bottomtiang.setResponsiveRotation(PHI,THETA);
+        boxSepeda.setResponsiveRotation(PHI,THETA);
+        tanganRoda1.setResponsiveRotation(PHI,THETA);
+        tanganRoda2.setResponsiveRotation(PHI,THETA);
+        roda.setResponsiveRotation(PHI,THETA);
+        innerRoda.setResponsiveRotation(PHI,THETA);
+        patternRoda.setResponsiveRotation(PHI,THETA);
+        pitaBrown2.setResponsiveRotation(PHI,THETA);
+        pitaBrown.setResponsiveRotation(PHI,THETA);
+
+        //JESSICA
+        jessicaHead.setResponsiveRotation(PHI,THETA);
+        kupingJessica1.setResponsiveRotation(PHI,THETA);
+        kupingJessica2.setResponsiveRotation(PHI,THETA);
+        eyeJessica1.setResponsiveRotation(PHI,THETA);
+        eyeJessica2.setResponsiveRotation(PHI,THETA);
+        noseJessica.setResponsiveRotation(PHI,THETA);
+        smileJessica.setResponsiveRotation(PHI,THETA);
+        for(var i = 0; i < smileJessica.child.length;i++){
+            smileJessica.child[i].setResponsiveRotation(PHI,THETA);
+        }
+        neckJessica.setResponsiveRotation(PHI,THETA);
+        bodyJessica.setResponsiveRotation(PHI,THETA);
+        ribbonJessica1.setResponsiveRotation(PHI,THETA);
+        ribbonJessica2.setResponsiveRotation(PHI,THETA);
+        pitaJessica1.setResponsiveRotation(PHI,THETA);
+        pitaJessica2.setResponsiveRotation(PHI,THETA);
+        stomachJessica.setResponsiveRotation(PHI,THETA);
+        pantJessica1.setResponsiveRotation(PHI,THETA);
+        pantJessica2.setResponsiveRotation(PHI,THETA);
+        legJessica1.setResponsiveRotation(PHI,THETA);
+        legJessica2.setResponsiveRotation(PHI,THETA);
+        legthumbJessica1.setResponsiveRotation(PHI,THETA);
+        legthumbJessica2.setResponsiveRotation(PHI,THETA);
+        armJessica1.setResponsiveRotation(PHI,THETA);
+        armJessica2.setResponsiveRotation(PHI,THETA);
+        palmJessica1.setResponsiveRotation(PHI,THETA);
+        palmJessica2.setResponsiveRotation(PHI,THETA);
+        tailJessica.setResponsiveRotation(PHI,THETA);
+
+        //ENV
+        environment1.setResponsiveRotation(PHI,THETA);
+        balonBottom.setResponsiveRotation(PHI,THETA);
+        balonUp.setResponsiveRotation(PHI,THETA);
+        balonBottom1.setResponsiveRotation(PHI,THETA);
+        balonUp1.setResponsiveRotation(PHI,THETA);
+        balonBottom2.setResponsiveRotation(PHI,THETA);
+        balonUp2.setResponsiveRotation(PHI,THETA);
+        balonBottom3.setResponsiveRotation(PHI,THETA);
+        balonUp3.setResponsiveRotation(PHI,THETA);
+        balonBottom4.setResponsiveRotation(PHI,THETA);
+        balonUp4.setResponsiveRotation(PHI,THETA);
+        
+        tali.setResponsiveRotation(PHI,THETA);
+        for(var i = 0; i < tali.child.length;i++){
+            tali.child[i].setResponsiveRotation(PHI,THETA)
+        }
+        bendera.setResponsiveRotation(PHI,THETA);
+        bendera1.setResponsiveRotation(PHI,THETA);
+        bendera2.setResponsiveRotation(PHI,THETA);
+        bendera3.setResponsiveRotation(PHI,THETA);
+        bendera4.setResponsiveRotation(PHI,THETA);
+        bendera5.setResponsiveRotation(PHI,THETA);
+        bendera6.setResponsiveRotation(PHI,THETA);
+
+
+        baseTart.setPosition(-2*0.785398,0,0,-4.2,-2.6,-3,PHI,THETA);
+        // // baseTart.translate(-4,-1.5,0.5);
+        tart1.setPosition(-2*0.785398,0,0,-4.2,-2.2,-3,PHI,THETA);
+        // // tart1.translate(-4,-1,0.5);
+        lowerBaseTart.setPosition(-2*0.785398,0,0,-4.2,-3.0,-3,PHI,THETA);
+        plate.setPosition(-2*0.785398,0,0,-4.2,-3.5,-3,PHI,THETA);
+        lowerBaseTartDecor.setPosition(-2*0.785398,0,0,-4.2,-3.2,-3,PHI,THETA);
+        cherry.setPosition(-2*0.785398,0,0,-4.2,-2.8,-2.3,PHI,THETA);
+
+        baseTart.setResponsiveRotation(PHI,THETA);
+        tart1.setResponsiveRotation(PHI,THETA);
+        lowerBaseTart.setResponsiveRotation(PHI,THETA);
+        plate.setResponsiveRotation(PHI,THETA);
+        lowerBaseTartDecor.setResponsiveRotation(PHI,THETA);
+        cherry.setResponsiveRotation(PHI,THETA);
+
+        for(var i = 0; i < cherry.child.length; i++){
+            let cherrychild = cherry.child[i];
+            var theta = (i/8)*2*Math.PI;
+            var x = 0.68*Math.cos(theta) -4.2;
+            var y = 0.68*Math.sin(theta)-3;
+            cherrychild.setPosition(-2*0.785398,0,0,x,-2.8,y,PHI,THETA);
+            cherrychild.setResponsiveRotation(PHI,THETA);
+        }
+
+        lilin.setPosition(-2*0.785398,0,0,-4.2,-2.2,-2.6,PHI,THETA);
+        lilin.setResponsiveRotation(PHI,THETA);
+        for(var i = 0; i < lilin.child.length; i++){
+            let lilinchild = lilin.child[i];
+            var theta = (i/8)*2*Math.PI;
+            var x = 0.4*Math.cos(theta) -4.2;
+            var y = 0.4*Math.sin(theta)-3;
+            lilinchild.setPosition(-2*0.785398,0,0,x,-2.2,y,PHI,THETA);
+            lilinchild.setResponsiveRotation(PHI,THETA);
+        }
+
+        topper.setPosition(0,0,0,-4.2,-1.6,-3,PHI,THETA);
+        topper2.setPosition(0,0,0,-4.2,-1.6,-3,PHI,THETA);
+        topper.setResponsiveRotation(PHI,THETA);
+        topper2.setResponsiveRotation(PHI,THETA);
+
+        table.setPosition(0,0,0,-4.2,-4.5,-3,PHI, THETA);
+        drawer1.setPosition(0,0,0,-4.2,-4,-2.5,PHI, THETA);
+        drawer2.setPosition(0,0,0,-4.2,-5,-2.5,PHI, THETA);
+        table.setResponsiveRotation(PHI,THETA);
+        drawer1.setResponsiveRotation(PHI,THETA);
+        drawer2.setResponsiveRotation(PHI,THETA);
+        baseTart.translate(0,2.5,0);
+
         //_______________DRAW___________________________________________
         GL.viewport (0,0,CANVAS.width,CANVAS.height);
         GL.clear(GL.COLOR_BUFFER_BIT);
 
-        object1.translate(0,-1.3,0)
         object1.setuniformmatrix4(PROJMATRIX,VIEWMATRIX);
         object1.draw();
 
@@ -1434,7 +1695,7 @@ function main(){
         jessicaHead.draw();
 
         environment1.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
-        // environment1.draw();
+        environment1.draw();
 
         balonBottom.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
         balonBottom.draw();
@@ -1452,6 +1713,9 @@ function main(){
 
         bendera.setuniformmatrix4(PROJMATRIX,VIEWMATRIX);
         bendera.draw();
+
+        baseTart.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
+        baseTart.draw();
 
         GL.flush();
         window.requestAnimationFrame(animate);
