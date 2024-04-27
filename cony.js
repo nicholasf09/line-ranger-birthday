@@ -991,22 +991,17 @@ function main(){
     var jessicaHead = new MyObject(jessicaHead_vertex, jessicaHead_faces, shader_vertex_source, shader_fragment_source);
 
     // Kuping 
-    var kupingJessica_vertex = sphereVertex(0.145, 0.395, 0.15, 255, 255, 255);
-    var kupingJessica_faces = sphereFaces();
-    var kupingJessica1 = new MyObject(kupingJessica_vertex, kupingJessica_faces, shader_vertex_source, shader_fragment_source);
-    var kupingJessica2 = new MyObject(kupingJessica_vertex, kupingJessica_faces, shader_vertex_source, shader_fragment_source);
+    var kupingJessica1_vertex = sphereVertex(0.145, 0.395, 0.15, 0, 0, 0);
+    var kupingJessica2_vertex = sphereVertex(0.145, 0.395, 0.15, 255, 255, 255);
+    var kupingJessica1_faces = sphereFaces();
+    var kupingJessica1 = new MyObject(kupingJessica2_vertex, kupingJessica1_faces, shader_vertex_source, shader_fragment_source);
+    var kupingJessica2 = new MyObject(kupingJessica1_vertex, kupingJessica1_faces, shader_vertex_source, shader_fragment_source);
 
     // Eye
     var eyeJessica_vertex = sphereVertex(0.05, 0.05, 0.05, 0, 0, 0);
     var eyeJessica_faces = sphereFaces();
     var eyeJessica1 = new MyObject(eyeJessica_vertex, eyeJessica_faces, shader_vertex_source, shader_fragment_source);
     var eyeJessica2 = new MyObject(eyeJessica_vertex, eyeJessica_faces, shader_vertex_source, shader_fragment_source);
-
-    // Cheek
-    var cheekJessica_vertex = sphereVertex(0.1, 0.05, 0.05, 255/255, 153/255, 204/255);
-    var cheekJessica_faces = sphereFaces();
-    var cheekJessica1 = new MyObject(cheekJessica_vertex, cheekJessica_faces, shader_vertex_source, shader_fragment_source);
-    var cheekJessica2 = new MyObject(cheekJessica_vertex, cheekJessica_faces, shader_vertex_source, shader_fragment_source);
 
     // Nose
     var noseJessica_vertex = sphereVertex(0.07, 0.0375, 0.05, 0, 0, 0);
@@ -1020,52 +1015,58 @@ function main(){
     smileJessica.addCurve(100);
 
     // Neck
-    var neckJessica_vertex = tabungVertex(0.25,0.25,0.3,0.3,0,-0.15,102/255,178/255,255);
+    var neckJessica_vertex = tabungVertex(0.35,0.35,0.25,0.3,0,-0.1,215/255,80/255,123/255);
     var neckJessica_faces = tabungFaces();
     var neckJessica = new MyObject(neckJessica_vertex, neckJessica_faces, shader_vertex_source, shader_fragment_source); 
 
     // Body
-    var bodyJessica_vertex = tabungVertex(0.3,0.3,0.3,0.3,-0.15,-0.375,102/255,178/255,255);
+    var bodyJessica_vertex = tabungVertex(0.15,0.15,0.35,0.5,0.15,-0.375,255,175/255,190/255);
     var bodyJessica_faces = tabungFaces();
     var bodyJessica = new MyObject(bodyJessica_vertex, bodyJessica_faces, shader_vertex_source, shader_fragment_source);
 
     //ribbon
-    var ribbonJessica_vertex = tabungVertex(0.05,0.05,0.06,0.06,-0.5,-0.65,51/255,255,51/255);
+    var ribbonJessica_vertex = tabungVertex(0.05,0.05,0.06,0.06,-0.5,-0.65,255,175/255,190/255);
     var ribbonJessica_faces = tabungFaces();
     var ribbonJessica1 = new MyObject(ribbonJessica_vertex, ribbonJessica_faces, shader_vertex_source, shader_fragment_source);
     var ribbonJessica2 = new MyObject(ribbonJessica_vertex, ribbonJessica_faces, shader_vertex_source, shader_fragment_source);
 
+    //  Pita
+    var pitaJessicaVertex = tabungVertex(0.1,0.1,0.0,0.0,0.0,0.15,253/255,216/255,56/255);
+    var pitaJessicaFaces = tabungFaces();
+    var pitaJessica1 = new MyObject(pitaJessicaVertex, pitaJessicaFaces, shader_vertex_source, shader_fragment_source);
+    var pitaJessica2 = new MyObject(pitaJessicaVertex, pitaJessicaFaces, shader_vertex_source, shader_fragment_source);
+
     //stomach
-    var stomachJessica_vertex = tabungVertex(0.3,0.3,0.3,0.3,-0.375,-0.5,0,0,0);
+    var stomachJessica_vertex = tabungVertex(0.3,0.3,0.3,0.3,-0.375,-0.5,215/255,80/255,123/255);
     var stomachJessica_faces = tabungFaces();
     var stomachJessica = new MyObject(stomachJessica_vertex, stomachJessica_faces, shader_vertex_source, shader_fragment_source);
 
     //pant
-    var pantJessica_vertex = tabungVertex(0.16875,0.16875,0.175,0.175,-0.5,-0.65,255,255,255);
+    var pantJessica_vertex = tabungVertex(0.16875,0.16875,0.175,0.175,-0.5,-0.65,0,0,0);
     var pantJessica_faces = tabungFaces();
     var pantJessica1 = new MyObject(pantJessica_vertex, pantJessica_faces, shader_vertex_source, shader_fragment_source);
     var pantJessica2 = new MyObject(pantJessica_vertex, pantJessica_faces, shader_vertex_source, shader_fragment_source);
 
     //leg
-    var legJessica_vertex = tabungVertex(0.16875,0.16875,0.175,0.175,-0.65,-0.75,0,76/255,153/255);
+    var legJessica_vertex = tabungVertex(0.16875,0.16875,0.175,0.175,-0.65,-0.75,108/255,70/255,57/255);
     var legJessica_faces = tabungFaces();
     var legJessica1 = new MyObject(legJessica_vertex, legJessica_faces, shader_vertex_source, shader_fragment_source);
     var legJessica2 = new MyObject(legJessica_vertex, legJessica_faces, shader_vertex_source, shader_fragment_source);
 
     //legthumb
-    var legthumbJessica_vertex = sphereVertex(0.175,0.1,0.2,0,76/255,153/255);
+    var legthumbJessica_vertex = sphereVertex(0.1475,0.1,0.2,108/255,70/255,57/255);
     var legthumbJessica_faces = sphereFaces();
     var legthumbJessica1 = new MyObject(legthumbJessica_vertex, legthumbJessica_faces, shader_vertex_source, shader_fragment_source);
     var legthumbJessica2 = new MyObject(legthumbJessica_vertex, legthumbJessica_faces, shader_vertex_source, shader_fragment_source);
 
     //arm
-    var armJessica_vertex = tabungVertex(0.125,0.125,0.1,0.1,-0.15,-0.45,102/255,178/255,255);
+    var armJessica_vertex = tabungVertex(0.125,0.125,0.1,0.1,-0.15,-0.45,255,255,255);
     var armJessica_faces = tabungFaces();
     var armJessica1 = new MyObject(armJessica_vertex, armJessica_faces, shader_vertex_source, shader_fragment_source);
     var armJessica2 = new MyObject(armJessica_vertex, armJessica_faces, shader_vertex_source, shader_fragment_source);
 
     //palm
-    var palmJessica_vertex = sphereVertex(0.08,0.12,0.08,255,255,255);
+    var palmJessica_vertex = sphereVertex(0.08,0.12,0.08,215/255,80/255,123/255);
     var palmJessica_faces = sphereFaces();
     var palmJessica1 = new MyObject(palmJessica_vertex, palmJessica_faces, shader_vertex_source, shader_fragment_source);
     var palmJessica2 = new MyObject(palmJessica_vertex, palmJessica_faces, shader_vertex_source, shader_fragment_source);
@@ -1206,14 +1207,14 @@ function main(){
     jessicaHead.addChild(kupingJessica2);
     jessicaHead.addChild(eyeJessica1);
     jessicaHead.addChild(eyeJessica2);
-    jessicaHead.addChild(cheekJessica1);
-    jessicaHead.addChild(cheekJessica2);
     jessicaHead.addChild(noseJessica);
     jessicaHead.addChild(smileJessica);
     jessicaHead.addChild(neckJessica);
     jessicaHead.addChild(bodyJessica);
     jessicaHead.addChild(ribbonJessica1);
     jessicaHead.addChild(ribbonJessica2);
+    jessicaHead.addChild(pitaJessica1);
+    jessicaHead.addChild(pitaJessica2);
     jessicaHead.addChild(stomachJessica);
     jessicaHead.addChild(pantJessica1);
     jessicaHead.addChild(pantJessica2);
@@ -1377,29 +1378,35 @@ function main(){
         // _____________________________ START JESSICA SET POSITION ______________________________________
         
         jessicaHead.setPosition(0,0,0,2,0,0);
-        kupingJessica1.setPosition(0,0,0,2.15,0.4,0);
-        kupingJessica2.setPosition(0,0,0,1.85,0.4,0);
-        eyeJessica1.setPosition(0,0,0,2.075,0.1,0.50);
-        eyeJessica2.setPosition(0,0,0,1.925,0.1,0.50);
-        cheekJessica1.setPosition(0,0,0,2.17,0,0.435);
-        cheekJessica2.setPosition(0,0,0,1.83,0,0.435);
+        kupingJessica1.setPosition(0,0,3.1,2.3,0.2,0);
+        kupingJessica2.setPosition(0,0,0.1,1.7,0.2,0);
+        eyeJessica1.setPosition(0,0,0,2.075,0.1,0.45);
+        eyeJessica2.setPosition(0,0,0,1.925,0.1,0.45);
         noseJessica.setPosition(0,0,0,2,0.0,0.6);
-        smileJessica.setPosition(0,0,0,2,0.065,0.5);
-        neckJessica.setPosition(0,0,0,2,-0.2,0.02);
-        bodyJessica.setPosition(0,0,0,2,-0.2,0.2);
-        ribbonJessica1.setPosition(0,0,0,2,-0.2,0.3);
-        ribbonJessica2.setPosition(0,0,0,2,-0.2,0.1);
-        stomachJessica.setPosition(0,0,0,2,-0.35,0);
-        pantJessica1.setPosition(0,0,0,2,-0.35,0.1);
-        pantJessica2.setPosition(0,0,0,2,-0.35,-0.1);
-        legJessica1.setPosition(0,0,0,2,-0.35,0.1);
-        legJessica2.setPosition(0,0,0,2,-0.35,-0.1);
-        legthumbJessica1.setPosition(0,0,0,2,-1.05,0.05);
-        legthumbJessica2.setPosition(0,0,0,2,-0.95,0.05);
-        armJessica1.setPosition(0,0,0,2.125,-0.375,0);
-        armJessica2.setPosition(0,0,0,1.875,-0.375,0);
-        palmJessica1.setPosition(0,0,0,2.31,-0.7,0.175);
-        palmJessica2.setPosition(0,0,0,1.69,-0.7,0.175);
+        smileJessica.setPosition(0,0,0,1.875,2.5*0.125*0.125-0.2,0.5);
+        var xtemp = 1.875;
+        for(var i = 0; i < smileJessica.child.length;i++){
+            xtemp += 0.0025;
+            var ytemp = 2.5*(xtemp-2)*(xtemp-2)-0.2;
+            smileJessica.child[i].setPosition(0,0,0,xtemp,ytemp,0.5)
+        }
+        neckJessica.setPosition(4.71239,0,0,2,-0.38,0.02);
+        bodyJessica.setPosition(4.71239,0,0,2,-0.38,0);
+        ribbonJessica1.setPosition(4.71239,0,0,2,-0.2,0.3);
+        ribbonJessica2.setPosition(4.71239,0,0,2,-0.2,0.1);
+        pitaJessica1.setPosition(4.71239,0,0,2,-0.5,0.32);
+        pitaJessica2.setPosition(4.71239,0,0,2,-0.5,0.32);
+        stomachJessica.setPosition(4.71239,0,0,2,-0.35,0);
+        pantJessica1.setPosition(4.71239,0,0,2.08,-0.35,0);
+        pantJessica2.setPosition(4.71239,0,0,1.9,-0.35,0);
+        legJessica1.setPosition(4.71239,0,0,1.9,-0.35,0);
+        legJessica2.setPosition(4.71239,0,0,2.08,-0.35,0);
+        legthumbJessica1.setPosition(0,0,0,1.87,-1.1,0.05);
+        legthumbJessica2.setPosition(0,0,0,2.11,-1.1,0.05);
+        armJessica1.setPosition(-Math.PI / 2 - 0.5,-0.5,0,2.125,-0.375,0);
+        armJessica2.setPosition(Math.PI / 2 - 0.5,2.5,0,1.875,-0.375,0);
+        palmJessica1.setPosition(0,0,0.5,2.34,-0.73,0.175);
+        palmJessica2.setPosition(0,0,-0.5,1.61,-0.7,0.175);
         tailJessica.setPosition(0,0,0,2,-0.8,-0.275);
 
         // _____________________________ END JESSICA SET POSITION ______________________________________
@@ -1522,14 +1529,17 @@ function main(){
         kupingJessica2.setResponsiveRotation(PHI,THETA);
         eyeJessica1.setResponsiveRotation(PHI,THETA);
         eyeJessica2.setResponsiveRotation(PHI,THETA);
-        cheekJessica1.setResponsiveRotation(PHI,THETA);
-        cheekJessica2.setResponsiveRotation(PHI,THETA);
         noseJessica.setResponsiveRotation(PHI,THETA);
         smileJessica.setResponsiveRotation(PHI,THETA);
+        for(var i = 0; i < smileJessica.child.length;i++){
+            smileJessica.child[i].setResponsiveRotation(PHI,THETA);
+        }
         neckJessica.setResponsiveRotation(PHI,THETA);
         bodyJessica.setResponsiveRotation(PHI,THETA);
         ribbonJessica1.setResponsiveRotation(PHI,THETA);
         ribbonJessica2.setResponsiveRotation(PHI,THETA);
+        pitaJessica1.setResponsiveRotation(PHI,THETA);
+        pitaJessica2.setResponsiveRotation(PHI,THETA);
         stomachJessica.setResponsiveRotation(PHI,THETA);
         pantJessica1.setResponsiveRotation(PHI,THETA);
         pantJessica2.setResponsiveRotation(PHI,THETA);
