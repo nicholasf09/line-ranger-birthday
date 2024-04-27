@@ -877,6 +877,8 @@ function main(){
 
     // -----------------------------------------------------END BROWN PUNYA TIMOTHY-----------------------------------
 
+    //_______________________CONY CANTIKKKK_______________________
+
     var object_vertex = sphereVertex(0.55,0.5,0.5, 255, 255, 255);
     var object_faces = sphereFaces();
     var object1 = new MyObject(object_vertex, object_faces, shader_vertex_source, shader_fragment_source);
@@ -917,6 +919,12 @@ function main(){
     var smileConyFaces = tabungFaces();
     var smileCony = new MyObject(smileConyVertex,smileConyFaces,shader_vertex_source,shader_fragment_source);
     smileCony.addCurve(100);
+
+    //pita di kepala
+    var headOrnamentVertex = tabungVertex(0.12,0.12,0.015,0.015,0,0.12,255,0,0);
+    var headOrnamentFaces = tabungFaces();
+    var headOrnament = new MyObject(headOrnamentVertex,headOrnamentFaces,shader_vertex_source,shader_fragment_source);
+    var headOrnament1 = new MyObject(headOrnamentVertex,headOrnamentFaces,shader_vertex_source,shader_fragment_source);
 
     //neck
     var neck_vertex = tabungVertex(0.25,0.25,0.3,0.3,0,-0.15,102/255,178/255,255);
@@ -1170,6 +1178,8 @@ function main(){
     object1.addChild(nose1);
     object1.addChild(nose2);
     object1.addChild(smileCony);
+    object1.addChild(headOrnament);
+    object1.addChild(headOrnament1);
 
     //badan
     object1.addChild(body);
@@ -1308,6 +1318,8 @@ function main(){
         eye2.setPosition(0,0,0,-0.075,0.1,0.45)
         cheek1.setPosition(0,0,0,0.17,0,0.435)
         cheek2.setPosition(0,0,0,-0.17,0,0.435)
+        headOrnament.setPosition(0,-1.5708,0,0.32,0.35,0.4);
+        headOrnament1.setPosition(0,1.5708,0,0.1,0.35,0.4);
         nose1.setPosition(0,0,0,0,0,0.475)
         nose2.setPosition(0,0,0,0,0,0.477)
         smileCony.setPosition(0,0,0,-0.125,2.5*0.125*0.125-0.2,0.45)
@@ -1432,6 +1444,8 @@ function main(){
         eye2.setResponsiveRotation(PHI,THETA);
         cheek1.setResponsiveRotation(PHI,THETA);
         cheek2.setResponsiveRotation(PHI,THETA);
+        headOrnament.setResponsiveRotation(PHI,THETA);
+        headOrnament1.setResponsiveRotation(PHI,THETA);
         nose1.setResponsiveRotation(PHI,THETA);
         nose2.setResponsiveRotation(PHI,THETA);
         smileCony.setResponsiveRotation(PHI,THETA);
