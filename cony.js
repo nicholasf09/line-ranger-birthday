@@ -1079,7 +1079,7 @@ function main(){
     // ______________________________________________________ END JESSICA ______________________________________________________
 
     // -------------------------------------------------------ENVIRONMENT--------------------------------------------
-    var environmentVertex = cubeVertexColor(7,7,7,155/255,213/255,254/255,11/255,144/255,227/255,197/255,38/255,0/255)
+    var environmentVertex = cubeVertexColor(8,8,6.5,155/255,213/255,254/255,11/255,144/255,227/255,178/255,172/255,136/255)
     var environmentFaces = cubeFaces();
     var environment1 = new MyObject(environmentVertex, environmentFaces, shader_vertex_source, shader_fragment_source);
     // ___________________________ START KUE TART___________________________
@@ -1309,7 +1309,6 @@ function main(){
         pitaBrown2.setPosition(4.71239,4.71239,0,-1.9,-0.4,0.4);
         pitaBrown.setPosition(4.71239,-4.71239,0,-2.1,-0.4,0.4);
 
-
         object1.setPosition(0,0,0,0,0,0)
         kuping1.setPosition(0,0,0,0.15,0.4,0)
         kuping2.setPosition(0,0,0,-0.15,0.4,0)
@@ -1348,7 +1347,6 @@ function main(){
         arm2.setPosition(Math.PI / 2 - 0.5,2.5,0,-0.125,-0.375,0)
         palm1.setPosition(0,-0.7,1,0.31,-0.7,0.175)
         palm2.setPosition(0,0.7,-1,-0.378,-0.7,0.175)
-
 
         //_________________CONY LOMPAT______________________
         if (conyUp) {
@@ -1413,31 +1411,31 @@ function main(){
         
         // _____________________________ENV POS______________________________________
         environment1.setPosition(0,0,4.71239,0,3.5,0);
-        balonBottom.setPosition(4.71239,0,0,1,0.1,-3);
-        balonUp.setPosition(4.71239,0,0,1,0.9,-3);
-        balonBottom1.setPosition(4.71239,0,0,3,-0.6,-3);
-        balonUp1.setPosition(4.71239,0,0,3,0.3,-3);
-        balonBottom2.setPosition(4.71239,0,0,-1,-0.7,-3);
-        balonUp2.setPosition(4.71239,0,0,-1,0.2,-3);
-        balonBottom3.setPosition(4.71239,0,0,-3,0.1,-3);
-        balonUp3.setPosition(4.71239,0,0,-3,0.9,-3);
-        balonBottom4.setPosition(4.71239,0,0,-5,-0.7,-3);
-        balonUp4.setPosition(4.71239,0,0,-5,0.1,-3);
+        balonBottom.setPosition(4.71239,0,0,1,0.1,-6);
+        balonUp.setPosition(4.71239,0,0,1,0.9,-6);
+        balonBottom1.setPosition(4.71239,0,0,3,-0.6,-6);
+        balonUp1.setPosition(4.71239,0,0,3,0.3,-6);
+        balonBottom2.setPosition(4.71239,0,0,-1,-0.7,-6);
+        balonUp2.setPosition(4.71239,0,0,-1,0.2,-6);
+        balonBottom3.setPosition(4.71239,0,0,-3,0.1,-6);
+        balonUp3.setPosition(4.71239,0,0,-3,0.9,-6);
+        balonBottom4.setPosition(4.71239,0,0,-5,-0.7,-6);
+        balonUp4.setPosition(4.71239,0,0,-5,0.1,-6);
         
-        tali.setPosition(0,0,0,-2.5,0.1*2.5*2.5+2,-3);
+        tali.setPosition(0,0,0,-2.5,0.1*2.5*2.5+2,-6);
         var xtemp = -5;
         for(var i = 0; i < tali.child.length;i++){
             xtemp += 0.05;
             var ytemp = 0.1*xtemp*xtemp+2;
-            tali.child[i].setPosition(0,0,0,xtemp,ytemp,-3)
+            tali.child[i].setPosition(0,0,0,xtemp,ytemp,-6)
         }
-        bendera.setPosition(0,0,0,0,0.95,-3);
-        bendera1.setPosition(0,0,0.261799,1.5,1.2,-3);
-        bendera2.setPosition(0,0,0.523599,3,1.8,-3);
-        bendera3.setPosition(0,0,-0.261799,-1.5,1.2,-3);
-        bendera4.setPosition(0,0,-0.523599,-3,1.8,-3);
-        bendera5.setPosition(0,0,0.785398,4.2,2.5,-3);
-        bendera6.setPosition(0,0,-0.785398,-4.2,2.6,-3);
+        bendera.setPosition(0,0,0,0,0.95,-6);
+        bendera1.setPosition(0,0,0.261799,1.5,1.2,-6);
+        bendera2.setPosition(0,0,0.523599,3,1.8,-6);
+        bendera3.setPosition(0,0,-0.261799,-1.5,1.2,-6);
+        bendera4.setPosition(0,0,-0.523599,-3,1.8,-6);
+        bendera5.setPosition(0,0,0.785398,4.2,2.5,-6);
+        bendera6.setPosition(0,0,-0.785398,-4.2,2.6,-6);
         
         object1.translate(0,-1.3,0)
 
@@ -1592,7 +1590,7 @@ function main(){
         jessicaHead.draw();
 
         environment1.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
-        // environment1.draw();
+        environment1.draw();
 
         balonBottom.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
         balonBottom.draw();
