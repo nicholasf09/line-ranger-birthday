@@ -103,7 +103,7 @@ class MyObject{
         LIBS.rotateY(this.MOVEMATRIX, THETA);
         LIBS.rotateX(this.MOVEMATRIX, PHI);
         
-        // Iterasi melalui objek anak
+        //Iterasi melalui objek anak
         for (let i = 0; i < this.child.length; i++) {
             let child = this.child[i];
             
@@ -122,6 +122,49 @@ class MyObject{
             child.MOVEMATRIX[13] = this.MOVEMATRIX[13] + relativePosition[1];
             child.MOVEMATRIX[14] = this.MOVEMATRIX[14] + relativePosition[2];
         }
+
+        //______________________________NYOBA________________________
+        // var parentMatrixBefore = LIBS.cloneMatrix(this.MOVEMATRIX);
+        // LIBS.translateZ(this.MOVEMATRIX,parentMatrixBefore[14]);
+        // LIBS.translateY(this.MOVEMATRIX,parentMatrixBefore[13]);
+        // LIBS.translateX(this.MOVEMATRIX,parentMatrixBefore[12]);
+
+        // var matRotZ = [
+        //     Math.cos(r), Math.sin(r), 0, 0,
+        //     -Math.sin(r), Math.cos(r), 0, 0,
+        //     0, 0, 1, 0,
+        //     0, 0, 0, 1
+        // ]
+
+        // this.MOVEMATRIX = LIBS.mul(this.MOVEMATRIX, matRotZ);
+
+        // var matRotY = [
+        //     Math.cos(THETA), 0, -Math.sin(THETA), 0,
+        //     0, 1, 0, 0,
+        //     Math.sin(THETA), 0, Math.cos(THETA), 0,
+        //     0, 0, 0, 1
+        // ]
+
+        // this.MOVEMATRIX = LIBS.mul(this.MOVEMATRIX, matRotY);
+
+        // var matRotX = [
+        //     1, 0, 0, 0,
+        //     0, Math.cos(PHI), Math.sin(PHI), 0,
+        //     0, -Math.sin(PHI), Math.cos(PHI), 0,
+        //     0, 0, 0, 1
+        // ]
+
+        // this.MOVEMATRIX = LIBS.mul(this.MOVEMATRIX, matRotX);
+
+
+        // LIBS.translateZ(this.MOVEMATRIX,-parentMatrixBefore[14]);
+        // LIBS.translateY(this.MOVEMATRIX,-parentMatrixBefore[13]);
+        // LIBS.translateX(this.MOVEMATRIX,-parentMatrixBefore[12]);
+
+        // for (var i = 0; i < this.child.length; i++) {
+        //     var child = this.child[i];
+        //     child.rotate(PHI,THETA,r);
+        // }
     }
 
     translate(x,y,z){
@@ -131,6 +174,27 @@ class MyObject{
         for (let i = 0; i < this.child.length; i++) {
             let child = this.child[i];
             child.translate(x,y,z)
+		}
+    }
+
+    scale(m){
+        var parentMatrixBefore = LIBS.cloneMatrix(this.MOVEMATRIX);
+        var matM = [
+            m, 0, 0, 0,
+            0, m, 0, 0,
+            0, 0, m, 0,
+            0, 0, 0, 1
+        ]
+        this.MOVEMATRIX = LIBS.mul(this.MOVEMATRIX, matM);
+        // LIBS.translateZ(this.MOVEMATRIX,parentMatrixBefore[14]);
+        // LIBS.translateY(this.MOVEMATRIX,parentMatrixBefore[13]);
+        // LIBS.translateX(this.MOVEMATRIX,parentMatrixBefore[12]);
+        this.MOVEMATRIX[12] = parentMatrixBefore[12];
+        this.MOVEMATRIX[13] = parentMatrixBefore[13];
+        this.MOVEMATRIX[14] = parentMatrixBefore[14];
+        for (let i = 0; i < this.child.length; i++) {
+            let child = this.child[i];
+            child.scale(m)
 		}
     }
 
@@ -993,9 +1057,11 @@ function main(){
 
     //kepala
     object1.addChild(kuping1);
+    kuping1.addChild(innerkuping1);
     object1.addChild(kuping2);
-    object1.addChild(innerkuping1);
-    object1.addChild(innerkuping2);
+    kuping2.addChild(innerkuping2);
+    // object1.addChild(innerkuping1);
+    // object1.addChild(innerkuping2);
     object1.addChild(eye1);
     object1.addChild(eye2);
     object1.addChild(cheek1);
@@ -1037,7 +1103,11 @@ function main(){
     bendera.addChild(bendera5);
     bendera.addChild(bendera6);
 
-    //DRAWING
+    //______________________________ANIMASI___________________
+    var conyJump = 0; //var utk translate Y
+    var conyUp = true;
+
+    //_____________________________________DRAWING_____________________________________
     GL.clearColor(0.0,0.0,0.0,0.0);
     GL.enable(GL.DEPTH_TEST);
     GL.depthFunc(GL.LEQUAL);
@@ -1132,6 +1202,32 @@ function main(){
         palm1.setPosition(0,-0.7,1,0.31,-0.7,0.175,PHI,THETA)
         palm2.setPosition(0,0.7,-1,-0.378,-0.7,0.175,PHI,THETA)
 
+
+        //_________________CONY LOMPAT______________________
+        if (conyUp) {
+            //Lompat ke atas
+            conyJump += 0.02;
+            if (conyJump >= 0.3) { //Batas Loncat
+                conyUp = false;
+            }
+        } else {
+            //Turun
+            conyJump -= 0.02;
+            if (conyJump <= 0) { //Kalau sudah sampai tanah
+                conyJump = 0; 
+                conyUp = true; //Naik
+            }
+        }
+    
+        object1.translate(0, conyJump, 0);
+
+        //_________________CONY SENYUM MELEBAR______________________
+        //BESARAN SCALING AGAR SMOOTH
+        var scaleFactor = (1.2 - 0.85) * (conyJump / 0.3) + 0.85;
+        cheek1.scale(scaleFactor);
+        cheek2.scale(scaleFactor);
+        smileCony.scale(scaleFactor);
+        
         // _____________________________ENV POS______________________________________
         environment1.setPosition(0,0,4.71239,0,3.5,0,PHI,THETA);
         balonBottom.setPosition(4.71239,0,0,1,0.1,-3,PHI,THETA);
