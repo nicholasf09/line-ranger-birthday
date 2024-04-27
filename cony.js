@@ -1406,20 +1406,13 @@ function main(){
             tali.child[i].setPosition(0,0,0,xtemp,ytemp,-3,PHI,THETA)
         }
         bendera.setPosition(0,0,0,0,0.95,-3,PHI,THETA);
-        bendera1.setPosition(0,0,0,1.5,1.2,-3,PHI,THETA);
-        bendera1.rotate(0,0,0.261799)
-        bendera2.setPosition(0,0,0,3,1.8,-3,PHI,THETA);
-        bendera2.rotate(0,0,0.523599)
-        bendera3.setPosition(0,0,0,-1.5,1.2,-3,PHI,THETA);
-        bendera3.rotate(0,0,-0.261799)
-        bendera4.setPosition(0,0,0,-3,1.8,-3,PHI,THETA);
-        bendera4.rotate(0,0,-0.523599)
-        bendera5.setPosition(0,0,0,4.2,2.5,-3,PHI,THETA);
-        bendera5.rotate(0,0,0.785398)
-        bendera6.setPosition(0,0,0,-4.2,2.6,-3,PHI,THETA);
-        bendera6.rotate(0,0,-0.785398)
-
-
+        bendera1.setPosition(0,0,0.261799,1.5,1.2,-3,PHI,THETA);
+        bendera2.setPosition(0,0,0.523599,3,1.8,-3,PHI,THETA);
+        bendera3.setPosition(0,0,-0.261799,-1.5,1.2,-3,PHI,THETA);
+        bendera4.setPosition(0,0,-0.523599,-3,1.8,-3,PHI,THETA);
+        bendera5.setPosition(0,0,0.785398,4.2,2.5,-3,PHI,THETA);
+        bendera6.setPosition(0,0,-0.785398,-4.2,2.6,-3,PHI,THETA);
+        
         //_______________DRAW___________________________________________
         GL.viewport (0,0,CANVAS.width,CANVAS.height);
         GL.clear(GL.COLOR_BUFFER_BIT);
