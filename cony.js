@@ -1162,7 +1162,7 @@ function main(){
     var PROJMATRIX = LIBS.get_projection(40,CANVAS.width/CANVAS.height, 1 ,100);
     var VIEWMATRIX = LIBS.get_I4(); 
 
-    LIBS.translateZ(VIEWMATRIX,-8);
+    LIBS.translateZ(VIEWMATRIX,-8.75);
 
     //___________________________________________ADD CHILD_____________________________________
     kepalaBrown.addChild(telingaBrown1);
@@ -1429,7 +1429,6 @@ function main(){
         smileCony.scale(scaleFactor);
         
         // _____________________________ START JESSICA SET POSITION ______________________________________
-        
         jessicaHead.setPosition(0,0,0,2,0,0);
         kupingJessica1.setPosition(0,0,3.1,2.3,0.2,0);
         kupingJessica2.setPosition(0,0,0.1,1.7,0.2,0);
@@ -1479,12 +1478,12 @@ function main(){
         balonBottom5.setPosition(4.71239,0,0,-5,-3,-1);
         balonUp5.setPosition(4.71239,0,0,-5,-2.2,-1);
         
-        tali.setPosition(0,0,0,-2.5,0.1*2.5*2.5+2,-3);
+        tali.setPosition(0,0,0,-2.5,0.1*2.5*2.5+2,-6);
         var xtemp = -5;
         for(var i = 0; i < tali.child.length;i++){
             xtemp += 0.05;
             var ytemp = 0.1*xtemp*xtemp+2;
-            tali.child[i].setPosition(0,0,0,xtemp,ytemp,-3)
+            tali.child[i].setPosition(0,0,0,xtemp,ytemp,-6)
         }
 
         bendera.setPosition(0,0,0,0,0.95,-6);
@@ -1510,6 +1509,7 @@ function main(){
                 conyUp = true; //Naik
             }
         }
+
         balonJump += 0.02;
         balonBottom5.translate(balonGeser, balonJump, 0);
         console.log(balonJump)
@@ -1517,7 +1517,9 @@ function main(){
             balonJump = 0;
         }
         
-        object1.translate(0,-1.3,0)
+        object1.translate(0,-1.9,0)
+        jessicaHead.translate(0,-1.9,0)
+        kepalaBrown.translate(0,-0.45,0)
 
         //_________________________RESPONSIVE ROTATE_____________________
         object1.setResponsiveRotation(PHI,THETA);
@@ -1707,7 +1709,7 @@ function main(){
         table.setResponsiveRotation(PHI,THETA);
         drawer1.setResponsiveRotation(PHI,THETA);
         drawer2.setResponsiveRotation(PHI,THETA);
-        baseTart.translate(0,2,0);
+        baseTart.translate(0,2.5,0);
 
         //_______________DRAW___________________________________________
         GL.viewport (0,0,CANVAS.width,CANVAS.height);
