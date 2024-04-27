@@ -218,10 +218,10 @@ class MyObject{
         LIBS.rotateX(this.MOVEMATRIX,PHI);
     }
 
-    setTranslateMove(x,y,z){
-        LIBS.translateZ(this.MOVEMATRIX,z);
-        LIBS.translateY(this.MOVEMATRIX,y);
-        LIBS.translateX(this.MOVEMATRIX,x);
+    setTranslateMove(x, y, z) {
+        LIBS.translateX(this.MOVEMATRIX, x);
+        LIBS.translateY(this.MOVEMATRIX, y);
+        LIBS.translateZ(this.MOVEMATRIX, z);
     }
 
     setIdentityMove(){
@@ -1016,15 +1016,29 @@ function main(){
     eyeJessica.addCurve(60);
 
     // Nose
-    var noseJessica_vertex = sphereVertex(0.07, 0.0375, 0.05, 0, 0, 0);
-    var noseJessica_faces = sphereFaces();
-    var noseJessica = new MyObject(noseJessica_vertex, noseJessica_faces, shader_vertex_source, shader_fragment_source);
+    // var noseJessica_vertex = sphereVertex(0.07, 0.0375, 0.05, 0, 0, 0);
+    // var noseJessica_faces = sphereFaces();
+    // var noseJessica = new MyObject(noseJessica_vertex, noseJessica_faces, shader_vertex_source, shader_fragment_source);
 
     // Mouth
-    var smileJessicaVertex = tabungVertex(0.01,0.01,0.01,0.01,0,0.01,0,0,0);
+    var smileJessicaVertex = tabungVertex(0.01,0.01,0.01,0.01,0,0.01,139/255,0/255,0/255);
     var smileJessicaFaces = tabungFaces();
     var smileJessica = new MyObject(smileJessicaVertex,smileJessicaFaces,shader_vertex_source,shader_fragment_source);
     smileJessica.addCurve(100);
+
+    // garis mulut
+    var garisJessica1Vertex = tabungVertex(0.007,0.007,0.007,0.007,-0.09,0.01,0,0,0);
+    var garisJessica1Faces = tabungFaces();
+    var garisJessica1 = new MyObject(garisJessica1Vertex, garisJessica1Faces, shader_vertex_source, shader_fragment_source);
+
+    var garisJessica2Vertex = tabungVertex(0.01,0.01,0.01,0.01,0.02,0.1,0,0,0);
+    var garisJessica2Faces = tabungFaces();
+    var garisJessica2 = new MyObject(garisJessica2Vertex, garisJessica2Faces, shader_vertex_source, shader_fragment_source);
+
+    var garisJessica3Vertex = tabungVertex(0.01,0.01,0.01,0.01,0.02,0.1,0,0,0);
+    var garisJessica3Faces = tabungFaces();
+    var garisJessica3 = new MyObject(garisJessica3Vertex, garisJessica3Faces, shader_vertex_source, shader_fragment_source);
+
 
     // Neck
     var neckJessica_vertex = tabungVertex(0.35,0.35,0.25,0.3,0,-0.1,215/255,80/255,123/255);
@@ -1270,8 +1284,11 @@ function main(){
     jessicaHead.addChild(kupingJessica1);
     jessicaHead.addChild(kupingJessica2);
     jessicaHead.addChild(eyeJessica);
-    jessicaHead.addChild(noseJessica);
+    // jessicaHead.addChild(noseJessica);
     jessicaHead.addChild(smileJessica);
+    jessicaHead.addChild(garisJessica1);
+    jessicaHead.addChild(garisJessica2);
+    jessicaHead.addChild(garisJessica3);
     jessicaHead.addChild(neckJessica);
     jessicaHead.addChild(bodyJessica);
     jessicaHead.addChild(ribbonJessica1);
@@ -1466,14 +1483,19 @@ function main(){
             var ytemp = 2.1*(xtemp-2.1025)*(xtemp-2.1025)+0.12;
             eyeJessica.child[i].setPosition(0,0,0,xtemp,ytemp,0.5)
         }
-        noseJessica.setPosition(0,0,0,2,0.0,0.6);
-        smileJessica.setPosition(0,0,0,1.875,2.5*0.125*0.125-0.2,0.5);
+        // noseJessica.setPosition(0,0,0,2,0.0,0.6);
+        smileJessica.setPosition(0,0,0,1.875,2.5*0.125*0.125-0.2,0.45);
+        
         var xtemp = 1.875;
         for(var i = 0; i < smileJessica.child.length;i++){
             xtemp += 0.0025;
             var ytemp = 2.5*(xtemp-2)*(xtemp-2)-0.2;
-            smileJessica.child[i].setPosition(0,0,0,xtemp,ytemp,0.5)
+            smileJessica.child[i].setPosition(0,0,0,xtemp,ytemp,0.45)
         }
+        garisJessica1.setPosition(-Math.PI / 2,0,0,2,-0.11,0.5);
+        garisJessica2.setPosition(-Math.PI / 2,-2,0,2.09,-0.07,0.5);
+        garisJessica3.setPosition(Math.PI / 2,-2,0,2.02,-0.12,0.5);
+
         neckJessica.setPosition(4.71239,0,0,2,-0.38,0.02);
         bodyJessica.setPosition(4.71239,0,0,2,-0.38,0);
         ribbonJessica1.setPosition(4.71239,0,0,2,-0.2,0.3);
@@ -1650,11 +1672,14 @@ function main(){
         for(var i = 0; i < eyeJessica.child.length;i++){
             eyeJessica.child[i].setResponsiveRotation(PHI,THETA);
         }
-        noseJessica.setResponsiveRotation(PHI,THETA);
+        // noseJessica.setResponsiveRotation(PHI,THETA);
         smileJessica.setResponsiveRotation(PHI,THETA);
         for(var i = 0; i < smileJessica.child.length;i++){
             smileJessica.child[i].setResponsiveRotation(PHI,THETA);
         }
+        garisJessica1.setResponsiveRotation(PHI,THETA);
+        garisJessica2.setResponsiveRotation(PHI,THETA);
+        garisJessica3.setResponsiveRotation(PHI,THETA);
         neckJessica.setResponsiveRotation(PHI,THETA);
         bodyJessica.setResponsiveRotation(PHI,THETA);
         ribbonJessica1.setResponsiveRotation(PHI,THETA);
