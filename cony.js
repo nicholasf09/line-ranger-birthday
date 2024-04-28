@@ -2013,6 +2013,7 @@ function main(){
         patternRoda.rotate(conyJump*10,0,0);
         fan.rotate(0,0,fanRotate);
         fan1.rotate(0,0,fanRotate);
+        ball.rotate(0,0,fanRotate);
 
         //_________________CONY SENYUM MELEBAR______________________
         //BESARAN SCALING AGAR SMOOTH
@@ -2023,6 +2024,7 @@ function main(){
         smileCony.scale(scaleFactor);
         palm1Brown.scale(scaleFactor);
         palm2Brown.scale(scaleFactor);
+        hidungBrown.scale(scaleFactor);
         arm1Brown.translate(0,conyJump*0.2,0);
         arm2Brown.translate(0,conyJump*0.2,0);
         pupil1.translate(pt,0,0);
