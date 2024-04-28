@@ -1,4 +1,171 @@
 var GL;
+class MyObjectTexture{
+    CANVAS = document.getElementById("your_canvas");
+    cube_vertex = [];
+    CUBE_VERTEX;
+    cube_faces = [];
+    CUBE_FACES;
+    shader_vertex_source = null;
+    shader_fragment_source = null;
+  
+    MOVEMATRIX = LIBS.get_I4();
+  
+    child = [];
+  
+    compile_shader = function(source, type, typeString) {
+      var shader = GL.createShader(type);
+      GL.shaderSource(shader, source);
+      GL.compileShader(shader);
+      if (!GL.getShaderParameter(shader, GL.COMPILE_STATUS)) {
+        alert("ERROR IN " + typeString + " SHADER: " + GL.getShaderInfoLog(shader));
+        return false;
+      }
+      return shader;
+    };
+  
+    shader_vertex;
+    shader_fragment;
+  
+    _Pmatrix;
+    _Vmatrix;
+    _Mmatrix;
+    _sampler;
+    texture;
+  
+    _color;
+    _position;
+  
+    SHADER_PROGRAM = GL.createProgram();
+  
+    constructor(cube_vertex,cube_faces,shader_vertex,shader_fragment){
+      this.cube_vertex = cube_vertex;
+      this.cube_faces = cube_faces;
+      this.shader_vertex_source = shader_vertex;
+      this.shader_fragment_source = shader_fragment;
+    
+      this.shader_vertex = this.compile_shader(this.shader_vertex_source, GL.VERTEX_SHADER, "VERTEX");
+      this.shader_fragment = this.compile_shader(this.shader_fragment_source, GL.FRAGMENT_SHADER, "FRAGMENT");
+  
+      this.SHADER_PROGRAM = GL.createProgram();
+  
+      GL.attachShader(this.SHADER_PROGRAM, this.shader_vertex);
+      GL.attachShader(this.SHADER_PROGRAM, this.shader_fragment);
+    
+      GL.linkProgram(this.SHADER_PROGRAM);
+  
+      this._Pmatrix = GL.getUniformLocation(this.SHADER_PROGRAM, "Pmatrix");
+      this._Vmatrix = GL.getUniformLocation(this.SHADER_PROGRAM, "Vmatrix");
+      this._Mmatrix = GL.getUniformLocation(this.SHADER_PROGRAM, "Mmatrix");
+  
+      this._sampler = GL.getUniformLocation(this.SHADER_PROGRAM, "sampler");
+  
+      this._color = GL.getAttribLocation(this.SHADER_PROGRAM, "uv");
+      this._position = GL.getAttribLocation(this.SHADER_PROGRAM, "position");
+  
+      GL.enableVertexAttribArray(this._color);
+      GL.enableVertexAttribArray(this._position);
+    
+      GL.useProgram(this.SHADER_PROGRAM);
+      GL.uniform1i(this._sampler, 0);
+  
+      this.CUBE_VERTEX= GL.createBuffer();
+      this.CUBE_FACES = GL.createBuffer();
+      
+      GL.bindBuffer(GL.ARRAY_BUFFER, this.CUBE_VERTEX);
+      GL.bufferData(GL.ARRAY_BUFFER,new Float32Array(this.cube_vertex),GL.STATIC_DRAW);
+      
+      GL.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, this.CUBE_FACES);
+      GL.bufferData(GL.ELEMENT_ARRAY_BUFFER,
+      new Uint16Array(this.cube_faces),
+      GL.STATIC_DRAW);
+  
+      // this.texture = LIBS.loadTexture("wall.jpg"); //texture.png atau wall.jpg
+    }
+  
+    setTexture(string){
+      this.texture = LIBS.loadTexture(string);
+    }
+    
+    setuniformmatrix4(PROJMATRIX,VIEWMATRIX){
+      GL.useProgram(this.SHADER_PROGRAM);
+      GL.uniformMatrix4fv(this._Pmatrix, false, PROJMATRIX);
+      GL.uniformMatrix4fv(this._Vmatrix, false, VIEWMATRIX);
+      GL.uniformMatrix4fv(this._Mmatrix, false, this.MOVEMATRIX);
+      
+    }
+    draw(){
+      GL.useProgram(this.SHADER_PROGRAM);
+      GL.activeTexture(GL.TEXTURE0);
+      GL.bindTexture(GL.TEXTURE_2D, this.texture);
+      
+      GL.bindBuffer(GL.ARRAY_BUFFER, this.CUBE_VERTEX);
+      GL.vertexAttribPointer(this._position, 3, GL.FLOAT, false, 4*(3+2), 0);
+      GL.vertexAttribPointer(this._color, 2, GL.FLOAT, false, 4*(3+2), 3*4);
+  
+      GL.bindBuffer(GL.ELEMENT_ARRAY_BUFFER, this.CUBE_FACES);
+      GL.drawElements(GL.TRIANGLE_STRIP, this.cube_faces.length, GL.UNSIGNED_SHORT, 0);
+      //  GL.drawArrays(GL.TRIANGLES, 0, this.cube_vertex.length/6);
+      for(let i = 0;i<this.child.length;i++){
+        this.child[i].draw();
+      }
+    }
+    getMoveMatrix(){
+      return this.MOVEMATRIX;
+    }
+    setRotateMove(phi,theta,r){
+      LIBS.rotateZ(this.MOVEMATRIX,r);
+      LIBS.rotateY(this.MOVEMATRIX, theta);
+      LIBS.rotateX(this.MOVEMATRIX, phi);
+    }
+    setTranslateMove(x,y,z){
+      LIBS.translateZ(this.MOVEMATRIX,z);
+      LIBS.translateY(this.MOVEMATRIX,y);
+      LIBS.translateX(this.MOVEMATRIX,x);
+    }
+    setIdentityMove(){
+      LIBS.set_I4(this.MOVEMATRIX);
+    }
+    addChild(child){
+      this.child.push(child);
+    }
+
+    setPosition(x1, y1, z1, x2, y2, z2) {
+		this.setIdentityMove();
+		this.setRotateMove(x1, y1, z1);
+		this.setTranslateMove(x2, y2, z2);
+	}
+
+    setResponsiveRotation(PHI, THETA) {
+		var temps = LIBS.get_I4();
+		LIBS.rotateX(temps, PHI);
+		this.MOVEMATRIX = LIBS.mul(this.MOVEMATRIX, temps);
+
+		LIBS.rotateY(temps, THETA);
+		this.MOVEMATRIX = LIBS.mul(this.MOVEMATRIX, temps);
+	}
+
+    scale(m){
+        var parentMatrixBefore = LIBS.cloneMatrix(this.MOVEMATRIX);
+        var matM = [
+            m, 0, 0, 0,
+            0, m, 0, 0,
+            0, 0, m, 0,
+            0, 0, 0, 1
+        ]
+        this.MOVEMATRIX = LIBS.mul(this.MOVEMATRIX, matM);
+        // LIBS.translateZ(this.MOVEMATRIX,parentMatrixBefore[14]);
+        // LIBS.translateY(this.MOVEMATRIX,parentMatrixBefore[13]);
+        // LIBS.translateX(this.MOVEMATRIX,parentMatrixBefore[12]);
+        this.MOVEMATRIX[12] = parentMatrixBefore[12];
+        this.MOVEMATRIX[13] = parentMatrixBefore[13];
+        this.MOVEMATRIX[14] = parentMatrixBefore[14];
+        for (let i = 0; i < this.child.length; i++) {
+            let child = this.child[i];
+            child.scale(m)
+		}
+  }
+}
+
 class MyObject{
     object_vertex =[];
     OBJECT_VERTEX = GL.createBuffer();
@@ -99,16 +266,13 @@ class MyObject{
         var parentMatrixBefore = LIBS.cloneMatrix(this.MOVEMATRIX);
         
         // Terapkan rotasi pada objek induk
-        this.setIdentityMove();
-        this.setRotateMove(PHI,THETA,r)
-        this.MOVEMATRIX[12] = parentMatrixBefore[12]
-        this.MOVEMATRIX[13] = parentMatrixBefore[13]
-        this.MOVEMATRIX[14] = parentMatrixBefore[14]
+        LIBS.rotateZ(this.MOVEMATRIX, r);
+        LIBS.rotateY(this.MOVEMATRIX, THETA);
+        LIBS.rotateX(this.MOVEMATRIX, PHI);
         
         //Iterasi melalui objek anak
         for (let i = 0; i < this.child.length; i++) {
             let child = this.child[i];
-            var childMatrixBefore = LIBS.cloneMatrix(child.MOVEMATRIX);
             
             // Hitung posisi relatif objek anak terhadap rotasi objek induk sebelum rotasi
             var relativePosition = [
@@ -117,45 +281,57 @@ class MyObject{
                 child.MOVEMATRIX[14] - parentMatrixBefore[14]
             ];
 
-            child.setIdentityMove();
-            child.setRotateMove(PHI,THETA,r)
-            child.MOVEMATRIX[12] = childMatrixBefore[12]
-            child.MOVEMATRIX[13] = childMatrixBefore[13]
-            child.MOVEMATRIX[14] = childMatrixBefore[14]
-
-            //translate ke sumbu (LOKASI PARENT) child - parent
-            var temp = LIBS.get_I4();
-            LIBS.translateX(temp, relativePosition[0])
-            child.MOVEMATRIX = LIBS.mul(child.MOVEMATRIX, temp);
-            temp = LIBS.get_I4();
-            LIBS.translateY(temp, relativePosition[1])
-            child.MOVEMATRIX = LIBS.mul(child.MOVEMATRIX, temp);
-            temp = LIBS.get_I4();
-            LIBS.translateZ(temp, relativePosition[2])
-            child.MOVEMATRIX = LIBS.mul(child.MOVEMATRIX, temp);
-
-            //rotate
-            temp = LIBS.get_I4();
-            LIBS.rotateZ(temp, r);
-            child.MOVEMATRIX = LIBS.mul(child.MOVEMATRIX, temp);
-            temp = LIBS.get_I4();
-            LIBS.rotateY(temp, THETA);
-            child.MOVEMATRIX = LIBS.mul(child.MOVEMATRIX, temp);
-            temp = LIBS.get_I4();
-            LIBS.rotateX(temp, PHI);
-            child.MOVEMATRIX = LIBS.mul(child.MOVEMATRIX, temp);
-
-            //kembali ke titik awal parent
-            temp = LIBS.get_I4();
-            LIBS.translateX(temp,parentMatrixBefore[12]);
-            child.MOVEMATRIX = LIBS.mul(child.MOVEMATRIX, temp);
-            temp = LIBS.get_I4();
-            LIBS.translateY(temp,parentMatrixBefore[13]);
-            child.MOVEMATRIX = LIBS.mul(child.MOVEMATRIX, temp);
-            temp = LIBS.get_I4();
-            LIBS.translateZ(temp,parentMatrixBefore[14]);
-            child.MOVEMATRIX = LIBS.mul(child.MOVEMATRIX, temp);
+            // Terapkan rotasi yang sama dengan objek induk pada objek anak
+            child.MOVEMATRIX = LIBS.cloneMatrix(this.MOVEMATRIX);
+    
+            // Terapkan posisi relatif pada posisi rotasi objek anak setelah rotasi objek induk
+            child.MOVEMATRIX[12] = this.MOVEMATRIX[12] + relativePosition[0];
+            child.MOVEMATRIX[13] = this.MOVEMATRIX[13] + relativePosition[1];
+            child.MOVEMATRIX[14] = this.MOVEMATRIX[14] + relativePosition[2];
         }
+
+        //______________________________NYOBA________________________
+        // var parentMatrixBefore = LIBS.cloneMatrix(this.MOVEMATRIX);
+        // LIBS.translateZ(this.MOVEMATRIX,parentMatrixBefore[14]);
+        // LIBS.translateY(this.MOVEMATRIX,parentMatrixBefore[13]);
+        // LIBS.translateX(this.MOVEMATRIX,parentMatrixBefore[12]);
+
+        // var matRotZ = [
+        //     Math.cos(r), Math.sin(r), 0, 0,
+        //     -Math.sin(r), Math.cos(r), 0, 0,
+        //     0, 0, 1, 0,
+        //     0, 0, 0, 1
+        // ]
+
+        // this.MOVEMATRIX = LIBS.mul(this.MOVEMATRIX, matRotZ);
+
+        // var matRotY = [
+        //     Math.cos(THETA), 0, -Math.sin(THETA), 0,
+        //     0, 1, 0, 0,
+        //     Math.sin(THETA), 0, Math.cos(THETA), 0,
+        //     0, 0, 0, 1
+        // ]
+
+        // this.MOVEMATRIX = LIBS.mul(this.MOVEMATRIX, matRotY);
+
+        // var matRotX = [
+        //     1, 0, 0, 0,
+        //     0, Math.cos(PHI), Math.sin(PHI), 0,
+        //     0, -Math.sin(PHI), Math.cos(PHI), 0,
+        //     0, 0, 0, 1
+        // ]
+
+        // this.MOVEMATRIX = LIBS.mul(this.MOVEMATRIX, matRotX);
+
+
+        // LIBS.translateZ(this.MOVEMATRIX,-parentMatrixBefore[14]);
+        // LIBS.translateY(this.MOVEMATRIX,-parentMatrixBefore[13]);
+        // LIBS.translateX(this.MOVEMATRIX,-parentMatrixBefore[12]);
+
+        // for (var i = 0; i < this.child.length; i++) {
+        //     var child = this.child[i];
+        //     child.rotate(PHI,THETA,r);
+        // }
     }
 
     translate(x,y,z){
@@ -209,10 +385,10 @@ class MyObject{
         LIBS.rotateX(this.MOVEMATRIX,PHI);
     }
 
-    setTranslateMove(x, y, z) {
-        LIBS.translateX(this.MOVEMATRIX, x);
-        LIBS.translateY(this.MOVEMATRIX, y);
-        LIBS.translateZ(this.MOVEMATRIX, z);
+    setTranslateMove(x,y,z){
+        LIBS.translateZ(this.MOVEMATRIX,z);
+        LIBS.translateY(this.MOVEMATRIX,y);
+        LIBS.translateX(this.MOVEMATRIX,x);
     }
 
     setIdentityMove(){
@@ -740,6 +916,81 @@ function main(){
         gl_FragColor =vec4(vColor,1.0);
     }`;
 
+    var shader_vertex_source_texture = "\n\
+    attribute vec3 position;\n\
+    uniform mat4 Pmatrix, Vmatrix, Mmatrix;\n\
+    attribute vec2 uv;\n\
+    varying vec2 vUV;\n\
+    \n\
+    void main(void) {\n\
+    gl_Position = Pmatrix * Vmatrix * Mmatrix * vec4(position, 1.);\n\
+    vUV=uv;\n\
+    }";
+    
+      var shader_fragment_source_texture = "\n\
+    precision mediump float;\n\
+    uniform sampler2D sampler;\n\
+    varying vec2 vUV;\n\
+    \n\
+    \n\
+    void main(void) {\n\
+    gl_FragColor = texture2D(sampler, vUV);\n\
+    //gl_FragColor = vec4(1.,1.,1.,1.);\n\
+    }";
+  
+    var cube_vertex_texture = [
+        -1,-1,-1,    0,0,
+        1,-1,-1,     1,0,
+        1, 1,-1,     1,1,
+        -1, 1,-1,    0,1,
+    
+        -1,-1, 1,    0,0,
+        1,-1, 1,     1,0,
+        1, 1, 1,     1,1,
+        -1, 1, 1,    0,1,
+    
+        -1,-1,-1,    0,0,
+        -1, 1,-1,    1,0,
+        -1, 1, 1,    1,1,
+        -1,-1, 1,    0,1,
+    
+        1,-1,-1,     0,0,
+        1, 1,-1,     1,0,
+        1, 1, 1,     1,1,
+        1,-1, 1,     0,1,
+    
+        -1,-1,-1,    0,0,
+        -1,-1, 1,    1,0,
+        1,-1, 1,     1,1,
+        1,-1,-1,     0,1,
+    
+        -1, 1,-1,    0,0,
+        -1, 1, 1,    1,0,
+        1, 1, 1,     1,1,
+        1, 1,-1,     0,1
+      ];
+    
+    var cube_faces_texture = [
+        0,1,2,
+        0,2,3,
+    
+        4,5,6,
+        4,6,7,
+    
+        8,9,10,
+        8,10,11,
+    
+        12,13,14,
+        12,14,15,
+    
+        16,17,18,
+        16,18,19,
+    
+        20,21,22,
+        20,22,23
+    
+      ];
+
     //CONY PUNYA MK
     //Kepala
     // BROWN PUNYA Timothy
@@ -941,35 +1192,6 @@ function main(){
     var ribbon1 = new MyObject(ribbon_vertex, ribbon_faces, shader_vertex_source, shader_fragment_source);
     var ribbon2 = new MyObject(ribbon_vertex, ribbon_faces, shader_vertex_source, shader_fragment_source);
 
-    //Pita Curve
-    var controlPointsCony = [-0.4078125, 0.7606837606837606, -0.4078125, 0.764102564102564, -0.41718750000000004, 0.764102564102564, -0.44843750000000004, 0.770940170940171, -0.4703125, 0.770940170940171, -0.4859375, 0.770940170940171, -0.5125, 0.7504273504273504, -0.534375, 0.7367521367521368, -0.5515625, 0.7196581196581197, -0.5625, 0.7059829059829059, -0.5828125, 0.6752136752136753, -0.6, 0.6341880341880342, -0.609375, 0.6, -0.61875, 0.558974358974359, -0.621875, 0.535042735042735, -0.6328125, 0.4837606837606837, -0.6421875, 0.44957264957264953, -0.646875, 0.4256410256410257, -0.65, 0.3914529914529915, -0.65, 0.37777777777777777, -0.6515625, 0.3025641025641026, -0.65, 0.28547008547008546, -0.6484375, 0.2581196581196581, -0.640625, 0.2170940170940171, -0.634375, 0.18632478632478633, -0.628125, 0.15555555555555556, -0.621875, 0.135042735042735, -0.6015625, 0.09401709401709402, -0.575, 0.04957264957264962, -0.565625, 0.03931623931623929, -0.5515625, 0.032478632478632474, -0.540625, 0.029059829059829068, -0.525, 0.018803418803418848, -0.50625, 0.018803418803418848, -0.475, 0.018803418803418848, -0.4390625, 0.02564102564102566, -0.40937500000000004, 0.052991452991453025, -0.38593750000000004, 0.10427350427350424, -0.38125, 0.1282051282051282, -0.37812500000000004, 0.15555555555555556, -0.375, 0.20341880341880347, -0.375, 0.2512820512820513, -0.384375, 0.28547008547008546, -0.3984375, 0.305982905982906, -0.40937500000000004, 0.3094017094017094, -0.42656249999999996, 0.305982905982906, -0.44843750000000004, 0.27863247863247864, -0.46562499999999996, 0.2547008547008547, -0.48124999999999996, 0.20683760683760688, -0.49375, 0.17948717948717952,
-        -0.5,
-        0.1316239316239316,
-        -0.5015625,
-        0.10427350427350424,
-        -0.49375,
-        0.03589743589743588,
-        -0.4828125,
-        -0.07008547008547006,
-        -0.475,
-        -0.135042735042735,
-        -0.4625,
-        -0.18974358974358974,
-        -0.446875,
-        -0.23418803418803424,
-        -0.43437499999999996,
-        -0.288888888888889
-    ];
-    for(var i = 0; i < controlPointsCony.length; i++){
-        controlPointsCony[i] *= 0.6;
-    }
-    // generateTube(x, y, outerRad, innerRad, height, segments, r,g,b)
-    var itemConyData = generateTube(0.1,0.1,0.1,0.1,0.1,5,10,253/255,216/255,56/255);
-    var itemConyVertex = itemConyData.vertices;
-    var itemConyFaces = itemConyData.faces
-    var itemCony = new MyObject(itemConyVertex, itemConyFaces, shader_vertex_source,shader_fragment_source);
-    itemCony.addCurve(controlPointsCony.length);
-
     //stomach
     var stomach_vertex = tabungVertex(0.3,0.3,0.3,0.3,-0.375,-0.5,0,0,0);
     var stomach_faces = tabungFaces();
@@ -1046,29 +1268,15 @@ function main(){
     eyeJessica.addCurve(60);
 
     // Nose
-    // var noseJessica_vertex = sphereVertex(0.07, 0.0375, 0.05, 0, 0, 0);
-    // var noseJessica_faces = sphereFaces();
-    // var noseJessica = new MyObject(noseJessica_vertex, noseJessica_faces, shader_vertex_source, shader_fragment_source);
+    var noseJessica_vertex = sphereVertex(0.07, 0.0375, 0.05, 0, 0, 0);
+    var noseJessica_faces = sphereFaces();
+    var noseJessica = new MyObject(noseJessica_vertex, noseJessica_faces, shader_vertex_source, shader_fragment_source);
 
     // Mouth
-    var smileJessicaVertex = tabungVertex(0.01,0.01,0.01,0.01,0,0.01,139/255,0/255,0/255);
+    var smileJessicaVertex = tabungVertex(0.01,0.01,0.01,0.01,0,0.01,0,0,0);
     var smileJessicaFaces = tabungFaces();
     var smileJessica = new MyObject(smileJessicaVertex,smileJessicaFaces,shader_vertex_source,shader_fragment_source);
     smileJessica.addCurve(100);
-
-    // garis mulut
-    var garisJessica1Vertex = tabungVertex(0.007,0.007,0.007,0.007,-0.09,0.01,0,0,0);
-    var garisJessica1Faces = tabungFaces();
-    var garisJessica1 = new MyObject(garisJessica1Vertex, garisJessica1Faces, shader_vertex_source, shader_fragment_source);
-
-    var garisJessica2Vertex = tabungVertex(0.01,0.01,0.01,0.01,0.02,0.1,0,0,0);
-    var garisJessica2Faces = tabungFaces();
-    var garisJessica2 = new MyObject(garisJessica2Vertex, garisJessica2Faces, shader_vertex_source, shader_fragment_source);
-
-    var garisJessica3Vertex = tabungVertex(0.01,0.01,0.01,0.01,0.02,0.1,0,0,0);
-    var garisJessica3Faces = tabungFaces();
-    var garisJessica3 = new MyObject(garisJessica3Vertex, garisJessica3Faces, shader_vertex_source, shader_fragment_source);
-
 
     // Neck
     var neckJessica_vertex = tabungVertex(0.35,0.35,0.25,0.3,0,-0.1,215/255,80/255,123/255);
@@ -1096,6 +1304,8 @@ function main(){
     var stomachJessica_vertex = tabungVertex(0.3,0.3,0.3,0.3,-0.375,-0.5,215/255,80/255,123/255);
     var stomachJessica_faces = tabungFaces();
     var stomachJessica = new MyObject(stomachJessica_vertex, stomachJessica_faces, shader_vertex_source, shader_fragment_source);
+
+
 
     //pant
     var pantJessica_vertex = tabungVertex(0.16875,0.16875,0.175,0.175,-0.5,-0.65,0,0,0);
@@ -1135,9 +1345,16 @@ function main(){
     // ______________________________________________________ END JESSICA ______________________________________________________
 
     // -------------------------------------------------------ENVIRONMENT--------------------------------------------
-    var environmentVertex = cubeVertexColor(8,8,6.5,54/255,69/255,79/255,129/255,133/255,129/255,139/255,0/255,0/255)
-    var environmentFaces = cubeFaces();
-    var environment1 = new MyObject(environmentVertex, environmentFaces, shader_vertex_source, shader_fragment_source);
+    var environmentVertex = cube_vertex_texture;
+    var environmentFaces = cube_faces_texture;
+    var environment1 = new MyObjectTexture(environmentVertex, environmentFaces, shader_vertex_source_texture, shader_fragment_source_texture);
+    environment1.setTexture("lantai.png");
+    var tembok_samping = new MyObjectTexture(environmentVertex, environmentFaces, shader_vertex_source_texture, shader_fragment_source_texture);
+    var tembok_samping2 = new MyObjectTexture(environmentVertex, environmentFaces, shader_vertex_source_texture, shader_fragment_source_texture);
+    var tembok_belakang = new MyObjectTexture(environmentVertex, environmentFaces, shader_vertex_source_texture, shader_fragment_source_texture);
+    tembok_samping.setTexture("tembok samping.png");
+    tembok_samping2.setTexture("tembok samping.png");
+    tembok_belakang.setTexture("tembok depan.png");
     // ___________________________ START KUE TART___________________________
     var baseTartVertex = tabungVertex(0.5,0.5,0.5,0.5,-0.15,0.45,248/255,248/255,255);
     var baseTartFaces = tabungFaces();
@@ -1204,7 +1421,7 @@ function main(){
     var taliVertex = tabungVertex(0.05,0.05,0.05,0.05,0,0.05,0,0,0);
     var taliFaces = tabungFaces();
     var tali = new MyObject(taliVertex,taliFaces,shader_vertex_source,shader_fragment_source);
-    tali.addCurve(200);
+    tali.addCurve(350);
 
     //_______________________BENDERA_______________
     var bendera = new MyObject(segitigaVertex(245/255,255/255,151/255),segitigaFaces(),shader_vertex_source,shader_fragment_source);
@@ -1224,10 +1441,9 @@ function main(){
     //MAtrix
     var PROJMATRIX = LIBS.get_projection(40,CANVAS.width/CANVAS.height, 1 ,100);
     var VIEWMATRIX = LIBS.get_I4(); 
-    
-    var controlPointsTail = [-0.2882758620689655, 0.2547008547008547, -0.20827586206896553, 0.052991452991453025, -0.02344827586206899, -0.1384615384615384, 0.2744827586206897, -0.14529914529914523, 0.36275862068965514, 0.14871794871794874, 0.4565517241379311, 0.3948717948717949, 0.6468965517241378, 0.535042735042735, 0.8262068965517242, 0.3538461538461538];
+    controlPointsTail = [-0.2882758620689655, 0.2547008547008547, -0.20827586206896553, 0.052991452991453025, -0.02344827586206899, -0.1384615384615384, 0.2744827586206897, -0.14529914529914523, 0.36275862068965514, 0.14871794871794874, 0.4565517241379311, 0.3948717948717949, 0.6468965517241378, 0.535042735042735, 0.8262068965517242, 0.3538461538461538];
 
-    LIBS.translateZ(VIEWMATRIX,-8.9);
+    LIBS.translateZ(VIEWMATRIX,-10);
 
     //___________________________________________ADD CHILD_____________________________________
     kepalaBrown.addChild(telingaBrown1);
@@ -1273,12 +1489,13 @@ function main(){
     innerRoda.addChild(patternRoda);
     bodyBrown.addChild(pitaBrown);
     bodyBrown.addChild(pitaBrown2);
-
     //kepala
     object1.addChild(kuping1);
     kuping1.addChild(innerkuping1);
     object1.addChild(kuping2);
     kuping2.addChild(innerkuping2);
+    // object1.addChild(innerkuping1);
+    // object1.addChild(innerkuping2);
     object1.addChild(eye1);
     object1.addChild(eye2);
     object1.addChild(cheek1);
@@ -1294,7 +1511,6 @@ function main(){
     object1.addChild(neck);
     object1.addChild(ribbon1);
     object1.addChild(ribbon2);
-    object1.addChild(itemCony);
     object1.addChild(stomach);
     object1.addChild(pant1);
     object1.addChild(pant2);
@@ -1317,11 +1533,8 @@ function main(){
     jessicaHead.addChild(kupingJessica1);
     jessicaHead.addChild(kupingJessica2);
     jessicaHead.addChild(eyeJessica);
-    // jessicaHead.addChild(noseJessica);
+    jessicaHead.addChild(noseJessica);
     jessicaHead.addChild(smileJessica);
-    jessicaHead.addChild(garisJessica1);
-    jessicaHead.addChild(garisJessica2);
-    jessicaHead.addChild(garisJessica3);
     jessicaHead.addChild(neckJessica);
     jessicaHead.addChild(bodyJessica);
     jessicaHead.addChild(ribbonJessica1);
@@ -1438,7 +1651,7 @@ function main(){
         patternRoda.setPosition(0,4.71239,4.71239,-1.8115,-2.1,-0.2);
         pitaBrown2.setPosition(4.71239,4.71239,0,-1.9,-0.4,0.4);
         pitaBrown.setPosition(4.71239,-4.71239,0,-2.1,-0.4,0.4);
-        itemBrown.setPosition(4.71239,0,0,controlPoints[i],controlPoints[i+1],0.9)
+        itemBrown.setPosition(4.71239,0,0,-0.125,2.5*0.125*0.125-0.2,0.9)
         for(var i = 0; i < itemBrown.child.length;i+=2){
             var xtemp = controlPoints[i];
             var ytemp = controlPoints[i+1];
@@ -1473,14 +1686,6 @@ function main(){
         neck.setPosition(4.71239,0,0,0,-0.35,0)
         ribbon1.setPosition(-Math.PI / 2 - 0.5,-0.5,0,-0.2,-0.05,0.03)
         ribbon2.setPosition(Math.PI / 2 - 0.5,2.5,0,0.3,-0.09,0.06)
-        itemCony.setPosition(4.71239,0,0,controlPointsCony[i],controlPointsCony[i+1],0.5)
-        for(var i = 0; i < itemCony.child.length;i+=2){
-            var xtemp = controlPointsCony[i];
-            var ytemp = controlPointsCony[i+1];
-            itemCony.child[i].setPosition(4.71239,0,0,xtemp,ytemp,0.5);
-        }
-        itemCony.translate(0.15,-0.75,-0.15);
-        itemCony.scale(0.3);
         stomach.setPosition(4.71239,0,0,0,-0.35,0)
         pant1.setPosition(4.71239,0,0,0.1,-0.35,0)
         pant2.setPosition(4.71239,0,0,-0.1,-0.35,0)
@@ -1514,7 +1719,7 @@ function main(){
 
         if(!jugglingReverse){
             juggling += 0.02;
-            jugglingY = -15*(juggling-0.5) * (juggling-0.5); 
+            jugglingY = -15*(juggling-0.5) * (juggling-0.5)+0.5; 
             if (juggling >= 0.8){
                 jugglingReverse = true;
             }
@@ -1524,13 +1729,13 @@ function main(){
                 juggling = 0.155;
                 jugglingReverse = false;
             }
-            jugglingY = -15*(juggling-0.5) * (juggling-0.5); 
+            jugglingY = -15*(juggling-0.5) * (juggling-0.5)+0.5; 
         }
 
         itemBrown.translate(juggling, jugglingY, 0);
         object1.translate(0, conyJump, 0);
-        kepalaBrown.translate(juggling*1.5,0,0);
-        // patternRoda.rotate(dt*PHI,0,0);
+        kepalaBrown.translate(0,0,conyJump*2);
+        patternRoda.rotate(conyJump*10,0,0);
 
         //_________________CONY SENYUM MELEBAR______________________
         //BESARAN SCALING AGAR SMOOTH
@@ -1538,6 +1743,12 @@ function main(){
         cheek1.scale(scaleFactor);
         cheek2.scale(scaleFactor);
         smileCony.scale(scaleFactor);
+        palm1Brown.scale(scaleFactor);
+        palm2Brown.scale(scaleFactor);
+        arm1Brown.translate(0,conyJump*0.2,0);
+        arm2Brown.translate(0,conyJump*0.2,0);
+
+
         
         // _____________________________ START JESSICA SET POSITION ______________________________________
         jessicaHead.setPosition(0,0,0,2,0,0);
@@ -1553,19 +1764,14 @@ function main(){
             var ytemp = 2.1*(xtemp-2.1025)*(xtemp-2.1025)+0.12;
             eyeJessica.child[i].setPosition(0,0,0,xtemp,ytemp,0.5)
         }
-        // noseJessica.setPosition(0,0,0,2,0.0,0.6);
-        smileJessica.setPosition(0,0,0,1.875,2.5*0.125*0.125-0.2,0.45);
-        
+        noseJessica.setPosition(0,0,0,2,0.0,0.6);
+        smileJessica.setPosition(0,0,0,1.875,2.5*0.125*0.125-0.2,0.5);
         var xtemp = 1.875;
         for(var i = 0; i < smileJessica.child.length;i++){
             xtemp += 0.0025;
             var ytemp = 2.5*(xtemp-2)*(xtemp-2)-0.2;
-            smileJessica.child[i].setPosition(0,0,0,xtemp,ytemp,0.45)
+            smileJessica.child[i].setPosition(0,0,0,xtemp,ytemp,0.5)
         }
-        garisJessica1.setPosition(-Math.PI / 2,0,0,2,-0.11,0.5);
-        garisJessica2.setPosition(-Math.PI / 2,-2,0,2.09,-0.07,0.5);
-        garisJessica3.setPosition(Math.PI / 2,-2,0,2.02,-0.12,0.5);
-
         neckJessica.setPosition(4.71239,0,0,2,-0.38,0.02);
         bodyJessica.setPosition(4.71239,0,0,2,-0.38,0);
         ribbonJessica1.setPosition(4.71239,0,0,2,-0.2,0.3);
@@ -1588,12 +1794,21 @@ function main(){
         // _____________________________ END JESSICA SET POSITION ______________________________________
         
         // _____________________________ENV POS______________________________________
-        environment1.setPosition(0,0,4.71239,0,3.5,0);
-        // balonBottom.setPosition(4.71239,0,0,1,0.1,-6);
-        // balonUp.setPosition(4.71239,0,0,1,0.9,-6);
-        balonBottom.setPosition(0,0,0,1,0.1,-6);
-        balonUp.setPosition(0,0,0,1,0.9,-6);
-        balonBottom.rotate(4.71239,0,0);
+        environment1.setPosition(0,0,0,0,0,0,PHI,THETA);
+        environment1.setTranslateMove(-1,-13.3,-3);
+        environment1.scale(10);
+
+        tembok_samping.setPosition(0,0,0,0,0,0,PHI,THETA);
+        tembok_samping.setTranslateMove(-19.3,0,-6);
+        tembok_samping.scale(10);
+        tembok_samping2.setPosition(0,0,0,0,0,0,PHI,THETA);
+        tembok_samping2.setTranslateMove(18.3,0,-6);
+        tembok_samping2.scale(10);
+        tembok_belakang.setPosition(0,0,0,0,0,0,PHI,THETA);
+        tembok_belakang.setTranslateMove(0,0,-17);
+        tembok_belakang.scale(10);
+        balonBottom.setPosition(4.71239,0,0,1,0.1,-6);
+        balonUp.setPosition(4.71239,0,0,1,0.9,-6);
         balonBottom1.setPosition(4.71239,0,0,3,-0.6,-6);
         balonUp1.setPosition(4.71239,0,0,3,0.3,-6);
         balonBottom2.setPosition(4.71239,0,0,-1,-0.7,-6);
@@ -1606,7 +1821,7 @@ function main(){
         balonUp5.setPosition(4.71239,0,0,-5,-2.2,-1);
         
         tali.setPosition(0,0,0,-2.5,0.1*2.5*2.5+2,-6);
-        var xtemp = -5;
+        var xtemp = -8;
         for(var i = 0; i < tali.child.length;i++){
             xtemp += 0.05;
             var ytemp = 0.1*xtemp*xtemp+2;
@@ -1624,6 +1839,40 @@ function main(){
         square.setPosition(0,0,0,0,5,0);
         square1.setPosition(0,0,0,0,-2,-7);
 
+        baseTart.setPosition(-2*0.785398,0,0,-4.2,-2.6,-3);
+        // // baseTart.translate(-4,-1.5,0.5);
+        tart1.setPosition(-2*0.785398,0,0,-4.2,-2.2,-3);
+        // // tart1.translate(-4,-1,0.5);
+        lowerBaseTart.setPosition(-2*0.785398,0,0,-4.2,-3.0,-3);
+        plate.setPosition(-2*0.785398,0,0,-4.2,-3.5,-3);
+        lowerBaseTartDecor.setPosition(-2*0.785398,0,0,-4.2,-3.2,-3);
+        cherry.setPosition(-2*0.785398,0,0,-4.2,-2.8,-2.3);
+
+        for(var i = 0; i < cherry.child.length; i++){
+            let cherrychild = cherry.child[i];
+            var theta = (i/8)*2*Math.PI;
+            var x = 0.68*Math.cos(theta) -4.2;
+            var y = 0.68*Math.sin(theta)-3;
+            cherrychild.setPosition(-2*0.785398,0,0,x,-2.8,y);
+        }
+
+        lilin.setPosition(-2*0.785398,0,0,-4.2,-2.2,-2.6);
+        for(var i = 0; i < lilin.child.length; i++){
+            let lilinchild = lilin.child[i];
+            var theta = (i/8)*2*Math.PI;
+            var x = 0.4*Math.cos(theta) -4.2;
+            var y = 0.4*Math.sin(theta)-3;
+            lilinchild.setPosition(-2*0.785398,0,0,x,-2.2,y);
+        }
+
+        topper.setPosition(0,0,0,-4.2,-1.6,-3);
+        topper2.setPosition(0,0,0,-4.2,-1.6,-3);
+
+        table.setPosition(0,0,0,-4.2,-4.5,-3);
+        drawer1.setPosition(0,0,0,-4.2,-4,-2.5);
+        drawer2.setPosition(0,0,0,-4.2,-5,-2.5);
+
+        baseTart.translate(0,2.5,0);
 
         //_____________________ANIMASI BALON TERBANG_____________________
         if (conyUp) {
@@ -1675,11 +1924,6 @@ function main(){
         neck.setResponsiveRotation(PHI,THETA);
         ribbon1.setResponsiveRotation(PHI,THETA);
         ribbon2.setResponsiveRotation(PHI,THETA);
-        itemCony.setResponsiveRotation(PHI,THETA);
-        for(var i = 0; i < itemCony.child.length;i++){
-            itemCony.child[i].setResponsiveRotation(PHI,THETA);
-        }
-        itemBrown.setResponsiveRotation(PHI,THETA);
         stomach.setResponsiveRotation(PHI,THETA);
         pant1.setResponsiveRotation(PHI,THETA);
         pant2.setResponsiveRotation(PHI,THETA);
@@ -1755,14 +1999,11 @@ function main(){
         for(var i = 0; i < eyeJessica.child.length;i++){
             eyeJessica.child[i].setResponsiveRotation(PHI,THETA);
         }
-        // noseJessica.setResponsiveRotation(PHI,THETA);
+        noseJessica.setResponsiveRotation(PHI,THETA);
         smileJessica.setResponsiveRotation(PHI,THETA);
         for(var i = 0; i < smileJessica.child.length;i++){
             smileJessica.child[i].setResponsiveRotation(PHI,THETA);
         }
-        garisJessica1.setResponsiveRotation(PHI,THETA);
-        garisJessica2.setResponsiveRotation(PHI,THETA);
-        garisJessica3.setResponsiveRotation(PHI,THETA);
         neckJessica.setResponsiveRotation(PHI,THETA);
         bodyJessica.setResponsiveRotation(PHI,THETA);
         ribbonJessica1.setResponsiveRotation(PHI,THETA);
@@ -1784,6 +2025,9 @@ function main(){
 
         //ENV
         environment1.setResponsiveRotation(PHI,THETA);
+        tembok_samping.setResponsiveRotation(PHI,THETA);
+        tembok_samping2.setResponsiveRotation(PHI,THETA);
+        tembok_belakang.setResponsiveRotation(PHI,THETA);
         balonBottom.setResponsiveRotation(PHI,THETA);
         balonUp.setResponsiveRotation(PHI,THETA);
         balonBottom1.setResponsiveRotation(PHI,THETA);
@@ -1812,15 +2056,6 @@ function main(){
         square.setResponsiveRotation(PHI,THETA);
         square1.setResponsiveRotation(PHI,THETA);
 
-        
-        baseTart.setPosition(-2*0.785398,0,0,-4.2,-2.6,-3);
-        // // baseTart.translate(-4,-1.5,0.5);
-        tart1.setPosition(-2*0.785398,0,0,-4.2,-2.2,-3);
-        // // tart1.translate(-4,-1,0.5);
-        lowerBaseTart.setPosition(-2*0.785398,0,0,-4.2,-3.0,-3);
-        plate.setPosition(-2*0.785398,0,0,-4.2,-3.5,-3);
-        lowerBaseTartDecor.setPosition(-2*0.785398,0,0,-4.2,-3.2,-3);
-        cherry.setPosition(-2*0.785398,0,0,-4.2,-2.8,-2.3);
 
         baseTart.setResponsiveRotation(PHI,THETA);
         tart1.setResponsiveRotation(PHI,THETA);
@@ -1828,32 +2063,17 @@ function main(){
         plate.setResponsiveRotation(PHI,THETA);
         lowerBaseTartDecor.setResponsiveRotation(PHI,THETA);
         cherry.setResponsiveRotation(PHI,THETA);
+
         for(var i = 0; i < cherry.child.length; i++){
             let cherrychild = cherry.child[i];
-            var theta = (i/8)*2*Math.PI;
-            var x = 0.68*Math.cos(theta) -4.2;
-            var y = 0.68*Math.sin(theta)-3;
-            cherrychild.setPosition(-2*0.785398,0,0,x,-2.8,y);
             cherrychild.setResponsiveRotation(PHI,THETA);
         }
 
-        lilin.setPosition(-2*0.785398,0,0,-4.2,-2.2,-2.6);
         lilin.setResponsiveRotation(PHI,THETA);
         for(var i = 0; i < lilin.child.length; i++){
             let lilinchild = lilin.child[i];
-            var theta = (i/8)*2*Math.PI;
-            var x = 0.4*Math.cos(theta) -4.2;
-            var y = 0.4*Math.sin(theta)-3;
-            lilinchild.setPosition(-2*0.785398,0,0,x,-2.2,y);
             lilinchild.setResponsiveRotation(PHI,THETA);
         }
-
-        topper.setPosition(0,0,0,-4.2,-1.6,-3);
-        topper2.setPosition(0,0,0,-4.2,-1.6,-3);
-
-        table.setPosition(0,0,0,-4.2,-4.5,-3);
-        drawer1.setPosition(0,0,0,-4.2,-4,-2.5);
-        drawer2.setPosition(0,0,0,-4.2,-5,-2.5);
 
         topper.setResponsiveRotation(PHI,THETA);
         topper2.setResponsiveRotation(PHI,THETA);
@@ -1861,7 +2081,6 @@ function main(){
         table.setResponsiveRotation(PHI,THETA);
         drawer1.setResponsiveRotation(PHI,THETA);
         drawer2.setResponsiveRotation(PHI,THETA);
-        baseTart.translate(0,2.5,0);
 
         //_______________DRAW___________________________________________
         GL.viewport (0,0,CANVAS.width,CANVAS.height);
@@ -1901,10 +2120,19 @@ function main(){
         square.setuniformmatrix4(PROJMATRIX,VIEWMATRIX);
         square.draw();
 
-        // baseTart.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
-        // baseTart.draw();
+        baseTart.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
+        baseTart.draw();
         itemBrown.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
         itemBrown.draw();
+
+        tembok_samping.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
+        tembok_samping.draw();
+
+        tembok_samping2.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
+        tembok_samping2.draw();
+
+        tembok_belakang.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
+        tembok_belakang.draw();
 
         GL.flush();
         window.requestAnimationFrame(animate);
