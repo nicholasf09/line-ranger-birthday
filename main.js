@@ -357,6 +357,7 @@ function main() {
   var sphere = generateSphere(0,0,0,1,1,1,10,10);
   var object1 = new MyObject(sphere[0],sphere[1],shader_vertex_source,shader_fragment_source);
   var object2 = new MyObject(cube_vertex,cube_faces,shader_vertex_source,shader_fragment_source);
+  object1.setTexture("wall.jpg");
   object2.setTexture("wall.jpg");
   object1.addChild(object2);
 
@@ -389,7 +390,7 @@ function main() {
 
     var temp = LIBS.get_I4();
 
-    //pusat rotasi di x = -2
+    //pusat rotasi di x = 3
     LIBS.translateX(temp, -2)
     object1.MOVEMATRIX = LIBS.mul(object1.MOVEMATRIX, temp);
     temp = LIBS.get_I4();
@@ -401,7 +402,7 @@ function main() {
 
     object1.child[0].setIdentityMove();
     object1.child[0].setRotateMove(PHI,THETA,0);
-    // object1.child[0].setTranslateMove(-2,0,0);
+    object1.child[0].setTranslateMove(3,0,0);
     
     time_prev = time;
 
