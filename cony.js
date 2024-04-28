@@ -846,6 +846,17 @@ function segitigaFaces(){
     return segitiga_faces;
 }
 
+function rotateArbitary(parent){
+    var res = []
+    for(var i = 0; i < 720; i+=0.5){
+        var x = 1.5*Math.cos(i) + parent.MOVEMATRIX[12]
+        var z = 1.5*Math.sin(i) + parent.MOVEMATRIX[14]
+        res.push(x);
+        res.push(z);
+    }
+    return res;
+}
+
 function main(){
     var CANVAS = document.getElementById("mycanvas");
 
@@ -1390,10 +1401,36 @@ function main(){
     var palmJessica2 = new MyObject(palmJessica_vertex, palmJessica_faces, shader_vertex_source, shader_fragment_source);
 
     //tail
-    var tailJessica_vertex = sphereVertex(0.05, 0.05, 0.05, 255, 255, 255);
+    var tailJessica_vertex = sphereVertex(0.145, 0.295, 0.05, 255, 255, 255);
     var tailJessica_faces = sphereFaces();
     var tailJessica = new MyObject(tailJessica_vertex, tailJessica_faces, shader_vertex_source, shader_fragment_source);
 
+    // Wings
+    var WingsJessica_vertex = sphereVertex(0.1, 0.755, 0.05, 255/255,255/255,255/255);
+    var WingsJessicaShorter_vertex = sphereVertex(0.1, 0.655, 0.05, 255/255,255/255,255/255);
+    var WingsJessicaShortest_vertex = sphereVertex(0.1, 0.555, 0.05, 255/255,255/255,255/255);
+
+    var WingsJessica2_vertex = sphereVertex(0.12, 0.755, 0.05, 215/255,80/255,123/255);
+    var WingsJessica2Shorter_vertex = sphereVertex(0.12, 0.655, 0.05, 215/255,80/255,123/255);
+    var WingsJessica2Shortest_vertex = sphereVertex(0.12, 0.555, 0.05, 215/255,80/255,123/255);
+
+    var WingsJessica_faces = sphereFaces();
+    
+    var WingJessica1 = new MyObject(WingsJessica_vertex, WingsJessica_faces, shader_vertex_source, shader_fragment_source);
+    var WingJessica2 = new MyObject(WingsJessica_vertex, WingsJessica_faces, shader_vertex_source, shader_fragment_source);
+    var WingJessica3 = new MyObject(WingsJessicaShorter_vertex, WingsJessica_faces, shader_vertex_source, shader_fragment_source);
+    var WingJessica4 = new MyObject(WingsJessicaShorter_vertex, WingsJessica_faces, shader_vertex_source, shader_fragment_source);
+    var WingJessica5 = new MyObject(WingsJessicaShortest_vertex, WingsJessica_faces, shader_vertex_source, shader_fragment_source);
+    var WingJessica6 = new MyObject(WingsJessicaShortest_vertex, WingsJessica_faces, shader_vertex_source, shader_fragment_source);
+    var WingJessicaOutline1 = new MyObject(WingsJessica2_vertex, WingsJessica_faces, shader_vertex_source, shader_fragment_source);
+    var WingJessicaOutline2 = new MyObject(WingsJessica2_vertex, WingsJessica_faces, shader_vertex_source, shader_fragment_source);
+    var WingJessicaOutline3 = new MyObject(WingsJessica2Shorter_vertex, WingsJessica_faces, shader_vertex_source, shader_fragment_source);
+    var WingJessicaOutline4 = new MyObject(WingsJessica2Shorter_vertex, WingsJessica_faces, shader_vertex_source, shader_fragment_source);
+    var WingJessicaOutline5 = new MyObject(WingsJessica2Shortest_vertex, WingsJessica_faces, shader_vertex_source, shader_fragment_source);
+    var WingJessicaOutline6 = new MyObject(WingsJessica2Shortest_vertex, WingsJessica_faces, shader_vertex_source, shader_fragment_source);
+
+
+    
     // ______________________________________________________ END JESSICA ______________________________________________________
 
     // -------------------------------------------------------ENVIRONMENT--------------------------------------------
@@ -1675,6 +1712,18 @@ function main(){
     jessicaHead.addChild(palmJessica1);
     jessicaHead.addChild(palmJessica2);
     jessicaHead.addChild(tailJessica);
+    jessicaHead.addChild(WingJessica1);
+    jessicaHead.addChild(WingJessica2);
+    jessicaHead.addChild(WingJessica3);
+    jessicaHead.addChild(WingJessica4);
+    jessicaHead.addChild(WingJessica5);
+    jessicaHead.addChild(WingJessica6);
+    jessicaHead.addChild(WingJessicaOutline1);
+    jessicaHead.addChild(WingJessicaOutline2);
+    jessicaHead.addChild(WingJessicaOutline3);
+    jessicaHead.addChild(WingJessicaOutline4);
+    jessicaHead.addChild(WingJessicaOutline5);
+    jessicaHead.addChild(WingJessicaOutline6);
     // ________________________________________ END JESSICA ADD CHILD _____________________________________
     
     //____________________ENV_________________
@@ -1738,7 +1787,10 @@ function main(){
     leonardHead.addChild(smileLeonard);
     //______________________________ANIMASI___________________
     var conyJump = 0; //var utk translate Y
+    var counter = 0;
     var conyUp = true;
+    var jessicaFly = 0;
+    var jessicaCanFly = true;
     var balonJump = 0;
     var balonJump1 = 0;
     var balonGeser = 0;
@@ -1748,7 +1800,8 @@ function main(){
     var fanRotate = 0;
     var pt = 0;
     var pupilup = true;
-
+    var dummy = 0;
+  
     //_____________________________________DRAWING_____________________________________
     GL.clearColor(0.0,0.0,0.0,0.0);
     GL.enable(GL.DEPTH_TEST);
@@ -1882,6 +1935,7 @@ function main(){
         mulutBeans2.setPosition(4.71239,0,0,-4.15,-2.625,0.7);
         mulutBeans3.setPosition(4.71239,0,0,-4.15,-3.025,0.7);
 
+        beans1.translate(0,0,-0.25);
         beans2.translate(-0.1,0,0);
 
         giftLeonard.setPosition(0,0,0,5,-2.8,-0.3);
@@ -1899,7 +1953,12 @@ function main(){
         mataLeonard1.translate(0,-0.05,0);
         mataLeonard2.translate(0,-0.05,0);
         smileLeonard.setPosition(0,0,0,4.97,-1.5,0.1);
-
+        //_________________________ROTATE BEAN________________________
+        
+        var controlBean = rotateArbitary(kepalaBrown);
+        dummy += 2
+        beans1.translate((controlBean[dummy%controlBean.length]-beans1.MOVEMATRIX[12]),0,(controlBean[(dummy+1)%controlBean.length]-beans1.MOVEMATRIX[14]))
+        
         //_________________CONY LOMPAT______________________
         if (conyUp) {
             //Lompat ke atas
@@ -2013,7 +2072,23 @@ function main(){
         armJessica2.setPosition(Math.PI / 2 - 0.5,2.5,0,1.875,-0.375,0);
         palmJessica1.setPosition(0,0,0.5,2.34,-0.73,0.175);
         palmJessica2.setPosition(0,0,-0.5,1.61,-0.7,0.175);
-        tailJessica.setPosition(0,0,0,2,-0.8,-0.275);
+        tailJessica.setPosition(0,2,0,2,-0.8,-0.275);
+
+        WingJessica1.setPosition(0,0        ,1   ,1.6   ,-0.3   ,-0.38);
+        WingJessica2.setPosition(0,0        ,-1  ,2.4  ,-0.3   ,-0.38);
+        WingJessica3.setPosition(0,0        ,1   ,1.65  ,-0.5   ,-0.36);
+        WingJessica4.setPosition(0,0        ,-1  ,2.35   ,-0.5   ,-0.36);
+        WingJessica5.setPosition(0,0        ,1   ,1.7   ,-0.7   ,-0.34);
+        WingJessica6.setPosition(0,0        ,-1  ,2.3   ,-0.7   ,-0.34);
+        WingJessicaOutline1.setPosition(0,0 ,1   ,1.6   ,-0.3  ,-0.39);
+        WingJessicaOutline2.setPosition(0,0 ,-1  ,2.4  ,-0.3  ,-0.39);
+        WingJessicaOutline3.setPosition(0,0 ,1   ,1.65  ,-0.49  ,-0.37);
+        WingJessicaOutline4.setPosition(0,0 ,-1  ,2.35   ,-0.49  ,-0.37);
+        WingJessicaOutline5.setPosition(0,0 ,1   ,1.7   ,-0.69  ,-0.35);
+        WingJessicaOutline6.setPosition(0,0 ,-1  ,2.3   ,-0.69  ,-0.35);
+
+        jessicaHead.translate(0,jessicaFly,0);
+
 
         // _____________________________ END JESSICA SET POSITION ______________________________________
         
@@ -2104,7 +2179,7 @@ function main(){
         drawer1.setPosition(0,0,0,-4.2,-4,-2.5);
         drawer2.setPosition(0,0,0,-4.2,-5,-2.5);
 
-        baseTart.translate(0,2.5,0);
+        baseTart.translate(0,2.5,0.5);
 
         //_____________________ANIMASI BALON TERBANG_____________________
         if (conyUp) {
@@ -2137,6 +2212,45 @@ function main(){
         object1.translate(0,-1.9,0)
         jessicaHead.translate(0,-1.9,0)
         kepalaBrown.translate(0,-0.45,0)
+
+
+        // ANIMASI JESSICA
+        if (jessicaCanFly && counter < 3) { // TERBANG
+            //Lompat ke atas
+            if ((jessicaFly >= 1.5 && jessicaFly <= 2.5) && counter != 0 ) {
+                jessicaFly += 0.015;
+            } else { // Sampe max
+                jessicaFly += 0.03;
+            }
+              // Sampe max
+            if (jessicaFly >= 2.5) { // Sampe max
+                counter++;
+                jessicaCanFly = false;
+            }
+        } else if (!jessicaCanFly && counter < 3) {
+
+            if (jessicaFly <= 2.5 || jessicaFly >= 2.3) {
+                jessicaFly -= 0.01;
+            } else {
+                jessicaFly -= 0.03;
+            }
+            if (jessicaFly <= 1.5) { //Kalau sudah sampai tanah
+                jessicaFly = 1.5;
+                jessicaCanFly = true; //Naik
+            }
+        } else if (counter = 3) {
+            //Turun
+            if (jessicaFly <= 0.2) {
+                jessicaFly -= 0.01;
+            } else {
+                jessicaFly -= 0.03;
+            }
+            if (jessicaFly <= 0) { //Kalau sudah sampai tanah
+                counter = 0;
+                jessicaFly = 0; 
+                jessicaCanFly = true; //Naik
+            }
+        }
 
         //_________________________RESPONSIVE ROTATE_____________________
         object1.setResponsiveRotation(PHI,THETA);
@@ -2269,6 +2383,18 @@ function main(){
         palmJessica1.setResponsiveRotation(PHI,THETA);
         palmJessica2.setResponsiveRotation(PHI,THETA);
         tailJessica.setResponsiveRotation(PHI,THETA);
+        WingJessica1.setResponsiveRotation(PHI,THETA);
+        WingJessica2.setResponsiveRotation(PHI,THETA);
+        WingJessica3.setResponsiveRotation(PHI,THETA);
+        WingJessica4.setResponsiveRotation(PHI,THETA);
+        WingJessica5.setResponsiveRotation(PHI,THETA);
+        WingJessica6.setResponsiveRotation(PHI,THETA);
+        WingJessicaOutline1.setResponsiveRotation(PHI,THETA);
+        WingJessicaOutline2.setResponsiveRotation(PHI,THETA);
+        WingJessicaOutline3.setResponsiveRotation(PHI,THETA);
+        WingJessicaOutline4.setResponsiveRotation(PHI,THETA);
+        WingJessicaOutline5.setResponsiveRotation(PHI,THETA);
+        WingJessicaOutline6.setResponsiveRotation(PHI,THETA);
 
         //ENV
         environment1.setResponsiveRotation(PHI,THETA);
