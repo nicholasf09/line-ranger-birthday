@@ -2030,6 +2030,7 @@ function main(){
         leonardHead.translate(0,(conyJump*1.3)-0.4,0);
 
 
+
         
         // _____________________________ START JESSICA SET POSITION ______________________________________
         jessicaHead.setPosition(0,0,0,2,0,0);
@@ -2090,6 +2091,19 @@ function main(){
 
         jessicaHead.translate(0,jessicaFly,0);
 
+        var scaleFactor = (1.2 - 0.85) * (conyJump / 0.3) + 0.85;
+        WingJessica1.scale(scaleFactor);
+        WingJessica2.scale(scaleFactor);
+        WingJessica3.scale(scaleFactor);
+        WingJessica4.scale(scaleFactor);
+        WingJessica5.scale(scaleFactor);
+        WingJessica6.scale(scaleFactor);
+        WingJessicaOutline1.scale(scaleFactor);
+        WingJessicaOutline2.scale(scaleFactor);
+        WingJessicaOutline3.scale(scaleFactor);
+        WingJessicaOutline4.scale(scaleFactor);
+        WingJessicaOutline5.scale(scaleFactor);
+        WingJessicaOutline6.scale(scaleFactor);
 
         // _____________________________ END JESSICA SET POSITION ______________________________________
         
