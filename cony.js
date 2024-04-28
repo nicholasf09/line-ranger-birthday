@@ -1430,7 +1430,9 @@ function main(){
     var WingJessicaOutline6 = new MyObject(WingsJessica2Shortest_vertex, WingsJessica_faces, shader_vertex_source, shader_fragment_source);
 
 
-    
+    var tongkatSihir_vertex = tabungVertex(0.08,0.08,0.02,0.02,-1,1,253/255,216/255,56/255);
+    var tongkatSihir_faces = tabungFaces();
+    var tongkatSihir = new MyObject(tongkatSihir_vertex, tongkatSihir_faces, shader_vertex_source, shader_fragment_source);    
     // ______________________________________________________ END JESSICA ______________________________________________________
 
     // -------------------------------------------------------ENVIRONMENT--------------------------------------------
@@ -1724,6 +1726,7 @@ function main(){
     jessicaHead.addChild(WingJessicaOutline4);
     jessicaHead.addChild(WingJessicaOutline5);
     jessicaHead.addChild(WingJessicaOutline6);
+    jessicaHead.addChild(tongkatSihir);
     // ________________________________________ END JESSICA ADD CHILD _____________________________________
     
     //____________________ENV_________________
@@ -2070,9 +2073,9 @@ function main(){
         legJessica2.setPosition(4.71239,0,0,2.08,-0.35,0);
         legthumbJessica1.setPosition(0,0,0,1.87,-1.1,0.05);
         legthumbJessica2.setPosition(0,0,0,2.11,-1.1,0.05);
-        armJessica1.setPosition(-Math.PI / 2 - 0.5,-0.5,0,2.125,-0.375,0);
+        armJessica1.setPosition(-Math.PI / 2 - 1.1,-0.5,0,2.125,-0.375,0);
         armJessica2.setPosition(Math.PI / 2 - 0.5,2.5,0,1.875,-0.375,0);
-        palmJessica1.setPosition(0,0,0.5,2.34,-0.73,0.175);
+        palmJessica1.setPosition(4.71426,0,0,2.34,-0.53,0.355);
         palmJessica2.setPosition(0,0,-0.5,1.61,-0.7,0.175);
         tailJessica.setPosition(0,2,0,2,-0.8,-0.275);
 
@@ -2088,8 +2091,10 @@ function main(){
         WingJessicaOutline4.setPosition(0,0 ,-1  ,2.35   ,-0.49  ,-0.37);
         WingJessicaOutline5.setPosition(0,0 ,1   ,1.7   ,-0.69  ,-0.35);
         WingJessicaOutline6.setPosition(0,0 ,-1  ,2.3   ,-0.69  ,-0.35);
+        tongkatSihir.setPosition(-1,3,-3.14159,2.35,-0.3,0.65);
 
         jessicaHead.translate(conyJump,jessicaFly,conyJump);
+        tongkatSihir.rotate(0,conyJump*2,0);
 
         var scaleFactor = (1.2 - 0.85) * (conyJump / 0.3) + 0.85;
         WingJessica1.scale(scaleFactor);
@@ -2416,6 +2421,7 @@ function main(){
         WingJessicaOutline4.setResponsiveRotation(PHI,THETA);
         WingJessicaOutline5.setResponsiveRotation(PHI,THETA);
         WingJessicaOutline6.setResponsiveRotation(PHI,THETA);
+        tongkatSihir.setResponsiveRotation(PHI,THETA);
 
         //ENV
         environment1.setResponsiveRotation(PHI,THETA);
