@@ -1501,6 +1501,37 @@ function main(){
     var pita2 = new MyObject(cubeVertex(1.05,1.01,0.3, 0/255,135/255,62/255),cubeFaces(),shader_vertex_source,shader_fragment_source);
     // var square23 = new MyObject(cubeVertex(0.4,0.9,1.3, 255,255,189/255),cubeFaces(),shader_vertex_source,shader_fragment_source);
 
+    // ____________________________START GIFT W LEONARD____________________________
+    var giftLeonard = new MyObjectTexture(environmentVertex, environmentFaces, shader_vertex_source_texture, shader_fragment_source_texture);
+    giftLeonard.setTexture("gift2.png");
+
+    var leonardHeadVertex = sphereVertex(0.6,0.5,0.5,36/255,153/255,59/255);
+    var kepalaBrownFaces = sphereFaces();
+    var leonardHead = new MyObject(leonardHeadVertex, kepalaBrownFaces, shader_vertex_source, shader_fragment_source);
+
+    var mataLeonardVertex = sphereVertex(0.2,0.3,0.3,36/255,153/255,59/255);
+    var mataLeonardFaces = sphereFaces();
+    var mataLeonard1 = new MyObject(mataLeonardVertex, mataLeonardFaces, shader_vertex_source, shader_fragment_source); 
+    var mataLeonard2 = new MyObject(mataLeonardVertex, mataLeonardFaces, shader_vertex_source, shader_fragment_source); 
+
+    var korneaLeonardVertex = sphereVertex(0.15,0.25,0.25,255,255,255);
+    var korneaLeonardFaces = sphereFaces();
+    var korneaLeonard1 = new MyObject(korneaLeonardVertex, korneaLeonardFaces, shader_vertex_source, shader_fragment_source);
+    var korneaLeonard2 = new MyObject(korneaLeonardVertex, korneaLeonardFaces, shader_vertex_source, shader_fragment_source);
+
+    var pupilVertex = sphereVertex(0.1,0.2,0.15,0,0,0);
+    var pupil1 = new MyObject(pupilVertex, korneaLeonardFaces, shader_vertex_source, shader_fragment_source);
+    var pupil2 = new MyObject(pupilVertex, korneaLeonardFaces, shader_vertex_source, shader_fragment_source);
+
+    var hidung1 = new MyObject(eye1_vertex, eye1_faces, shader_vertex_source, shader_fragment_source);
+    var hidung2 = new MyObject(eye1_vertex, eye1_faces, shader_vertex_source, shader_fragment_source);
+
+    var mulutLeonardVertex = sphereVertex(0.3,0.15,0.1,143/255, 36/255, 14/255);
+    var mulutLeonardFaces = sphereFaces();
+    var smileLeonard = new MyObject(mulutLeonardVertex, mulutLeonardFaces, shader_vertex_source, shader_fragment_source);
+
+
+
     // ________________________________BEANS_____________________________________
     var beansVertex = sphereVertex(0.2,0.2,0.2,91/255,180/255,84/255);
     var beansFaces = sphereFaces();
@@ -1694,6 +1725,17 @@ function main(){
     beans1.addChild(mulutBeans1);
     beans2.addChild(mulutBeans2);
     beans3.addChild(mulutBeans3);
+
+    leonardHead.addChild(mataLeonard1);
+    leonardHead.addChild(mataLeonard2);
+    mataLeonard1.addChild(korneaLeonard1);
+    mataLeonard2.addChild(korneaLeonard2);
+    korneaLeonard1.addChild(pupil1);
+    korneaLeonard2.addChild(pupil2);
+
+    leonardHead.addChild(hidung1);
+    leonardHead.addChild(hidung2);
+    leonardHead.addChild(smileLeonard);
     //______________________________ANIMASI___________________
     var conyJump = 0; //var utk translate Y
     var conyUp = true;
@@ -1704,6 +1746,8 @@ function main(){
     var juggling = 0.155;
     var jugglingY = 0;
     var fanRotate = 0;
+    var pt = 0;
+    var pupilup = true;
 
     //_____________________________________DRAWING_____________________________________
     GL.clearColor(0.0,0.0,0.0,0.0);
@@ -1840,6 +1884,21 @@ function main(){
 
         beans2.translate(-0.1,0,0);
 
+        giftLeonard.setPosition(0,0,0,5,-2.8,-0.3);
+        leonardHead.setPosition(0,0,0,5,-1.5,-0.3);
+        mataLeonard1.setPosition(0,0,0,4.7,-1.0,-0.3);
+        mataLeonard2.setPosition(0,0,0,5.3,-1.0,-0.3);
+        korneaLeonard1.setPosition(0.5,0,0,4.65,-1.0,-0.24);
+        korneaLeonard2.setPosition(0,0,0,5.27,-1.0,-0.2);
+        pupil1.setPosition(0.5,0,0,4.65,-1.0,-0.1);
+        pupil2.setPosition(0,0,0,5.27,-1.0,-0.05);
+        hidung1.setPosition(0,0,0,4.9,-1.1,-0.01);
+        hidung2.setPosition(0,0,0,5,-1.1,-0.01);
+        hidung1.scale(0.5);
+        hidung2.scale(0.5);
+        mataLeonard1.translate(0,-0.05,0);
+        mataLeonard2.translate(0,-0.05,0);
+        smileLeonard.setPosition(0,0,0,4.97,-1.5,0.1);
 
         //_________________CONY LOMPAT______________________
         if (conyUp) {
@@ -1872,6 +1931,20 @@ function main(){
             jugglingY = -15*(juggling-0.5) * (juggling-0.5)+0.5; 
         }
 
+        if (pupilup) {
+            //Lompat ke atas
+            pt += 0.002;
+            if (pt >= 0.04) { //Batas Loncat
+                pupilup = false;
+            }
+        } else {
+            //Turun
+            pt -= 0.002;
+            if (pt <= -0.1) { //Kalau sudah sampai tanah
+                pupilup = true; //Naik
+            }
+        }
+
         fanRotate += 0.174533
 
         itemBrown.translate(juggling, jugglingY, 0);
@@ -1892,6 +1965,9 @@ function main(){
         palm2Brown.scale(scaleFactor);
         arm1Brown.translate(0,conyJump*0.2,0);
         arm2Brown.translate(0,conyJump*0.2,0);
+        pupil1.translate(pt,0,0);
+        pupil2.translate(pt,0,0);
+        leonardHead.translate(0,(conyJump*1.3)-0.4,0);
 
 
         
@@ -2213,6 +2289,14 @@ function main(){
         balonUp5.setResponsiveRotation(PHI,THETA);
         balonBottom6.setResponsiveRotation(PHI,THETA);
         balonUp6.setResponsiveRotation(PHI,THETA);
+        mataLeonard1.setResponsiveRotation(PHI,THETA);
+        mataLeonard2.setResponsiveRotation(PHI,THETA);
+        korneaLeonard1.setResponsiveRotation(PHI,THETA);
+        korneaLeonard2.setResponsiveRotation(PHI,THETA);
+        pupil1.setResponsiveRotation(PHI,THETA);
+        pupil2.setResponsiveRotation(PHI,THETA);
+        hidung1.setResponsiveRotation(PHI,THETA);
+        hidung2.setResponsiveRotation(PHI,THETA);
         
         tali.setResponsiveRotation(PHI,THETA);
         for(var i = 0; i < tali.child.length;i++){
@@ -2246,7 +2330,12 @@ function main(){
         pita2.setResponsiveRotation(PHI,THETA);
         pitaGift1.setResponsiveRotation(PHI,THETA);
         pitaGift2.setResponsiveRotation(PHI,THETA);
+
+        leonardHead.setResponsiveRotation(PHI,THETA);
         // square23.setResponsiveRotation(PHI,THETA);
+
+        giftLeonard.setResponsiveRotation(PHI,THETA);
+        smileLeonard.setResponsiveRotation(PHI,THETA);
 
 
         baseTart.setResponsiveRotation(PHI,THETA);
@@ -2330,6 +2419,12 @@ function main(){
 
         beans1.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
         beans1.draw();
+
+        giftLeonard.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
+        giftLeonard.draw();
+
+        leonardHead.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
+        leonardHead.draw();
 
         GL.flush();
         window.requestAnimationFrame(animate);
