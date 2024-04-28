@@ -1734,7 +1734,10 @@ function main(){
     beans3.addChild(mulutBeans3);
     //______________________________ANIMASI___________________
     var conyJump = 0; //var utk translate Y
+    var counter = 0;
     var conyUp = true;
+    var jessicaFly = 0;
+    var jessicaCanFly = true;
     var balonJump = 0;
     var balonJump1 = 0;
     var balonGeser = 0;
@@ -1990,6 +1993,8 @@ function main(){
         WingJessicaOutline5.setPosition(0,0 ,1   ,1.7   ,-0.69  ,-0.35);
         WingJessicaOutline6.setPosition(0,0 ,-1  ,2.3   ,-0.69  ,-0.35);
 
+        jessicaHead.translate(0,jessicaFly,0);
+
 
         // _____________________________ END JESSICA SET POSITION ______________________________________
         
@@ -2113,6 +2118,45 @@ function main(){
         object1.translate(0,-1.9,0)
         jessicaHead.translate(0,-1.9,0)
         kepalaBrown.translate(0,-0.45,0)
+
+
+        // ANIMASI JESSICA
+        if (jessicaCanFly && counter < 3) { // TERBANG
+            //Lompat ke atas
+            if ((jessicaFly >= 1.5 && jessicaFly <= 2.5) && counter != 0 ) {
+                jessicaFly += 0.015;
+            } else { // Sampe max
+                jessicaFly += 0.03;
+            }
+              // Sampe max
+            if (jessicaFly >= 2.5) { // Sampe max
+                counter++;
+                jessicaCanFly = false;
+            }
+        } else if (!jessicaCanFly && counter < 3) {
+
+            if (jessicaFly <= 2.5 || jessicaFly >= 2.3) {
+                jessicaFly -= 0.01;
+            } else {
+                jessicaFly -= 0.03;
+            }
+            if (jessicaFly <= 1.5) { //Kalau sudah sampai tanah
+                jessicaFly = 1.5;
+                jessicaCanFly = true; //Naik
+            }
+        } else if (counter = 3) {
+            //Turun
+            if (jessicaFly <= 0.2) {
+                jessicaFly -= 0.01;
+            } else {
+                jessicaFly -= 0.03;
+            }
+            if (jessicaFly <= 0) { //Kalau sudah sampai tanah
+                counter = 0;
+                jessicaFly = 0; 
+                jessicaCanFly = true; //Naik
+            }
+        }
 
         //_________________________RESPONSIVE ROTATE_____________________
         object1.setResponsiveRotation(PHI,THETA);
