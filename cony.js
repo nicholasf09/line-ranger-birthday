@@ -1465,6 +1465,8 @@ function main(){
     var balonUp4 = new MyObject(sphereVertex(0.5,0.5,0.7,48/255, 120/255, 87/255),balonUpFaces,shader_vertex_source,shader_fragment_source);
     var balonBottom5 = new MyObject(tabungVertex(0.05,0.05,0.45,0.45,0,0.7,160/255, 121/255, 176/255),balonBottomFaces,shader_vertex_source,shader_fragment_source);
     var balonUp5 = new MyObject(sphereVertex(0.5,0.5,0.7,160/255, 121/255, 176/255),balonUpFaces,shader_vertex_source,shader_fragment_source);
+    var balonBottom6 = new MyObject(tabungVertex(0.05,0.05,0.45,0.45,0,0.7,50/255,245/255,219/255),balonBottomFaces,shader_vertex_source,shader_fragment_source);
+    var balonUp6 = new MyObject(sphereVertex(0.5,0.5,0.7,50/255,245/255,219/255),balonUpFaces,shader_vertex_source,shader_fragment_source);
 
     //_______________________________________TALI_____________________________________
     var taliVertex = tabungVertex(0.05,0.05,0.05,0.05,0,0.05,0,0,0);
@@ -1627,6 +1629,7 @@ function main(){
     balonBottom3.addChild(balonUp3);
     balonBottom4.addChild(balonUp4);
     balonBottom5.addChild(balonUp5);
+    balonBottom6.addChild(balonUp6);
 
     bendera.addChild(bendera1);
     bendera.addChild(bendera2);
@@ -1659,6 +1662,7 @@ function main(){
     var conyJump = 0; //var utk translate Y
     var conyUp = true;
     var balonJump = 0;
+    var balonJump1 = 0;
     var balonGeser = 0;
     var jugglingReverse = false;
     var juggling = 0.155;
@@ -1908,6 +1912,8 @@ function main(){
         balonUp4.setPosition(4.71239,0,0,-5,0.1,-6);
         balonBottom5.setPosition(4.71239,0,0,-5,-3,-1);
         balonUp5.setPosition(4.71239,0,0,-5,-2.2,-1);
+        balonBottom6.setPosition(4.71239,0,0,5,0.2,-2);
+        balonUp6.setPosition(4.71239,0,0,5,1,-2);
         
         tali.setPosition(0,0,0,-2.5,0.1*2.5*2.5+2,-6);
         var xtemp = -8;
@@ -1987,9 +1993,14 @@ function main(){
 
         balonJump += 0.02;
         balonBottom5.translate(balonGeser, balonJump, 0);
-        console.log(balonJump)
         if(balonJump >= 8){
             balonJump = 0;
+        }
+
+        balonJump1 += 0.02;
+        balonBottom6.translate(balonGeser, balonJump1, 0);
+        if(balonJump1 >= 5){
+            balonJump1 = -3;
         }
         
         object1.translate(0,-1.9,0)
@@ -2145,6 +2156,8 @@ function main(){
         balonUp4.setResponsiveRotation(PHI,THETA);
         balonBottom5.setResponsiveRotation(PHI,THETA);
         balonUp5.setResponsiveRotation(PHI,THETA);
+        balonBottom6.setResponsiveRotation(PHI,THETA);
+        balonUp6.setResponsiveRotation(PHI,THETA);
         
         tali.setResponsiveRotation(PHI,THETA);
         for(var i = 0; i < tali.child.length;i++){
@@ -2221,6 +2234,8 @@ function main(){
         balonBottom4.draw();
         balonBottom5.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
         balonBottom5.draw();
+        balonBottom6.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
+        balonBottom6.draw();
 
         tali.setuniformmatrix4(PROJMATRIX,VIEWMATRIX);
         tali.draw();
