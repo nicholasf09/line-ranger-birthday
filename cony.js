@@ -2089,7 +2089,7 @@ function main(){
         WingJessicaOutline5.setPosition(0,0 ,1   ,1.7   ,-0.69  ,-0.35);
         WingJessicaOutline6.setPosition(0,0 ,-1  ,2.3   ,-0.69  ,-0.35);
 
-        jessicaHead.translate(0,jessicaFly,0);
+        jessicaHead.translate(conyJump,jessicaFly,conyJump);
 
         var scaleFactor = (1.2 - 0.85) * (conyJump / 0.3) + 0.85;
         WingJessica1.scale(scaleFactor);
@@ -2135,6 +2135,12 @@ function main(){
         balonUp5.setPosition(4.71239,0,0,-5,-2.2,-1);
         balonBottom6.setPosition(4.71239,0,0,5,0.2,-2);
         balonUp6.setPosition(4.71239,0,0,5,1,-2);
+
+        var scaleFactor1 = (1.1 - 0.95) * (conyJump / 0.3) + 0.95;
+        balonBottom5.scale(scaleFactor1);
+        balonBottom6.scale(scaleFactor1);
+
+        
         
         tali.setPosition(0,0,0,-2.5,0.1*2.5*2.5+2,-6);
         var xtemp = -8;
