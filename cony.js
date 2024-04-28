@@ -1387,7 +1387,7 @@ function main(){
     var topper = new MyObject(topperData.vertices, topperData.faces, shader_vertex_source, shader_fragment_source);
     var topper2 = new MyObject(topper2Data.vertices, topper2Data.faces, shader_vertex_source, shader_fragment_source);
 
-    var plateVertex = tabungVertex(0.5,0.5,1.2,1.2,0,0.3,245/255, 228/255, 201/255);
+    var plateVertex = tabungVertex(0.5,0.5,1.2,1.2,0,0.3,124/255,136/255,242/255);
     var plateFaces = tabungFaces();
     var plate = new MyObject(plateVertex, plateFaces, shader_vertex_source, shader_fragment_source);
 
@@ -1412,10 +1412,10 @@ function main(){
     var balonUp2 = new MyObject(sphereVertex(0.5,0.5,0.7,50/255,245/255,219/255),balonUpFaces,shader_vertex_source,shader_fragment_source);
     var balonBottom3 = new MyObject(tabungVertex(0.05,0.05,0.45,0.45,0,0.7,91/255,65/255,255),balonBottomFaces,shader_vertex_source,shader_fragment_source);
     var balonUp3 = new MyObject(sphereVertex(0.5,0.5,0.7,91/255,65/255,255),balonUpFaces,shader_vertex_source,shader_fragment_source);
-    var balonBottom4 = new MyObject(tabungVertex(0.05,0.05,0.45,0.45,0,0.7,255,0,0),balonBottomFaces,shader_vertex_source,shader_fragment_source);
-    var balonUp4 = new MyObject(sphereVertex(0.5,0.5,0.7,255,0,0),balonUpFaces,shader_vertex_source,shader_fragment_source);
-    var balonBottom5 = new MyObject(tabungVertex(0.05,0.05,0.45,0.45,0,0.7,255,0,0),balonBottomFaces,shader_vertex_source,shader_fragment_source);
-    var balonUp5 = new MyObject(sphereVertex(0.5,0.5,0.7,255,0,0),balonUpFaces,shader_vertex_source,shader_fragment_source);
+    var balonBottom4 = new MyObject(tabungVertex(0.05,0.05,0.45,0.45,0,0.7,48/255, 120/255, 87/255),balonBottomFaces,shader_vertex_source,shader_fragment_source);
+    var balonUp4 = new MyObject(sphereVertex(0.5,0.5,0.7,48/255, 120/255, 87/255),balonUpFaces,shader_vertex_source,shader_fragment_source);
+    var balonBottom5 = new MyObject(tabungVertex(0.05,0.05,0.45,0.45,0,0.7,160/255, 121/255, 176/255),balonBottomFaces,shader_vertex_source,shader_fragment_source);
+    var balonUp5 = new MyObject(sphereVertex(0.5,0.5,0.7,160/255, 121/255, 176/255),balonUpFaces,shader_vertex_source,shader_fragment_source);
 
     //_______________________________________TALI_____________________________________
     var taliVertex = tabungVertex(0.05,0.05,0.05,0.05,0,0.05,0,0,0);
