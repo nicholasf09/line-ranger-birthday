@@ -848,7 +848,7 @@ function segitigaFaces(){
 
 function rotateArbitary(parent){
     var res = []
-    for(var i = 0; i < 720; i+=0.5){
+    for(var i = 0; i < 720; i+=0.1){
         var x = 1.5*Math.cos(i) + parent.MOVEMATRIX[12]
         var z = 1.5*Math.sin(i) + parent.MOVEMATRIX[14]
         res.push(x);
@@ -2017,6 +2017,7 @@ function main(){
         //_________________CONY SENYUM MELEBAR______________________
         //BESARAN SCALING AGAR SMOOTH
         var scaleFactor = (1.2 - 0.85) * (conyJump / 0.3) + 0.85;
+        beans1.scale(scaleFactor);
         cheek1.scale(scaleFactor);
         cheek2.scale(scaleFactor);
         smileCony.scale(scaleFactor);
