@@ -1125,6 +1125,9 @@ function main(){
     var itemBrownFaces = itemBrownData.faces
     var itemBrown = new MyObject(itemBrownVertex, itemBrownFaces, shader_vertex_source,shader_fragment_source);
     itemBrown.addCurve(controlPoints.length);
+    var ballVertex = sphereVertex(0.1,0.2,0.1,51/255, 148/255, 46/255);
+    var ballFaces = sphereFaces();
+    var ball = new MyObject(ballVertex, ballFaces, shader_vertex_source, shader_fragment_source);
     // -----------------------------------------------------END BROWN PUNYA TIMOTHY-----------------------------------
 
     //_______________________CONY CANTIKKKK_______________________
@@ -1491,6 +1494,8 @@ function main(){
     var balonUp4 = new MyObject(sphereVertex(0.5,0.5,0.7,48/255, 120/255, 87/255),balonUpFaces,shader_vertex_source,shader_fragment_source);
     var balonBottom5 = new MyObject(tabungVertex(0.05,0.05,0.45,0.45,0,0.7,160/255, 121/255, 176/255),balonBottomFaces,shader_vertex_source,shader_fragment_source);
     var balonUp5 = new MyObject(sphereVertex(0.5,0.5,0.7,160/255, 121/255, 176/255),balonUpFaces,shader_vertex_source,shader_fragment_source);
+    var balonBottom6 = new MyObject(tabungVertex(0.05,0.05,0.45,0.45,0,0.7,50/255,245/255,219/255),balonBottomFaces,shader_vertex_source,shader_fragment_source);
+    var balonUp6 = new MyObject(sphereVertex(0.5,0.5,0.7,50/255,245/255,219/255),balonUpFaces,shader_vertex_source,shader_fragment_source);
 
     //_______________________________________TALI_____________________________________
     var taliVertex = tabungVertex(0.05,0.05,0.05,0.05,0,0.05,0,0,0);
@@ -1522,6 +1527,26 @@ function main(){
     var pita2 = new MyObject(cubeVertex(1.05,1.01,0.3, 0/255,135/255,62/255),cubeFaces(),shader_vertex_source,shader_fragment_source);
     // var square23 = new MyObject(cubeVertex(0.4,0.9,1.3, 255,255,189/255),cubeFaces(),shader_vertex_source,shader_fragment_source);
 
+    // ________________________________BEANS_____________________________________
+    var beansVertex = sphereVertex(0.2,0.2,0.2,91/255,180/255,84/255);
+    var beansFaces = sphereFaces();
+    var beans1 = new MyObject(beansVertex, beansFaces, shader_vertex_source, shader_fragment_source);
+    var beans2 = new MyObject(beansVertex, beansFaces, shader_vertex_source, shader_fragment_source);
+    var beans3 = new MyObject(beansVertex, beansFaces, shader_vertex_source, shader_fragment_source);
+    var eye1_vertex = sphereVertex(0.025, 0.025, 0.025, 0, 0, 0);
+    var eye1_faces = sphereFaces();
+    var eye1Beans = new MyObject(eye1_vertex, eye1_faces, shader_vertex_source, shader_fragment_source);
+    var eye2Beans = new MyObject(eye1_vertex, eye1_faces, shader_vertex_source, shader_fragment_source);
+    var eye3Beans = new MyObject(eye1_vertex, eye1_faces, shader_vertex_source, shader_fragment_source);
+    var eye4Beans = new MyObject(eye1_vertex, eye1_faces, shader_vertex_source, shader_fragment_source);
+    var eye5Beans = new MyObject(eye1_vertex, eye1_faces, shader_vertex_source, shader_fragment_source);
+    var eye6Beans = new MyObject(eye1_vertex, eye1_faces, shader_vertex_source, shader_fragment_source);  
+    
+    var mulutBeansVertex = sphereVertex(0.05,0.05,0.02,254/255,249/255,64/255);
+    var mulutBeansFaces = sphereFaces();
+    var mulutBeans1 = new MyObject(mulutBeansVertex, mulutBeansFaces, shader_vertex_source, shader_fragment_source);
+    var mulutBeans2 = new MyObject(mulutBeansVertex, mulutBeansFaces, shader_vertex_source, shader_fragment_source);
+    var mulutBeans3 = new MyObject(mulutBeansVertex, mulutBeansFaces, shader_vertex_source, shader_fragment_source);
     
     // ___________________________ END square ___________________________
     //MAtrix
@@ -1534,6 +1559,7 @@ function main(){
     //___________________________________________ADD CHILD_____________________________________
     kepalaBrown.addChild(telingaBrown1);
     kepalaBrown.addChild(itemBrown);
+    kepalaBrown.addChild(ball);
     kepalaBrown.addChild(telingaBrown2);
     kepalaBrown.addChild(inner1);
     kepalaBrown.addChild(inner2);
@@ -1665,6 +1691,7 @@ function main(){
     balonBottom3.addChild(balonUp3);
     balonBottom4.addChild(balonUp4);
     balonBottom5.addChild(balonUp5);
+    balonBottom6.addChild(balonUp6);
 
     bendera.addChild(bendera1);
     bendera.addChild(bendera2);
@@ -1692,11 +1719,24 @@ function main(){
     tart1.addChild(lilin);
     table.addChild(drawer1);
     table.addChild(drawer2);
+    beans1.addChild(beans2);
+    beans1.addChild(beans3);
 
+    beans1.addChild(eye1Beans);
+    beans1.addChild(eye2Beans);
+    beans2.addChild(eye3Beans);
+    beans2.addChild(eye4Beans);
+    beans3.addChild(eye5Beans);
+    beans3.addChild(eye6Beans);
+
+    beans1.addChild(mulutBeans1);
+    beans2.addChild(mulutBeans2);
+    beans3.addChild(mulutBeans3);
     //______________________________ANIMASI___________________
     var conyJump = 0; //var utk translate Y
     var conyUp = true;
     var balonJump = 0;
+    var balonJump1 = 0;
     var balonGeser = 0;
     var jugglingReverse = false;
     var juggling = 0.155;
@@ -1769,6 +1809,7 @@ function main(){
         }
         itemBrown.scale(0.3);
         itemBrown.translate(-2.5,0.5,0);
+        ball.setPosition(0,0,0,-2.5,0.5,0.5);
 
 
         object1.setPosition(0,0,0,0,0,0)
@@ -1820,6 +1861,23 @@ function main(){
         palm1.setPosition(0,-0.7,1,0.31,-0.7,0.175)
         palm2.setPosition(0,0.7,-1,-0.378,-0.7,0.175)
 
+        beans1.setPosition(0,0,0,-4.2,-2.2,0.5);
+        beans2.setPosition(0,0,0,-4.2,-2.6,0.5);
+        beans3.setPosition(0,0,0,-4.2,-3.0,0.5);
+
+        eye1Beans.setPosition(0,0,0,-4.2,-2.1,0.7);
+        eye2Beans.setPosition(0,0,0,-4.1,-2.1,0.7);
+        eye3Beans.setPosition(0,0,0,-4.2,-2.5,0.7);
+        eye4Beans.setPosition(0,0,0,-4.1,-2.5,0.7);
+        eye5Beans.setPosition(0,0,0,-4.2,-2.9,0.7);
+        eye6Beans.setPosition(0,0,0,-4.1,-2.9,0.7);
+
+        mulutBeans1.setPosition(4.71239,0,0,-4.15,-2.225,0.7);
+        mulutBeans2.setPosition(4.71239,0,0,-4.15,-2.625,0.7);
+        mulutBeans3.setPosition(4.71239,0,0,-4.15,-3.025,0.7);
+
+        beans2.translate(-0.1,0,0);
+
 
         //_________________CONY LOMPAT______________________
         if (conyUp) {
@@ -1855,6 +1913,7 @@ function main(){
         fanRotate += 0.174533
 
         itemBrown.translate(juggling, jugglingY, 0);
+        ball.translate(-juggling+1, jugglingY,0);
         object1.translate(0, conyJump, 0);
         kepalaBrown.translate(0,0,conyJump*2);
         patternRoda.rotate(conyJump*10,0,0);
@@ -1960,6 +2019,8 @@ function main(){
         balonUp4.setPosition(4.71239,0,0,-5,0.1,-6);
         balonBottom5.setPosition(4.71239,0,0,-5,-3,-1);
         balonUp5.setPosition(4.71239,0,0,-5,-2.2,-1);
+        balonBottom6.setPosition(4.71239,0,0,5,0.2,-2);
+        balonUp6.setPosition(4.71239,0,0,5,1,-2);
         
         tali.setPosition(0,0,0,-2.5,0.1*2.5*2.5+2,-6);
         var xtemp = -8;
@@ -2039,9 +2100,14 @@ function main(){
 
         balonJump += 0.02;
         balonBottom5.translate(balonGeser, balonJump, 0);
-        console.log(balonJump)
         if(balonJump >= 8){
             balonJump = 0;
+        }
+
+        balonJump1 += 0.02;
+        balonBottom6.translate(balonGeser, balonJump1, 0);
+        if(balonJump1 >= 5){
+            balonJump1 = -3;
         }
         
         object1.translate(0,-1.9,0)
@@ -2103,7 +2169,7 @@ function main(){
         mulutBrown.setResponsiveRotation(PHI,THETA);
         hidungBrown.setResponsiveRotation(PHI,THETA);
         garisMulut1.setResponsiveRotation(PHI,THETA);
-        // garisMulut2.setResponsiveRotation(PHI,THETA)
+        ball.setResponsiveRotation(PHI,THETA);
         topiBrown.setResponsiveRotation(PHI,THETA);
         bawahTopiBrown.setResponsiveRotation(PHI,THETA);
         bodyBrown.setResponsiveRotation(PHI,THETA);
@@ -2209,6 +2275,8 @@ function main(){
         balonUp4.setResponsiveRotation(PHI,THETA);
         balonBottom5.setResponsiveRotation(PHI,THETA);
         balonUp5.setResponsiveRotation(PHI,THETA);
+        balonBottom6.setResponsiveRotation(PHI,THETA);
+        balonUp6.setResponsiveRotation(PHI,THETA);
         
         tali.setResponsiveRotation(PHI,THETA);
         for(var i = 0; i < tali.child.length;i++){
@@ -2221,6 +2289,19 @@ function main(){
         bendera4.setResponsiveRotation(PHI,THETA);
         bendera5.setResponsiveRotation(PHI,THETA);
         bendera6.setResponsiveRotation(PHI,THETA);
+        beans1.setResponsiveRotation(PHI,THETA);
+        beans2.setResponsiveRotation(PHI,THETA);
+        beans3.setResponsiveRotation(PHI,THETA);
+        eye1Beans.setResponsiveRotation(PHI,THETA);
+        eye2Beans.setResponsiveRotation(PHI,THETA);
+        eye3Beans.setResponsiveRotation(PHI,THETA);
+        eye4Beans.setResponsiveRotation(PHI,THETA);
+        eye5Beans.setResponsiveRotation(PHI,THETA);
+        eye6Beans.setResponsiveRotation(PHI,THETA);
+        mulutBeans1.setResponsiveRotation(PHI,THETA);
+        mulutBeans2.setResponsiveRotation(PHI,THETA);
+        mulutBeans3.setResponsiveRotation(PHI,THETA);
+
 
         square.setResponsiveRotation(PHI,THETA);
         square1.setResponsiveRotation(PHI,THETA);
@@ -2285,6 +2366,8 @@ function main(){
         balonBottom4.draw();
         balonBottom5.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
         balonBottom5.draw();
+        balonBottom6.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
+        balonBottom6.draw();
 
         tali.setuniformmatrix4(PROJMATRIX,VIEWMATRIX);
         tali.draw();
@@ -2308,6 +2391,9 @@ function main(){
 
         tembok_belakang.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
         tembok_belakang.draw();
+
+        beans1.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
+        beans1.draw();
 
         GL.flush();
         window.requestAnimationFrame(animate);
