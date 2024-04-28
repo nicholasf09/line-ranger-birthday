@@ -1470,7 +1470,13 @@ function main(){
     // ___________________________ START square ___________________________
     var square = new MyObject(cubeVertex(0.1,3,3, 245/255,255/255,151/255),cubeFaces(),shader_vertex_source,shader_fragment_source);
     var square1 = new MyObject(cubeVertex(0.1,0.5,5, 129/255,133/255,129/255),cubeFaces(),shader_vertex_source,shader_fragment_source);
-    var square2 = new MyObject(cubeVertex(0.1,0.5,5, 129/255,133/255,129/255),cubeFaces(),shader_vertex_source,shader_fragment_source);
+
+    // ___________________________ START GIFT ___________________________
+    var square2 = new MyObject(cubeVertex(0.8,0.8,1.2,255,255,219/255),cubeFaces(),shader_vertex_source,shader_fragment_source);
+    var pita1 = new MyObject(cubeVertex(1.3,0.3,1.35, 255/255,0/255,0/255),cubeFaces(),shader_vertex_source,shader_fragment_source);
+    var pita2 = new MyObject(cubeVertex(1.3,1.35,0.3, 255/255,0/255,0/255),cubeFaces(),shader_vertex_source,shader_fragment_source);
+    var square23 = new MyObject(cubeVertex(0.4,0.9,1.3, 255,255,189/255),cubeFaces(),shader_vertex_source,shader_fragment_source);
+
     
     // ___________________________ END square ___________________________
     //MAtrix
@@ -1608,6 +1614,10 @@ function main(){
     bendera.addChild(bendera6);
 
     square.addChild(square1);
+    square.addChild(square2);
+    square.addChild(pita1);
+    square.addChild(pita2);
+    square.addChild(square23);
 
     baseTart.addChild(tart1);
     baseTart.addChild(lowerBaseTart);
@@ -1890,6 +1900,10 @@ function main(){
 
         square.setPosition(0,0,0,0,5,0);
         square1.setPosition(0,0,0,0,-2,-7);
+        square2.setPosition(0,0,0,3,-2.5,-3);
+        pita1.setPosition(0,0,0,3,-2.2,-3);
+        pita2.setPosition(0,0,0,3,-2.2,-3);
+        square23.setPosition(0,0,0,3,-1.5,-3);
 
         baseTart.setPosition(-2*0.785398,0,0,-4.2,-2.6,-3);
         // // baseTart.translate(-4,-1.5,0.5);
@@ -2114,6 +2128,10 @@ function main(){
 
         square.setResponsiveRotation(PHI,THETA);
         square1.setResponsiveRotation(PHI,THETA);
+        square2.setResponsiveRotation(PHI,THETA);
+        pita1.setResponsiveRotation(PHI,THETA);
+        pita2.setResponsiveRotation(PHI,THETA);
+        square23.setResponsiveRotation(PHI,THETA);
 
 
         baseTart.setResponsiveRotation(PHI,THETA);
