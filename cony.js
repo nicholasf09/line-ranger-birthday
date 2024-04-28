@@ -1310,11 +1310,6 @@ function main(){
     // var noseJessica_faces = sphereFaces();
     // var noseJessica = new MyObject(noseJessica_vertex, noseJessica_faces, shader_vertex_source, shader_fragment_source);
 
-    // Mouth
-    var smileJessicaVertex = tabungVertex(0.01,0.01,0.01,0.01,0,0.01,139/255,0/255,0/255);
-    var smileJessicaFaces = tabungFaces();
-    var smileJessica = new MyObject(smileJessicaVertex,smileJessicaFaces,shader_vertex_source,shader_fragment_source);
-    smileJessica.addCurve(100);
 
     // garis mulut
     var garisJessica1Vertex = tabungVertex(0.007,0.007,0.007,0.007,-0.09,0.01,0,0,0);
@@ -1330,7 +1325,7 @@ function main(){
     var garisJessica3 = new MyObject(garisJessica3Vertex, garisJessica3Faces, shader_vertex_source, shader_fragment_source);
 
     // Mouth
-    var smileJessicaVertex = tabungVertex(0.01,0.01,0.01,0.01,0,0.01,0,0,0);
+    var smileJessicaVertex = tabungVertex(0.01,0.01,0.01,0.01,0,0.01,139/255,0/255,0/255);
     var smileJessicaFaces = tabungFaces();
     var smileJessica = new MyObject(smileJessicaVertex,smileJessicaFaces,shader_vertex_source,shader_fragment_source);
     smileJessica.addCurve(100);
@@ -1473,6 +1468,8 @@ function main(){
     var balonUp4 = new MyObject(sphereVertex(0.5,0.5,0.7,48/255, 120/255, 87/255),balonUpFaces,shader_vertex_source,shader_fragment_source);
     var balonBottom5 = new MyObject(tabungVertex(0.05,0.05,0.45,0.45,0,0.7,160/255, 121/255, 176/255),balonBottomFaces,shader_vertex_source,shader_fragment_source);
     var balonUp5 = new MyObject(sphereVertex(0.5,0.5,0.7,160/255, 121/255, 176/255),balonUpFaces,shader_vertex_source,shader_fragment_source);
+    var balonBottom6 = new MyObject(tabungVertex(0.05,0.05,0.45,0.45,0,0.7,50/255,245/255,219/255),balonBottomFaces,shader_vertex_source,shader_fragment_source);
+    var balonUp6 = new MyObject(sphereVertex(0.5,0.5,0.7,50/255,245/255,219/255),balonUpFaces,shader_vertex_source,shader_fragment_source);
 
     //_______________________________________TALI_____________________________________
     var taliVertex = tabungVertex(0.05,0.05,0.05,0.05,0,0.05,0,0,0);
@@ -1496,7 +1493,10 @@ function main(){
     // ___________________________ START GIFT ___________________________
     var gift = new MyObjectTexture(environmentVertex, environmentFaces, shader_vertex_source_texture, shader_fragment_source_texture);
     gift.setTexture("gift-texture.jpg");
-    var ribbonGift = new MyObject(cubeVertex(0.1,0.1,1.2,255,0,0),cubeFaces(),shader_vertex_source,shader_fragment_source);
+    var pitaGiftVertex = tabungVertex(0.3,0.3,0.0,0.0,0.0,0.75, 139/255,0/255,0/255);
+    var pitaGiftFaces = tabungFaces();
+    var pitaGift1 = new MyObject(pitaGiftVertex, pitaGiftFaces, shader_vertex_source, shader_fragment_source);
+    var pitaGift2 = new MyObject(pitaGiftVertex, pitaGiftFaces, shader_vertex_source, shader_fragment_source);
     var pita1 = new MyObject(cubeVertex(1.05,0.3,1.01, 0/255,135/255,62/255),cubeFaces(),shader_vertex_source,shader_fragment_source);
     var pita2 = new MyObject(cubeVertex(1.05,1.01,0.3, 0/255,135/255,62/255),cubeFaces(),shader_vertex_source,shader_fragment_source);
     // var square23 = new MyObject(cubeVertex(0.4,0.9,1.3, 255,255,189/255),cubeFaces(),shader_vertex_source,shader_fragment_source);
@@ -1653,6 +1653,7 @@ function main(){
     balonBottom3.addChild(balonUp3);
     balonBottom4.addChild(balonUp4);
     balonBottom5.addChild(balonUp5);
+    balonBottom6.addChild(balonUp6);
 
     bendera.addChild(bendera1);
     bendera.addChild(bendera2);
@@ -1663,6 +1664,8 @@ function main(){
 
     square.addChild(square1);
     square.addChild(gift);
+    square.addChild(pitaGift1);
+    square.addChild(pitaGift2);
     square.addChild(pita1);
     square.addChild(pita2);
     // square.addChild(square23);
@@ -1695,6 +1698,7 @@ function main(){
     var conyJump = 0; //var utk translate Y
     var conyUp = true;
     var balonJump = 0;
+    var balonJump1 = 0;
     var balonGeser = 0;
     var jugglingReverse = false;
     var juggling = 0.155;
@@ -1963,6 +1967,8 @@ function main(){
         balonUp4.setPosition(4.71239,0,0,-5,0.1,-6);
         balonBottom5.setPosition(4.71239,0,0,-5,-3,-1);
         balonUp5.setPosition(4.71239,0,0,-5,-2.2,-1);
+        balonBottom6.setPosition(4.71239,0,0,5,0.2,-2);
+        balonUp6.setPosition(4.71239,0,0,5,1,-2);
         
         tali.setPosition(0,0,0,-2.5,0.1*2.5*2.5+2,-6);
         var xtemp = -8;
@@ -1985,6 +1991,8 @@ function main(){
         gift.setPosition(0,0,0,3,-2.2,-3);
         pita1.setPosition(0,0,0,3,-2.2,-3);
         pita2.setPosition(0,0,0,3,-2.2,-3);
+        pitaGift1.setPosition(4.71239,-4.71239,0,2.4,-1.05,-3);
+        pitaGift2.setPosition(4.71239,4.71239,0,3.6,-1.05,-3);
         // square23.setPosition(0,0,0,3,-1.5,-3);
 
         baseTart.setPosition(-2*0.785398,0,0,-4.2,-2.6,-3);
@@ -2040,9 +2048,14 @@ function main(){
 
         balonJump += 0.02;
         balonBottom5.translate(balonGeser, balonJump, 0);
-        console.log(balonJump)
         if(balonJump >= 8){
             balonJump = 0;
+        }
+
+        balonJump1 += 0.02;
+        balonBottom6.translate(balonGeser, balonJump1, 0);
+        if(balonJump1 >= 5){
+            balonJump1 = -3;
         }
         
         object1.translate(0,-1.9,0)
@@ -2198,6 +2211,8 @@ function main(){
         balonUp4.setResponsiveRotation(PHI,THETA);
         balonBottom5.setResponsiveRotation(PHI,THETA);
         balonUp5.setResponsiveRotation(PHI,THETA);
+        balonBottom6.setResponsiveRotation(PHI,THETA);
+        balonUp6.setResponsiveRotation(PHI,THETA);
         
         tali.setResponsiveRotation(PHI,THETA);
         for(var i = 0; i < tali.child.length;i++){
@@ -2229,6 +2244,8 @@ function main(){
         gift.setResponsiveRotation(PHI,THETA);
         pita1.setResponsiveRotation(PHI,THETA);
         pita2.setResponsiveRotation(PHI,THETA);
+        pitaGift1.setResponsiveRotation(PHI,THETA);
+        pitaGift2.setResponsiveRotation(PHI,THETA);
         // square23.setResponsiveRotation(PHI,THETA);
 
 
@@ -2285,6 +2302,8 @@ function main(){
         balonBottom4.draw();
         balonBottom5.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
         balonBottom5.draw();
+        balonBottom6.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
+        balonBottom6.draw();
 
         tali.setuniformmatrix4(PROJMATRIX,VIEWMATRIX);
         tali.draw();
