@@ -99,13 +99,16 @@ class MyObject{
         var parentMatrixBefore = LIBS.cloneMatrix(this.MOVEMATRIX);
         
         // Terapkan rotasi pada objek induk
-        LIBS.rotateZ(this.MOVEMATRIX, r);
-        LIBS.rotateY(this.MOVEMATRIX, THETA);
-        LIBS.rotateX(this.MOVEMATRIX, PHI);
+        this.setIdentityMove();
+        this.setRotateMove(PHI,THETA,r)
+        this.MOVEMATRIX[12] = parentMatrixBefore[12]
+        this.MOVEMATRIX[13] = parentMatrixBefore[13]
+        this.MOVEMATRIX[14] = parentMatrixBefore[14]
         
         //Iterasi melalui objek anak
         for (let i = 0; i < this.child.length; i++) {
             let child = this.child[i];
+            var childMatrixBefore = LIBS.cloneMatrix(child.MOVEMATRIX);
             
             // Hitung posisi relatif objek anak terhadap rotasi objek induk sebelum rotasi
             var relativePosition = [
@@ -114,57 +117,45 @@ class MyObject{
                 child.MOVEMATRIX[14] - parentMatrixBefore[14]
             ];
 
-            // Terapkan rotasi yang sama dengan objek induk pada objek anak
-            child.MOVEMATRIX = LIBS.cloneMatrix(this.MOVEMATRIX);
-    
-            // Terapkan posisi relatif pada posisi rotasi objek anak setelah rotasi objek induk
-            child.MOVEMATRIX[12] = this.MOVEMATRIX[12] + relativePosition[0];
-            child.MOVEMATRIX[13] = this.MOVEMATRIX[13] + relativePosition[1];
-            child.MOVEMATRIX[14] = this.MOVEMATRIX[14] + relativePosition[2];
+            child.setIdentityMove();
+            child.setRotateMove(PHI,THETA,r)
+            child.MOVEMATRIX[12] = childMatrixBefore[12]
+            child.MOVEMATRIX[13] = childMatrixBefore[13]
+            child.MOVEMATRIX[14] = childMatrixBefore[14]
+
+            //translate ke sumbu (LOKASI PARENT) child - parent
+            var temp = LIBS.get_I4();
+            LIBS.translateX(temp, relativePosition[0])
+            child.MOVEMATRIX = LIBS.mul(child.MOVEMATRIX, temp);
+            temp = LIBS.get_I4();
+            LIBS.translateY(temp, relativePosition[1])
+            child.MOVEMATRIX = LIBS.mul(child.MOVEMATRIX, temp);
+            temp = LIBS.get_I4();
+            LIBS.translateZ(temp, relativePosition[2])
+            child.MOVEMATRIX = LIBS.mul(child.MOVEMATRIX, temp);
+
+            //rotate
+            temp = LIBS.get_I4();
+            LIBS.rotateZ(temp, r);
+            child.MOVEMATRIX = LIBS.mul(child.MOVEMATRIX, temp);
+            temp = LIBS.get_I4();
+            LIBS.rotateY(temp, THETA);
+            child.MOVEMATRIX = LIBS.mul(child.MOVEMATRIX, temp);
+            temp = LIBS.get_I4();
+            LIBS.rotateX(temp, PHI);
+            child.MOVEMATRIX = LIBS.mul(child.MOVEMATRIX, temp);
+
+            //kembali ke titik awal parent
+            temp = LIBS.get_I4();
+            LIBS.translateX(temp,parentMatrixBefore[12]);
+            child.MOVEMATRIX = LIBS.mul(child.MOVEMATRIX, temp);
+            temp = LIBS.get_I4();
+            LIBS.translateY(temp,parentMatrixBefore[13]);
+            child.MOVEMATRIX = LIBS.mul(child.MOVEMATRIX, temp);
+            temp = LIBS.get_I4();
+            LIBS.translateZ(temp,parentMatrixBefore[14]);
+            child.MOVEMATRIX = LIBS.mul(child.MOVEMATRIX, temp);
         }
-
-        //______________________________NYOBA________________________
-        // var parentMatrixBefore = LIBS.cloneMatrix(this.MOVEMATRIX);
-        // LIBS.translateZ(this.MOVEMATRIX,parentMatrixBefore[14]);
-        // LIBS.translateY(this.MOVEMATRIX,parentMatrixBefore[13]);
-        // LIBS.translateX(this.MOVEMATRIX,parentMatrixBefore[12]);
-
-        // var matRotZ = [
-        //     Math.cos(r), Math.sin(r), 0, 0,
-        //     -Math.sin(r), Math.cos(r), 0, 0,
-        //     0, 0, 1, 0,
-        //     0, 0, 0, 1
-        // ]
-
-        // this.MOVEMATRIX = LIBS.mul(this.MOVEMATRIX, matRotZ);
-
-        // var matRotY = [
-        //     Math.cos(THETA), 0, -Math.sin(THETA), 0,
-        //     0, 1, 0, 0,
-        //     Math.sin(THETA), 0, Math.cos(THETA), 0,
-        //     0, 0, 0, 1
-        // ]
-
-        // this.MOVEMATRIX = LIBS.mul(this.MOVEMATRIX, matRotY);
-
-        // var matRotX = [
-        //     1, 0, 0, 0,
-        //     0, Math.cos(PHI), Math.sin(PHI), 0,
-        //     0, -Math.sin(PHI), Math.cos(PHI), 0,
-        //     0, 0, 0, 1
-        // ]
-
-        // this.MOVEMATRIX = LIBS.mul(this.MOVEMATRIX, matRotX);
-
-
-        // LIBS.translateZ(this.MOVEMATRIX,-parentMatrixBefore[14]);
-        // LIBS.translateY(this.MOVEMATRIX,-parentMatrixBefore[13]);
-        // LIBS.translateX(this.MOVEMATRIX,-parentMatrixBefore[12]);
-
-        // for (var i = 0; i < this.child.length; i++) {
-        //     var child = this.child[i];
-        //     child.rotate(PHI,THETA,r);
-        // }
     }
 
     translate(x,y,z){
@@ -1539,7 +1530,7 @@ function main(){
         itemBrown.translate(juggling, jugglingY, 0);
         object1.translate(0, conyJump, 0);
         kepalaBrown.translate(juggling*1.5,0,0);
-        patternRoda.rotate(dt*PHI,0,0);
+        // patternRoda.rotate(dt*PHI,0,0);
 
         //_________________CONY SENYUM MELEBAR______________________
         //BESARAN SCALING AGAR SMOOTH
@@ -1598,8 +1589,11 @@ function main(){
         
         // _____________________________ENV POS______________________________________
         environment1.setPosition(0,0,4.71239,0,3.5,0);
-        balonBottom.setPosition(4.71239,0,0,1,0.1,-6);
-        balonUp.setPosition(4.71239,0,0,1,0.9,-6);
+        // balonBottom.setPosition(4.71239,0,0,1,0.1,-6);
+        // balonUp.setPosition(4.71239,0,0,1,0.9,-6);
+        balonBottom.setPosition(0,0,0,1,0.1,-6);
+        balonUp.setPosition(0,0,0,1,0.9,-6);
+        balonBottom.rotate(4.71239,0,0);
         balonBottom1.setPosition(4.71239,0,0,3,-0.6,-6);
         balonUp1.setPosition(4.71239,0,0,3,0.3,-6);
         balonBottom2.setPosition(4.71239,0,0,-1,-0.7,-6);

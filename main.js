@@ -355,18 +355,18 @@ function main() {
   ];
 
   var sphere = generateSphere(0,0,0,1,1,1,10,10);
-  var object1 = new MyObject(sphere[0],sphere[1],shader_vertex_source,shader_fragment_source);
-  var object2 = new MyObject(cube_vertex,cube_faces,shader_vertex_source,shader_fragment_source);
-  object1.setTexture("wall.jpg");
-  object2.setTexture("wall.jpg");
-  object1.addChild(object2);
+  var bola = new MyObject(sphere[0],sphere[1],shader_vertex_source,shader_fragment_source);
+  var kubus = new MyObject(cube_vertex,cube_faces,shader_vertex_source,shader_fragment_source);
+  bola.setTexture("wall.jpg");
+  kubus.setTexture("wall.jpg");
+  kubus.addChild(bola);
 
   /*========================= MATRIX ========================= */
 
   var PROJMATRIX = LIBS.get_projection(40, CANVAS.width/CANVAS.height, 1, 100);
   var VIEWMATRIX = LIBS.get_I4();
 
-  LIBS.translateZ(VIEWMATRIX, -10);
+  LIBS.translateZ(VIEWMATRIX, -15);
   var THETA = 0,
       PHI = 0;
 
@@ -383,37 +383,42 @@ function main() {
       dX *= AMORTIZATION, dY *= AMORTIZATION;
       THETA += dX, PHI += dY;
     }
-    object1.setIdentityMove();
-    // object1.setTranslateMove(-1,0,0);
-    object1.setRotateMove(PHI,THETA,0);
-    object1.setTranslateMove(5,0,0);
 
+    //___________ROTASI KUBUS (PARENT)____________
+    kubus.setIdentityMove();
+    kubus.setRotateMove(PHI,THETA,0);
+    kubus.setTranslateMove(1,0,0);
+
+    //________________ROTASI BOLA (CHILD)_____________
+    bola.setIdentityMove();
+    bola.setRotateMove(PHI,THETA,0);
+    bola.setTranslateMove(5,0,0);
+    
+    //translate ke sumbu (LOKASI PARENT) child - parent
     var temp = LIBS.get_I4();
+    LIBS.translateX(temp, 4)
+    bola.MOVEMATRIX = LIBS.mul(bola.MOVEMATRIX, temp);
 
-    //pusat rotasi di x = 3
-    LIBS.translateX(temp, -2)
-    object1.MOVEMATRIX = LIBS.mul(object1.MOVEMATRIX, temp);
+    //rotate child
     temp = LIBS.get_I4();
     LIBS.rotateY(temp, THETA);
-    object1.MOVEMATRIX = LIBS.mul(object1.MOVEMATRIX, temp);
+    bola.MOVEMATRIX = LIBS.mul(bola.MOVEMATRIX, temp);
+    
+    //kembali ke titik awal parent
     temp = LIBS.get_I4();
-    LIBS.translateX(temp,2);
-    object1.MOVEMATRIX = LIBS.mul(object1.MOVEMATRIX, temp);
-
-    object1.child[0].setIdentityMove();
-    object1.child[0].setRotateMove(PHI,THETA,0);
-    object1.child[0].setTranslateMove(3,0,0);
+    LIBS.translateX(temp,1);
+    bola.MOVEMATRIX = LIBS.mul(bola.MOVEMATRIX, temp);
     
     time_prev = time;
 
     GL.viewport(0, 0, CANVAS.width, CANVAS.height);
     GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT);
 
-    object1.draw();
+    kubus.draw();
 
-    object1.setuniformmatrix4(PROJMATRIX,VIEWMATRIX);
+    kubus.setuniformmatrix4(PROJMATRIX,VIEWMATRIX);
 
-    object1.child[0].setuniformmatrix4(PROJMATRIX,VIEWMATRIX);
+    kubus.child[0].setuniformmatrix4(PROJMATRIX,VIEWMATRIX);
 
    
 
