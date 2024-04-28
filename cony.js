@@ -1307,11 +1307,6 @@ function main(){
     // var noseJessica_faces = sphereFaces();
     // var noseJessica = new MyObject(noseJessica_vertex, noseJessica_faces, shader_vertex_source, shader_fragment_source);
 
-    // Mouth
-    var smileJessicaVertex = tabungVertex(0.01,0.01,0.01,0.01,0,0.01,139/255,0/255,0/255);
-    var smileJessicaFaces = tabungFaces();
-    var smileJessica = new MyObject(smileJessicaVertex,smileJessicaFaces,shader_vertex_source,shader_fragment_source);
-    smileJessica.addCurve(100);
 
     // garis mulut
     var garisJessica1Vertex = tabungVertex(0.007,0.007,0.007,0.007,-0.09,0.01,0,0,0);
@@ -1327,7 +1322,7 @@ function main(){
     var garisJessica3 = new MyObject(garisJessica3Vertex, garisJessica3Faces, shader_vertex_source, shader_fragment_source);
 
     // Mouth
-    var smileJessicaVertex = tabungVertex(0.01,0.01,0.01,0.01,0,0.01,0,0,0);
+    var smileJessicaVertex = tabungVertex(0.01,0.01,0.01,0.01,0,0.01,139/255,0/255,0/255);
     var smileJessicaFaces = tabungFaces();
     var smileJessica = new MyObject(smileJessicaVertex,smileJessicaFaces,shader_vertex_source,shader_fragment_source);
     smileJessica.addCurve(100);
@@ -1493,7 +1488,10 @@ function main(){
     // ___________________________ START GIFT ___________________________
     var gift = new MyObjectTexture(environmentVertex, environmentFaces, shader_vertex_source_texture, shader_fragment_source_texture);
     gift.setTexture("gift-texture.jpg");
-    var ribbonGift = new MyObject(cubeVertex(0.1,0.1,1.2,255,0,0),cubeFaces(),shader_vertex_source,shader_fragment_source);
+    var pitaGiftVertex = tabungVertex(0.3,0.3,0.0,0.0,0.0,0.75, 139/255,0/255,0/255);
+    var pitaGiftFaces = tabungFaces();
+    var pitaGift1 = new MyObject(pitaGiftVertex, pitaGiftFaces, shader_vertex_source, shader_fragment_source);
+    var pitaGift2 = new MyObject(pitaGiftVertex, pitaGiftFaces, shader_vertex_source, shader_fragment_source);
     var pita1 = new MyObject(cubeVertex(1.05,0.3,1.01, 0/255,135/255,62/255),cubeFaces(),shader_vertex_source,shader_fragment_source);
     var pita2 = new MyObject(cubeVertex(1.05,1.01,0.3, 0/255,135/255,62/255),cubeFaces(),shader_vertex_source,shader_fragment_source);
     // var square23 = new MyObject(cubeVertex(0.4,0.9,1.3, 255,255,189/255),cubeFaces(),shader_vertex_source,shader_fragment_source);
@@ -1639,6 +1637,8 @@ function main(){
 
     square.addChild(square1);
     square.addChild(gift);
+    square.addChild(pitaGift1);
+    square.addChild(pitaGift2);
     square.addChild(pita1);
     square.addChild(pita2);
     // square.addChild(square23);
@@ -1930,6 +1930,8 @@ function main(){
         gift.setPosition(0,0,0,3,-2.2,-3);
         pita1.setPosition(0,0,0,3,-2.2,-3);
         pita2.setPosition(0,0,0,3,-2.2,-3);
+        pitaGift1.setPosition(4.71239,-4.71239,0,2.4,-1.05,-3);
+        pitaGift2.setPosition(4.71239,4.71239,0,3.6,-1.05,-3);
         // square23.setPosition(0,0,0,3,-1.5,-3);
 
         baseTart.setPosition(-2*0.785398,0,0,-4.2,-2.6,-3);
@@ -2161,6 +2163,8 @@ function main(){
         gift.setResponsiveRotation(PHI,THETA);
         pita1.setResponsiveRotation(PHI,THETA);
         pita2.setResponsiveRotation(PHI,THETA);
+        pitaGift1.setResponsiveRotation(PHI,THETA);
+        pitaGift2.setResponsiveRotation(PHI,THETA);
         // square23.setResponsiveRotation(PHI,THETA);
 
 
