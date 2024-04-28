@@ -846,6 +846,17 @@ function segitigaFaces(){
     return segitiga_faces;
 }
 
+function rotateArbitary(parent){
+    var res = []
+    for(var i = 0; i < 720; i+=0.5){
+        var x = 1.5*Math.cos(i) + parent.MOVEMATRIX[12]
+        var z = 1.5*Math.sin(i) + parent.MOVEMATRIX[14]
+        res.push(x);
+        res.push(z);
+    }
+    return res;
+}
+
 function main(){
     var CANVAS = document.getElementById("mycanvas");
 
@@ -1704,7 +1715,8 @@ function main(){
     var juggling = 0.155;
     var jugglingY = 0;
     var fanRotate = 0;
-
+    var dummy = 0;
+  
     //_____________________________________DRAWING_____________________________________
     GL.clearColor(0.0,0.0,0.0,0.0);
     GL.enable(GL.DEPTH_TEST);
@@ -1838,9 +1850,15 @@ function main(){
         mulutBeans2.setPosition(4.71239,0,0,-4.15,-2.625,0.7);
         mulutBeans3.setPosition(4.71239,0,0,-4.15,-3.025,0.7);
 
+        beans1.translate(0,0,-0.25);
         beans2.translate(-0.1,0,0);
 
-
+        //_________________________ROTATE BEAN________________________
+        
+        var controlBean = rotateArbitary(kepalaBrown);
+        dummy += 2
+        beans1.translate((controlBean[dummy%controlBean.length]-beans1.MOVEMATRIX[12]),0,(controlBean[(dummy+1)%controlBean.length]-beans1.MOVEMATRIX[14]))
+        
         //_________________CONY LOMPAT______________________
         if (conyUp) {
             //Lompat ke atas
@@ -2028,7 +2046,7 @@ function main(){
         drawer1.setPosition(0,0,0,-4.2,-4,-2.5);
         drawer2.setPosition(0,0,0,-4.2,-5,-2.5);
 
-        baseTart.translate(0,2.5,0);
+        baseTart.translate(0,2.5,0.5);
 
         //_____________________ANIMASI BALON TERBANG_____________________
         if (conyUp) {

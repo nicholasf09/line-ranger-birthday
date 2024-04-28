@@ -376,6 +376,8 @@ function main() {
   GL.clearColor(1.0, 0.0, 0.0, 0.0);
   GL.clearDepth(1.0);
 
+  var fanRotate = 0;
+
   var time_prev = 0;
   var animate = function(time) {
     var dt = time - time_prev;
@@ -384,10 +386,12 @@ function main() {
       THETA += dX, PHI += dY;
     }
 
+    fanRotate += 0.174533;
+
     //___________ROTASI KUBUS (PARENT)____________
     kubus.setIdentityMove();
     kubus.setRotateMove(PHI,THETA,0);
-    kubus.setTranslateMove(1,0,0);
+    kubus.setTranslateMove(3,0,0);
 
     //________________ROTASI BOLA (CHILD)_____________
     bola.setIdentityMove();
@@ -396,17 +400,17 @@ function main() {
     
     //translate ke sumbu (LOKASI PARENT) child - parent
     var temp = LIBS.get_I4();
-    LIBS.translateX(temp, 4)
+    LIBS.translateX(temp, 2)
     bola.MOVEMATRIX = LIBS.mul(bola.MOVEMATRIX, temp);
 
     //rotate child
     temp = LIBS.get_I4();
-    LIBS.rotateY(temp, THETA);
+    LIBS.rotateY(temp, fanRotate);
     bola.MOVEMATRIX = LIBS.mul(bola.MOVEMATRIX, temp);
     
     //kembali ke titik awal parent
     temp = LIBS.get_I4();
-    LIBS.translateX(temp,1);
+    LIBS.translateX(temp,3);
     bola.MOVEMATRIX = LIBS.mul(bola.MOVEMATRIX, temp);
     
     time_prev = time;
