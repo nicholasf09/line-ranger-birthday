@@ -1192,6 +1192,41 @@ function main(){
     var ribbon1 = new MyObject(ribbon_vertex, ribbon_faces, shader_vertex_source, shader_fragment_source);
     var ribbon2 = new MyObject(ribbon_vertex, ribbon_faces, shader_vertex_source, shader_fragment_source);
 
+    //Pita Curve
+    var controlPointsCony = [-0.4078125, 0.7606837606837606, -0.4078125, 0.764102564102564, -0.41718750000000004, 0.764102564102564, -0.44843750000000004, 0.770940170940171, -0.4703125, 0.770940170940171, -0.4859375, 0.770940170940171, -0.5125, 0.7504273504273504, -0.534375, 0.7367521367521368, -0.5515625, 0.7196581196581197, -0.5625, 0.7059829059829059, -0.5828125, 0.6752136752136753, -0.6, 0.6341880341880342, -0.609375, 0.6, -0.61875, 0.558974358974359, -0.621875, 0.535042735042735, -0.6328125, 0.4837606837606837, -0.6421875, 0.44957264957264953, -0.646875, 0.4256410256410257, -0.65, 0.3914529914529915, -0.65, 0.37777777777777777, -0.6515625, 0.3025641025641026, -0.65, 0.28547008547008546, -0.6484375, 0.2581196581196581, -0.640625, 0.2170940170940171, -0.634375, 0.18632478632478633, -0.628125, 0.15555555555555556, -0.621875, 0.135042735042735, -0.6015625, 0.09401709401709402, -0.575, 0.04957264957264962, -0.565625, 0.03931623931623929, -0.5515625, 0.032478632478632474, -0.540625, 0.029059829059829068, -0.525, 0.018803418803418848, -0.50625, 0.018803418803418848, -0.475, 0.018803418803418848, -0.4390625, 0.02564102564102566, -0.40937500000000004, 0.052991452991453025, -0.38593750000000004, 0.10427350427350424, -0.38125, 0.1282051282051282, -0.37812500000000004, 0.15555555555555556, -0.375, 0.20341880341880347, -0.375, 0.2512820512820513, -0.384375, 0.28547008547008546, -0.3984375, 0.305982905982906, -0.40937500000000004, 0.3094017094017094, -0.42656249999999996, 0.305982905982906, -0.44843750000000004, 0.27863247863247864, -0.46562499999999996, 0.2547008547008547, -0.48124999999999996, 0.20683760683760688, -0.49375, 0.17948717948717952,
+        -0.5,
+        0.1316239316239316,
+        -0.5015625,
+        0.10427350427350424,
+        -0.49375,
+        0.03589743589743588,
+        -0.4828125,
+        -0.07008547008547006,
+        -0.475,
+        -0.135042735042735,
+        -0.4625,
+        -0.18974358974358974,
+        -0.446875,
+        -0.23418803418803424,
+        -0.43437499999999996,
+        -0.288888888888889
+    ];
+    for(var i = 0; i < controlPointsCony.length; i++){
+        controlPointsCony[i] *= 0.6;
+    }
+    // generateTube(x, y, outerRad, innerRad, height, segments, r,g,b)
+    var itemConyData = generateTube(0.1,0.1,0.1,0.1,0.1,5,10,253/255,216/255,56/255);
+    var itemConyVertex = itemConyData.vertices;
+    var itemConyFaces = itemConyData.faces
+    var itemCony = new MyObject(itemConyVertex, itemConyFaces, shader_vertex_source,shader_fragment_source);
+    itemCony.addCurve(controlPointsCony.length);
+
+    //fan
+    var fan1_vertex = sphereVertex(0.15,0.025,0.025,255,119/255,28/255);
+    var fan_faces = sphereFaces();
+    var fan = new MyObject(fan1_vertex, fan_faces, shader_vertex_source, shader_fragment_source);
+    var fan1 = new MyObject(fan1_vertex, fan_faces, shader_vertex_source, shader_fragment_source);
+
     //stomach
     var stomach_vertex = tabungVertex(0.3,0.3,0.3,0.3,-0.375,-0.5,0,0,0);
     var stomach_faces = tabungFaces();
@@ -1516,13 +1551,12 @@ function main(){
     innerRoda.addChild(patternRoda);
     bodyBrown.addChild(pitaBrown);
     bodyBrown.addChild(pitaBrown2);
+
     //kepala
     object1.addChild(kuping1);
     kuping1.addChild(innerkuping1);
     object1.addChild(kuping2);
     kuping2.addChild(innerkuping2);
-    // object1.addChild(innerkuping1);
-    // object1.addChild(innerkuping2);
     object1.addChild(eye1);
     object1.addChild(eye2);
     object1.addChild(cheek1);
@@ -1538,6 +1572,9 @@ function main(){
     object1.addChild(neck);
     object1.addChild(ribbon1);
     object1.addChild(ribbon2);
+    object1.addChild(itemCony);
+    object1.addChild(fan);
+    object1.addChild(fan1);
     object1.addChild(stomach);
     object1.addChild(pant1);
     object1.addChild(pant2);
@@ -1626,6 +1663,7 @@ function main(){
     var jugglingReverse = false;
     var juggling = 0.155;
     var jugglingY = 0;
+    var fanRotate = 0;
 
     //_____________________________________DRAWING_____________________________________
     GL.clearColor(0.0,0.0,0.0,0.0);
@@ -1685,7 +1723,7 @@ function main(){
         patternRoda.setPosition(0,4.71239,4.71239,-1.8115,-2.1,-0.2);
         pitaBrown2.setPosition(4.71239,4.71239,0,-1.9,-0.4,0.4);
         pitaBrown.setPosition(4.71239,-4.71239,0,-2.1,-0.4,0.4);
-        itemBrown.setPosition(4.71239,0,0,-0.125,2.5*0.125*0.125-0.2,0.9)
+        itemBrown.setPosition(4.71239,0,0,controlPoints[i],controlPoints[i+1],0.9)
         for(var i = 0; i < itemBrown.child.length;i+=2){
             var xtemp = controlPoints[i];
             var ytemp = controlPoints[i+1];
@@ -1720,6 +1758,16 @@ function main(){
         neck.setPosition(4.71239,0,0,0,-0.35,0)
         ribbon1.setPosition(-Math.PI / 2 - 0.5,-0.5,0,-0.2,-0.05,0.03)
         ribbon2.setPosition(Math.PI / 2 - 0.5,2.5,0,0.3,-0.09,0.06)
+        itemCony.setPosition(4.71239,0,0,controlPointsCony[i],controlPointsCony[i+1],0.5)
+        for(var i = 0; i < itemCony.child.length;i+=2){
+            var xtemp = controlPointsCony[i];
+            var ytemp = controlPointsCony[i+1];
+            itemCony.child[i].setPosition(4.71239,0,0,xtemp,ytemp,0.5);
+        }
+        itemCony.translate(-0.1,-0.75,-0.15);
+        itemCony.scale(0.3);
+        fan.setPosition(0,0,0,-0.4,-0.25,0.35);
+        fan1.setPosition(0,0,1.5708,-0.4,-0.25,0.35);
         stomach.setPosition(4.71239,0,0,0,-0.35,0)
         pant1.setPosition(4.71239,0,0,0.1,-0.35,0)
         pant2.setPosition(4.71239,0,0,-0.1,-0.35,0)
@@ -1766,10 +1814,14 @@ function main(){
             jugglingY = -15*(juggling-0.5) * (juggling-0.5)+0.5; 
         }
 
+        fanRotate += 0.174533
+
         itemBrown.translate(juggling, jugglingY, 0);
         object1.translate(0, conyJump, 0);
         kepalaBrown.translate(0,0,conyJump*2);
         patternRoda.rotate(conyJump*10,0,0);
+        fan.rotate(0,0,fanRotate);
+        fan1.rotate(0,0,fanRotate);
 
         //_________________CONY SENYUM MELEBAR______________________
         //BESARAN SCALING AGAR SMOOTH
@@ -1965,6 +2017,13 @@ function main(){
         neck.setResponsiveRotation(PHI,THETA);
         ribbon1.setResponsiveRotation(PHI,THETA);
         ribbon2.setResponsiveRotation(PHI,THETA);
+        itemCony.setResponsiveRotation(PHI,THETA);
+        for(var i = 0; i < itemCony.child.length;i++){
+            itemCony.child[i].setResponsiveRotation(PHI,THETA);
+        }
+        fan.setResponsiveRotation(PHI,THETA);
+        fan1.setResponsiveRotation(PHI,THETA);
+        itemBrown.setResponsiveRotation(PHI,THETA);
         stomach.setResponsiveRotation(PHI,THETA);
         pant1.setResponsiveRotation(PHI,THETA);
         pant2.setResponsiveRotation(PHI,THETA);
