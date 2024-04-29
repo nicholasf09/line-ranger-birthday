@@ -1574,10 +1574,12 @@ function main(){
 
     // ________________________________BEANS_____________________________________
     var beansVertex = sphereVertex(0.2,0.2,0.2,91/255,180/255,84/255);
+    var beansVertex2 = sphereVertex(0.2,0.2,0.2,91/255,80/255,24/255);
+    var beansVertex3 = sphereVertex(0.2,0.2,0.2,50/255,245/255,219/255);
     var beansFaces = sphereFaces();
     var beans1 = new MyObject(beansVertex, beansFaces, shader_vertex_source, shader_fragment_source);
-    var beans2 = new MyObject(beansVertex, beansFaces, shader_vertex_source, shader_fragment_source);
-    var beans3 = new MyObject(beansVertex, beansFaces, shader_vertex_source, shader_fragment_source);
+    var beans2 = new MyObject(beansVertex2, beansFaces, shader_vertex_source, shader_fragment_source);
+    var beans3 = new MyObject(beansVertex3, beansFaces, shader_vertex_source, shader_fragment_source);
     var eye1_vertex = sphereVertex(0.025, 0.025, 0.025, 0, 0, 0);
     var eye1_faces = sphereFaces();
     var eye1Beans = new MyObject(eye1_vertex, eye1_faces, shader_vertex_source, shader_fragment_source);
@@ -1766,8 +1768,8 @@ function main(){
     tart1.addChild(lilin);
     table.addChild(drawer1);
     table.addChild(drawer2);
-    beans1.addChild(beans2);
-    beans1.addChild(beans3);
+    // beans1.addChild(beans2);
+    // beans1.addChild(beans3);
 
     beans1.addChild(eye1Beans);
     beans1.addChild(eye2Beans);
@@ -1962,7 +1964,12 @@ function main(){
         //_________________________ROTATE BEAN________________________
         
         var controlBean = rotateArbitary(kepalaBrown);
+        var cp2 = rotateArbitary(object1);
+        var cp3 = rotateArbitary(jessicaHead);
+        beans3.translate((cp3[(dummy+270)%controlBean.length]-beans1.MOVEMATRIX[12]),0,(cp3[(dummy+271)%controlBean.length]-beans1.MOVEMATRIX[14]))
+        beans2.translate((cp2[(dummy+180)%controlBean.length]-beans1.MOVEMATRIX[12]),0,(cp2[(dummy+181)%controlBean.length]-beans1.MOVEMATRIX[14]))
         dummy += 2
+        var y = (controlBean[dummy%controlBean.length]-beans1.MOVEMATRIX[12]) * (controlBean[(dummy+1)%controlBean.length]-beans1.MOVEMATRIX[14])
         beans1.translate((controlBean[dummy%controlBean.length]-beans1.MOVEMATRIX[12]),0,(controlBean[(dummy+1)%controlBean.length]-beans1.MOVEMATRIX[14]))
         
         //_________________CONY LOMPAT______________________
@@ -2590,6 +2597,12 @@ function main(){
 
         beans1.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
         beans1.draw();
+
+        beans2.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
+        beans2.draw();
+
+        beans3.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
+        beans3.draw();
 
         giftLeonard.setuniformmatrix4(PROJMATRIX, VIEWMATRIX);
         giftLeonard.draw();
